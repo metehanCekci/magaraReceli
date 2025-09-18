@@ -22,14 +22,17 @@ public class BossController : MonoBehaviour
     [Header("Lazer Launcher Attack")]
     public GameObject lazerLauncherPrefab;
     public GameObject lazerLauncherPrefab2;
+    public GameObject lazerLauncherPrefab3;
+    public GameObject lazerLauncherPrefab4;
+
 
     [Header("General Settings")]
     public float timeBetweenAttacks = 2f;
 
     [Header("Attack Chances (percentages)")]
-    [Range(0,100)] public int spikeChance = 50;
-    [Range(0,100)] public int boulderChance = 40;
-    [Range(0,100)] public int lazerChance = 10;
+    [Range(0,100)] public int spikeChance = 0;
+    [Range(0,100)] public int boulderChance = 100;
+    [Range(0,100)] public int lazerChance = 0;
 
     private void Start()
     {
@@ -61,14 +64,26 @@ public class BossController : MonoBehaviour
 
             // Stop before attack
             canMove = false;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
 
             // Pick attack based on weighted chances
             int roll = Random.Range(0, 100);
-            if (roll < spikeChance)
+            int cumulative = 0;
+
+            if (roll < (cumulative += spikeChance))
+            {
                 yield return StartCoroutine(SpikeAttack());
-            else if (roll < spikeChance + boulderChance)
+            }
+            else if (roll < (cumulative += boulderChance))
+            {
                 yield return StartCoroutine(BoulderAttack());
+            }
+            else if (roll < (cumulative += lazerChance))
+            {
+                if (FindObjectOfType<LazerLauncher>() == null)
+                    yield return StartCoroutine(LazerLauncherAttack());
+            }
+
             else if (roll < spikeChance + boulderChance + lazerChance)
             {
                 if (FindObjectOfType<LazerLauncher>() == null)
@@ -76,7 +91,7 @@ public class BossController : MonoBehaviour
             }
 
             // Small delay before moving again
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             canMove = true;
         }
     }
@@ -105,49 +120,66 @@ public class BossController : MonoBehaviour
 
     IEnumerator LazerLauncherAttack()
     {
-        // Ýlk lazer launcher'ýný oluþtur
-        GameObject launcher = Instantiate(lazerLauncherPrefab, lazerLauncherPrefab.transform.position, Quaternion.identity);
-        launcher.SetActive(true);
+        GameObject[] topCannons = { lazerLauncherPrefab, lazerLauncherPrefab2 };
+        GameObject[] bottomCannons = { lazerLauncherPrefab3, lazerLauncherPrefab4 };
 
-        // Ýkinci lazer launcher'ýný oluþtur
-        GameObject launcher2 = Instantiate(lazerLauncherPrefab2, lazerLauncherPrefab2.transform.position, Quaternion.identity);
-        launcher2.SetActive(true);
+        // Üst cannonlar aktif edilir
+        yield return StartCoroutine(ActivateCannons(topCannons));
 
-        // Ýlk launcher için fade-in efekti
-        SpriteRenderer sr1 = launcher.GetComponent<SpriteRenderer>();
-        Color color1 = sr1.color;
-        color1.a = 0;
-        sr1.color = color1;
+        // 1 saniye bekle
+        yield return new WaitForSeconds(1f);
 
-        // Ýkinci launcher için fade-in efekti
-        SpriteRenderer sr2 = launcher2.GetComponent<SpriteRenderer>();
-        Color color2 = sr2.color;
-        color2.a = 0;
-        sr2.color = color2;
+        // Alt cannonlar aktif edilir
+        yield return StartCoroutine(ActivateCannons(bottomCannons));
+    }
 
-        // Fade-in zamanlamasý
-        float fadeTime = 1f;
-        float elapsed = 0f;
+    IEnumerator ActivateCannons(GameObject[] cannons)
+    {
+        float fadeTime = 1.5f;
 
-        // Ýlk lazer launcher'ý için fade-in
-        while (elapsed < fadeTime)
+        foreach (GameObject cannonPrefab in cannons)
         {
-            color1.a = Mathf.Lerp(0, 1, elapsed / fadeTime);
-            sr1.color = color1;
-            color2.a = Mathf.Lerp(0, 1, elapsed / fadeTime);
-            sr2.color = color2;
+            GameObject cannon = Instantiate(cannonPrefab, cannonPrefab.transform.position, Quaternion.identity);
+            cannon.SetActive(true);
+
+            // Fade-in
+            SpriteRenderer sr = cannon.GetComponent<SpriteRenderer>();
+            StartCoroutine(FadeIn(sr, fadeTime));
+
+            // Cannon’u aktive et
+            LazerLauncher launcher = cannon.GetComponent<LazerLauncher>();
+            launcher.ActivateCannon();
+
+            // Tag ekle ki bulletler vurabilsin
+            cannon.tag = "Cannon";
+        }
+
+        // Bu sefer süre yok çünkü sürekli ateþ edecekler
+        yield return null;
+    }
+
+
+    IEnumerator FadeIn(SpriteRenderer sr, float time)
+    {
+        if (!sr) yield break;
+        Color c = sr.color;
+        c.a = 0;
+        sr.color = c;
+
+        float elapsed = 0f;
+        while (elapsed < time)
+        {
+            c.a = Mathf.Lerp(0, 1, elapsed / time);
+            sr.color = c;
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Fade-in tamamlandýðýnda son halini ayarla
-        color1.a = 1;
-        sr1.color = color1;
-        color2.a = 1;
-        sr2.color = color2;
-
-        yield return null;
+        c.a = 1;
+        sr.color = c;
     }
+
+
 
 
     #endregion

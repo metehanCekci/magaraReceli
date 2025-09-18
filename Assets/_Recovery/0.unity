@@ -124,11 +124,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1045160414630831676, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
   m_PrefabInstance: {fileID: 6946339551672237758}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &315940850 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4776694086864521984, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-  m_PrefabInstance: {fileID: 3372503815638448942}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,7 +470,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1853696300}
   - component: {fileID: 1853696299}
-  - component: {fileID: 1853696301}
   m_Layer: 0
   m_Name: SaveObject
   m_TagString: Untagged
@@ -495,7 +489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29f1bca0fbc92ed8191c4d29e5f51855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveTest
-  Player: {fileID: 315940850}
+  Player: {fileID: 0}
 --- !u!4 &1853696300
 Transform:
   m_ObjectHideFlags: 0
@@ -511,18 +505,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1853696301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1853696298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 742f669c129d98591910b30c09f33757, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SaveSystem
 --- !u!1 &2097069178
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,14 +698,6 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 1251772105}
-    - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: maxHealth
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: currentHealth
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: spriteRenderer
       value: 

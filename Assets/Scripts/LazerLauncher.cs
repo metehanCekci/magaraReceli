@@ -3,49 +3,56 @@ using UnityEngine;
 
 public class LazerLauncher : MonoBehaviour
 {
-    [Header("Lazer Settings")]
-    public GameObject lazerPrefab;       // Bullet prefab
-    public float shootInterval = 0.1f;   // Delay between bullets
-    public float shootDuration = 3f;     // Shoot for this many seconds each volley
-    public float shootAngle = 15f;       // Angle between bullets
-    public int bulletCount = 5;          // Number of bullets per volley
-    public bool shootRight = true;       // Shooting direction
+    [Header("Cannon Settings")]
+    public GameObject bulletPrefab;
+    public float bulletSpeed = 10f;
+    public float fireInterval = 0.2f;
+    public int health = 5;
+
+    [Header("Direction")]
+    public bool shootRight = true; // sað/sol yön
+
+    private bool isShooting = false;
 
     private void Start()
     {
-        StartCoroutine(ShootLoop());
+        // Fade-in sýrasýnda BossController ActivateCannon() çaðýrabilir
+    }
+
+    public void ActivateCannon()
+    {
+        if (!isShooting)
+            StartCoroutine(ShootLoop());
     }
 
     IEnumerator ShootLoop()
     {
-        yield return new WaitForSeconds(2);
-        while (true)
+        isShooting = true;
+
+        while (true) // sonsuza kadar
         {
-            float timer = 0f;
-
-            while (timer < shootDuration)
-            {
-                ShootBulletPattern();
-                timer += shootInterval * bulletCount;
-                yield return new WaitForSeconds(shootInterval * bulletCount);
-            }
-
-            // Wait 1 second before next volley
-            yield return new WaitForSeconds(5f);
+            Shoot();
+            yield return new WaitForSeconds(fireInterval);
         }
     }
 
-    void ShootBulletPattern()
+    void Shoot()
     {
-        float startAngle = -(shootAngle * (bulletCount - 1) / 2f);
-        for (int i = 0; i < bulletCount; i++)
-        {
-            float angle = startAngle + i * shootAngle;
-            Vector3 dir = Quaternion.Euler(0, 0, shootRight ? angle : 180 - angle) * Vector3.right;
+        if (!bulletPrefab) return;
 
-            GameObject bullet = Instantiate(lazerPrefab, transform.position, Quaternion.identity);
-            bullet.SetActive(true);
-            bullet.GetComponent<Rigidbody2D>().linearVelocity = dir * 10f; // speed
+        GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        bullet.SetActive(true);
+
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        rb.linearVelocity = (shootRight ? Vector2.right : Vector2.left) * bulletSpeed;
+    }
+
+    public void TakeDamage(int dmg)
+    {
+        health -= dmg;
+        if (health <= 0)
+        {
+            Destroy(gameObject); // yok olduðunda otomatik olarak ateþ durur
         }
     }
 }
