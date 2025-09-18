@@ -475,4 +475,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19fc00dc30fde49eeb441e670a9f0fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackHitbox
-  damage: 10
+  damage: 5
