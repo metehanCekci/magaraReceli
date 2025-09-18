@@ -105,31 +105,31 @@ public class BossController : MonoBehaviour
 
     IEnumerator LazerLauncherAttack()
     {
-        // Ýlk lazer launcher'ýný oluþtur
+        // ï¿½lk lazer launcher'ï¿½nï¿½ oluï¿½tur
         GameObject launcher = Instantiate(lazerLauncherPrefab, lazerLauncherPrefab.transform.position, Quaternion.identity);
         launcher.SetActive(true);
 
-        // Ýkinci lazer launcher'ýný oluþtur
+        // ï¿½kinci lazer launcher'ï¿½nï¿½ oluï¿½tur
         GameObject launcher2 = Instantiate(lazerLauncherPrefab2, lazerLauncherPrefab2.transform.position, Quaternion.identity);
         launcher2.SetActive(true);
 
-        // Ýlk launcher için fade-in efekti
+        // ï¿½lk launcher iï¿½in fade-in efekti
         SpriteRenderer sr1 = launcher.GetComponent<SpriteRenderer>();
         Color color1 = sr1.color;
         color1.a = 0;
         sr1.color = color1;
 
-        // Ýkinci launcher için fade-in efekti
+        // ï¿½kinci launcher iï¿½in fade-in efekti
         SpriteRenderer sr2 = launcher2.GetComponent<SpriteRenderer>();
         Color color2 = sr2.color;
         color2.a = 0;
         sr2.color = color2;
 
-        // Fade-in zamanlamasý
+        // Fade-in zamanlamasï¿½
         float fadeTime = 1f;
         float elapsed = 0f;
 
-        // Ýlk lazer launcher'ý için fade-in
+        // ï¿½lk lazer launcher'ï¿½ iï¿½in fade-in
         while (elapsed < fadeTime)
         {
             color1.a = Mathf.Lerp(0, 1, elapsed / fadeTime);
@@ -140,7 +140,7 @@ public class BossController : MonoBehaviour
             yield return null;
         }
 
-        // Fade-in tamamlandýðýnda son halini ayarla
+        // Fade-in tamamlandï¿½ï¿½ï¿½nda son halini ayarla
         color1.a = 1;
         sr1.color = color1;
         color2.a = 1;
