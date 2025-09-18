@@ -39,6 +39,7 @@ public class EnemyHealth2D : MonoBehaviour
     /// </summary>
     public void TakeDamage(int amount, Vector2 hitFrom)
     {
+        if (invulnerable) { Debug.Log("Hit blocked: i-frame active"); return; }
         if (invulnerable || currentHealth <= 0) return;
 
         currentHealth -= amount;
