@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 6716727142501694644}
   - component: {fileID: 3304049720111731278}
   - component: {fileID: 1657189960040081162}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -145,7 +145,7 @@ MonoBehaviour:
   Attack: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   Heal: {fileID: 7476244043514120974, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   moveSpeed: 7
-  jumpForce: 7
+  jumpForce: 12
   variableJumpMultiplier: 0.5
   coyoteTime: 0.15
   jumpBufferTime: 0.2
@@ -154,9 +154,10 @@ MonoBehaviour:
   dashDuration: 0.2
   dashCooldown: 0.5
   attackHitbox: {fileID: 1141328431190398702}
-  attackDuration: 0.3
-  healTime: 1
-  healAmount: 1
+  attackDuration: 0.1
+  attackCooldown: 0.3
+  healTime: 2
+  healAmount: 2
   groundCheck: {fileID: 127239123338225834}
   groundRadius: 0.15
   groundLayer:
@@ -263,8 +264,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891dd5d683b78aa5d81f315a15c31264, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthSystem
-  maxHealth: 100
-  currentHealth: 100
+  playerLayer: -1
+  enemyAttackLayer: -1
+  maxHealth: 5
+  currentHealth: 5
+  invulnerableTime: 1
+  flashTime: 0.08
+  spriteRenderer: {fileID: 0}
+  animator: {fileID: 0}
+  audioSource: {fileID: 0}
+  hurtSfx: {fileID: 0}
+  deathSfx: {fileID: 0}
+  rb: {fileID: 0}
+  knockbackForce: 8
+  knockbackUpFactor: 0.35
 --- !u!82 &1657189960040081162
 AudioSource:
   m_ObjectHideFlags: 0
@@ -475,4 +488,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19fc00dc30fde49eeb441e670a9f0fe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackHitbox
-  damage: 10
+  damage: 5
