@@ -841,12 +841,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7423982b3432646b599033fa27bee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  lazerPrefab: {fileID: 350980176}
-  shootInterval: 1
-  bulletCooldown: 5
-  shootDuration: 1
-  shootAngle: 13
-  bulletCount: 1
+  bulletPrefab: {fileID: 350980176}
+  bulletSpeed: 5
+  fireInterval: 3
+  health: 5
   shootRight: 1
 --- !u!1 &436169730
 GameObject:
@@ -1398,12 +1396,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7423982b3432646b599033fa27bee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  lazerPrefab: {fileID: 436169730}
-  shootInterval: 2
-  bulletCooldown: 1
-  shootDuration: 2
-  shootAngle: 15
-  bulletCount: 1
+  bulletPrefab: {fileID: 436169730}
+  bulletSpeed: 5
+  fireInterval: 3
+  health: 5
   shootRight: 0
 --- !u!114 &812106201
 MonoBehaviour:
@@ -1611,12 +1607,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7423982b3432646b599033fa27bee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  lazerPrefab: {fileID: 1074294890}
-  shootInterval: 2
-  bulletCooldown: 1
-  shootDuration: 2
-  shootAngle: 13
-  bulletCount: 1
+  bulletPrefab: {fileID: 1074294890}
+  bulletSpeed: 5
+  fireInterval: 3
+  health: 5
   shootRight: 1
 --- !u!114 &1049295872
 MonoBehaviour:
@@ -2409,12 +2403,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7423982b3432646b599033fa27bee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  lazerPrefab: {fileID: 261866520}
-  shootInterval: 1
-  bulletCooldown: 5
-  shootDuration: 1
-  shootAngle: 15
-  bulletCount: 1
+  bulletPrefab: {fileID: 261866520}
+  bulletSpeed: 5
+  fireInterval: 3
+  health: 5
   shootRight: 0
 --- !u!114 &1371008007
 MonoBehaviour:
@@ -3055,9 +3047,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 759581660}
     - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: lazerChance
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: leftTrigger
       value: 
       objectReference: {fileID: 1677022239}
+    - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: spikeChance
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: spikePrefab
       value: 
@@ -3066,6 +3066,10 @@ PrefabInstance:
       propertyPath: rightTrigger
       value: 
       objectReference: {fileID: 17676133}
+    - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: boulderChance
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: boulderPrefab
       value: 

@@ -30,9 +30,9 @@ public class BossController : MonoBehaviour
     public float timeBetweenAttacks = 2f;
 
     [Header("Attack Chances (percentages)")]
-    [Range(0,100)] public int spikeChance = 1;
-    [Range(0,100)] public int boulderChance = 1;
-    [Range(0,100)] public int lazerChance = 98;
+    [Range(0,100)] public int spikeChance = 0;
+    [Range(0,100)] public int boulderChance = 100;
+    [Range(0,100)] public int lazerChance = 0;
 
     private void Start()
     {
@@ -64,14 +64,26 @@ public class BossController : MonoBehaviour
 
             // Stop before attack
             canMove = false;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
 
             // Pick attack based on weighted chances
             int roll = Random.Range(0, 100);
-            if (roll < spikeChance)
+            int cumulative = 0;
+
+            if (roll < (cumulative += spikeChance))
+            {
                 yield return StartCoroutine(SpikeAttack());
-            else if (roll < spikeChance + boulderChance)
+            }
+            else if (roll < (cumulative += boulderChance))
+            {
                 yield return StartCoroutine(BoulderAttack());
+            }
+            else if (roll < (cumulative += lazerChance))
+            {
+                if (FindObjectOfType<LazerLauncher>() == null)
+                    yield return StartCoroutine(LazerLauncherAttack());
+            }
+
             else if (roll < spikeChance + boulderChance + lazerChance)
             {
                 if (FindObjectOfType<LazerLauncher>() == null)
@@ -79,7 +91,7 @@ public class BossController : MonoBehaviour
             }
 
             // Small delay before moving again
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
             canMove = true;
         }
     }
