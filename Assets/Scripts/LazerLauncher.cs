@@ -18,6 +18,7 @@ public class LazerLauncher : MonoBehaviour
 
     IEnumerator ShootLoop()
     {
+        yield return new WaitForSeconds(2);
         while (true)
         {
             float timer = 0f;
