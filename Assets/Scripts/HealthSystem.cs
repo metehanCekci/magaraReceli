@@ -25,8 +25,6 @@ public class HealthSystem : MonoBehaviour
 
     [Header("Knockback")]
     public Rigidbody2D rb;                     // yoksa otomatik bulur
-    public float knockbackForce = 8f;          // yatay baz kuvvet
-    public float knockbackUpFactor = 0.35f;    // dikey itiş oranı
 
     bool invulnerable;
 
@@ -40,36 +38,36 @@ public class HealthSystem : MonoBehaviour
         if (playerLayer < 0) playerLayer = gameObject.layer; // auto
     }
 
-    public void TakeDamage(int amount, Vector2 hitFrom, Collider2D source)
+    public bool IsInvulnerable()
+{
+    return invulnerable;  // Player invulnerable ise hasar almaz
+}
+
+public void TakeDamage(int amount, Vector2 hitFrom)
+{
+    if (invulnerable || currentHealth <= 0) return;
+
+    currentHealth -= amount;
+    if (currentHealth <= 0)
     {
-        if (invulnerable || currentHealth <= 0) return;
-
-        currentHealth -= amount;
-        if (currentHealth <= 0) { Die(); return; }
-
-        animator?.SetTrigger("Hurt");
-        if (audioSource && hurtSfx) audioSource.PlayOneShot(hurtSfx);
-        StartCoroutine(FlashRedRoutine());
-        ApplyKnockback(hitFrom);
-        StartCoroutine(InvulnerabilityWithColliderRoutine(source));
+        Die();
+        return;
     }
+
+    // Feedback (Hurt animasyon, ses, kırmızı flash)
+    if (animator) animator.SetTrigger("Hurt");
+    if (audioSource && hurtSfx) audioSource.PlayOneShot(hurtSfx);
+    StartCoroutine(FlashRedRoutine());
+
+
+    // i-frame
+    StartCoroutine(InvulnerabilityRoutine());
+}
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
     }
 
-    void ApplyKnockback(Vector2 hitFrom)
-    {
-        if (!rb) return;
-
-        Vector2 dir = ((Vector2)transform.position - hitFrom).normalized;
-        Vector2 force = new Vector2(dir.x * knockbackForce,
-                                    Mathf.Abs(dir.y) * knockbackForce * knockbackUpFactor);
-
-        // yatay hızı sıfırla, sonra it
-        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-        rb.AddForce(force, ForceMode2D.Impulse);
-    }
 
 
     IEnumerator InvulnerabilityWithColliderRoutine(Collider2D source)
@@ -86,19 +84,19 @@ public class HealthSystem : MonoBehaviour
         foreach (var c in myCols) if (c && source) Physics2D.IgnoreCollision(c, source, false);
     }
     IEnumerator InvulnerabilityRoutine()
-    {
-        invulnerable = true;
+{
+    invulnerable = true;
 
-        bool canIgnore = (enemyAttackLayer >= 0);
-        if (canIgnore)
-            Physics2D.IgnoreLayerCollision(playerLayer, enemyAttackLayer, true);
+    bool canIgnore = (enemyAttackLayer >= 0);
+    if (canIgnore)
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyAttackLayer, true);
 
-        yield return new WaitForSeconds(invulnerableTime);
+    yield return new WaitForSeconds(invulnerableTime);
 
-        invulnerable = false;
-        if (canIgnore)
-            Physics2D.IgnoreLayerCollision(playerLayer, enemyAttackLayer, false);
-    }
+    invulnerable = false;
+    if (canIgnore)
+        Physics2D.IgnoreLayerCollision(playerLayer, enemyAttackLayer, false);
+}
 
     IEnumerator FlashRedRoutine()
     {
