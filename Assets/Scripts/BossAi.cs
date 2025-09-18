@@ -30,9 +30,9 @@ public class BossController : MonoBehaviour
     public float timeBetweenAttacks = 2f;
 
     [Header("Attack Chances (percentages)")]
-    [Range(0,100)] public int spikeChance = 50;
-    [Range(0,100)] public int boulderChance = 40;
-    [Range(0,100)] public int lazerChance = 10;
+    [Range(0,100)] public int spikeChance = 1;
+    [Range(0,100)] public int boulderChance = 1;
+    [Range(0,100)] public int lazerChance = 98;
 
     private void Start()
     {
@@ -108,57 +108,65 @@ public class BossController : MonoBehaviour
 
     IEnumerator LazerLauncherAttack()
     {
-        // Launcher 1
-        GameObject launcher1 = Instantiate(lazerLauncherPrefab, lazerLauncherPrefab.transform.position, Quaternion.identity);
-        launcher1.SetActive(true);
-        SpriteRenderer sr1 = launcher1.GetComponent<SpriteRenderer>();
+        GameObject[] topCannons = { lazerLauncherPrefab, lazerLauncherPrefab2 };
+        GameObject[] bottomCannons = { lazerLauncherPrefab3, lazerLauncherPrefab4 };
 
-        // Launcher 2
-        GameObject launcher2 = Instantiate(lazerLauncherPrefab2, lazerLauncherPrefab2.transform.position, Quaternion.identity);
-        launcher2.SetActive(true);
-        SpriteRenderer sr2 = launcher2.GetComponent<SpriteRenderer>();
+        // Üst cannonlar aktif edilir
+        yield return StartCoroutine(ActivateCannons(topCannons));
 
-        // Launcher 3
-        GameObject launcher3 = Instantiate(lazerLauncherPrefab3, lazerLauncherPrefab3.transform.position, Quaternion.identity);
-        launcher3.SetActive(true);
-        SpriteRenderer sr3 = launcher3.GetComponent<SpriteRenderer>();
+        // 1 saniye bekle
+        yield return new WaitForSeconds(1f);
 
-        // Launcher 4
-        GameObject launcher4 = Instantiate(lazerLauncherPrefab4, lazerLauncherPrefab4.transform.position, Quaternion.identity);
-        launcher4.SetActive(true);
-        SpriteRenderer sr4 = launcher4.GetComponent<SpriteRenderer>();
+        // Alt cannonlar aktif edilir
+        yield return StartCoroutine(ActivateCannons(bottomCannons));
+    }
 
-        // Hepsinin transparan olarak baþlamasý
-        Color color1 = sr1.color; color1.a = 0; sr1.color = color1;
-        Color color2 = sr2.color; color2.a = 0; sr2.color = color2;
-        Color color3 = sr3.color; color3.a = 0; sr3.color = color3;
-        Color color4 = sr4.color; color4.a = 0; sr4.color = color4;
-
-        // Fade-in ayarlarý
+    IEnumerator ActivateCannons(GameObject[] cannons)
+    {
         float fadeTime = 1.5f;
-        float elapsed = 0f;
 
-        while (elapsed < fadeTime)
+        foreach (GameObject cannonPrefab in cannons)
         {
-            float alpha = Mathf.Lerp(0, 1, elapsed / fadeTime);
+            GameObject cannon = Instantiate(cannonPrefab, cannonPrefab.transform.position, Quaternion.identity);
+            cannon.SetActive(true);
 
-            color1.a = alpha; sr1.color = color1;
-            color2.a = alpha; sr2.color = color2;
-            color3.a = alpha; sr3.color = color3;
-            color4.a = alpha; sr4.color = color4;
+            // Fade-in
+            SpriteRenderer sr = cannon.GetComponent<SpriteRenderer>();
+            StartCoroutine(FadeIn(sr, fadeTime));
 
+            // Cannon’u aktive et
+            LazerLauncher launcher = cannon.GetComponent<LazerLauncher>();
+            launcher.ActivateCannon();
+
+            // Tag ekle ki bulletler vurabilsin
+            cannon.tag = "Cannon";
+        }
+
+        // Bu sefer süre yok çünkü sürekli ateþ edecekler
+        yield return null;
+    }
+
+
+    IEnumerator FadeIn(SpriteRenderer sr, float time)
+    {
+        if (!sr) yield break;
+        Color c = sr.color;
+        c.a = 0;
+        sr.color = c;
+
+        float elapsed = 0f;
+        while (elapsed < time)
+        {
+            c.a = Mathf.Lerp(0, 1, elapsed / time);
+            sr.color = c;
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Son alpha'yý garantiye al
-        color1.a = 1; sr1.color = color1;
-        color2.a = 1; sr2.color = color2;
-        color3.a = 1; sr3.color = color3;
-        color4.a = 1; sr4.color = color4;
-
-        yield return null;
+        c.a = 1;
+        sr.color = c;
     }
+
 
 
 
