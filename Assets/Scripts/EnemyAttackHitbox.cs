@@ -23,6 +23,6 @@ public class EnemyAttackHitbox: MonoBehaviour
         var hs = other.GetComponentInParent<HealthSystem>();
         if (!hs) return;
 
-        hs.TakeDamage(damage, transform.position);  // i-frame + knockback + flash bu tarafta
+        hs.TakeDamage(damage, transform.position, GetComponent<Collider2D>());
     }
 }

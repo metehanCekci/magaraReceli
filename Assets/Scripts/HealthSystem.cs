@@ -40,35 +40,19 @@ public class HealthSystem : MonoBehaviour
         if (playerLayer < 0) playerLayer = gameObject.layer; // auto
     }
 
-    // Eski çağrılar bozulmasın diye overload bıraktık:
-    public void TakeDamage(int amount) => TakeDamage(amount, transform.position);
-
-    /// <summary>
-    /// amount kadar hasar uygular; hitFrom darbenin geldiği dünya pozisyonu.
-    /// </summary>
-    public void TakeDamage(int amount, Vector2 hitFrom)
+    public void TakeDamage(int amount, Vector2 hitFrom, Collider2D source)
     {
         if (invulnerable || currentHealth <= 0) return;
 
         currentHealth -= amount;
-        if (currentHealth <= 0)
-        {
-            Die();
-            return;
-        }
+        if (currentHealth <= 0) { Die(); return; }
 
-        // Hurt feedback
-        if (animator) animator.SetTrigger("Hurt");
+        animator?.SetTrigger("Hurt");
         if (audioSource && hurtSfx) audioSource.PlayOneShot(hurtSfx);
         StartCoroutine(FlashRedRoutine());
-
-        // Knockback
         ApplyKnockback(hitFrom);
-
-        // i-frames
-        StartCoroutine(InvulnerabilityRoutine());
+        StartCoroutine(InvulnerabilityWithColliderRoutine(source));
     }
-
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
@@ -87,6 +71,20 @@ public class HealthSystem : MonoBehaviour
         rb.AddForce(force, ForceMode2D.Impulse);
     }
 
+
+    IEnumerator InvulnerabilityWithColliderRoutine(Collider2D source)
+    {
+        invulnerable = true;
+
+        // player tarafındaki tüm collider’larla bu 'source'u geçici olarak ignore et
+        var myCols = GetComponentsInChildren<Collider2D>(includeInactive: false);
+        foreach (var c in myCols) if (c && source) Physics2D.IgnoreCollision(c, source, true);
+
+        yield return new WaitForSeconds(invulnerableTime);
+
+        invulnerable = false;
+        foreach (var c in myCols) if (c && source) Physics2D.IgnoreCollision(c, source, false);
+    }
     IEnumerator InvulnerabilityRoutine()
     {
         invulnerable = true;
