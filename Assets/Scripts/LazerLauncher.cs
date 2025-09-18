@@ -5,7 +5,8 @@ public class LazerLauncher : MonoBehaviour
 {
     [Header("Lazer Settings")]
     public GameObject lazerPrefab;       // Bullet prefab
-    public float shootInterval = 0.1f;   // Delay between bullets
+    public float shootInterval = 0.1f;
+    public float bulletCooldown = 1; // Delay between bullets
     public float shootDuration = 3f;     // Shoot for this many seconds each volley
     public float shootAngle = 15f;       // Angle between bullets
     public int bulletCount = 5;          // Number of bullets per volley
@@ -18,7 +19,7 @@ public class LazerLauncher : MonoBehaviour
 
     IEnumerator ShootLoop()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
         while (true)
         {
             float timer = 0f;
@@ -31,7 +32,7 @@ public class LazerLauncher : MonoBehaviour
             }
 
             // Wait 1 second before next volley
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(bulletCooldown);
         }
     }
 

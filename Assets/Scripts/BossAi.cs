@@ -22,6 +22,9 @@ public class BossController : MonoBehaviour
     [Header("Lazer Launcher Attack")]
     public GameObject lazerLauncherPrefab;
     public GameObject lazerLauncherPrefab2;
+    public GameObject lazerLauncherPrefab3;
+    public GameObject lazerLauncherPrefab4;
+
 
     [Header("General Settings")]
     public float timeBetweenAttacks = 2f;
@@ -105,49 +108,58 @@ public class BossController : MonoBehaviour
 
     IEnumerator LazerLauncherAttack()
     {
-        // Ýlk lazer launcher'ýný oluþtur
-        GameObject launcher = Instantiate(lazerLauncherPrefab, lazerLauncherPrefab.transform.position, Quaternion.identity);
-        launcher.SetActive(true);
+        // Launcher 1
+        GameObject launcher1 = Instantiate(lazerLauncherPrefab, lazerLauncherPrefab.transform.position, Quaternion.identity);
+        launcher1.SetActive(true);
+        SpriteRenderer sr1 = launcher1.GetComponent<SpriteRenderer>();
 
-        // Ýkinci lazer launcher'ýný oluþtur
+        // Launcher 2
         GameObject launcher2 = Instantiate(lazerLauncherPrefab2, lazerLauncherPrefab2.transform.position, Quaternion.identity);
         launcher2.SetActive(true);
-
-        // Ýlk launcher için fade-in efekti
-        SpriteRenderer sr1 = launcher.GetComponent<SpriteRenderer>();
-        Color color1 = sr1.color;
-        color1.a = 0;
-        sr1.color = color1;
-
-        // Ýkinci launcher için fade-in efekti
         SpriteRenderer sr2 = launcher2.GetComponent<SpriteRenderer>();
-        Color color2 = sr2.color;
-        color2.a = 0;
-        sr2.color = color2;
 
-        // Fade-in zamanlamasý
-        float fadeTime = 1f;
+        // Launcher 3
+        GameObject launcher3 = Instantiate(lazerLauncherPrefab3, lazerLauncherPrefab3.transform.position, Quaternion.identity);
+        launcher3.SetActive(true);
+        SpriteRenderer sr3 = launcher3.GetComponent<SpriteRenderer>();
+
+        // Launcher 4
+        GameObject launcher4 = Instantiate(lazerLauncherPrefab4, lazerLauncherPrefab4.transform.position, Quaternion.identity);
+        launcher4.SetActive(true);
+        SpriteRenderer sr4 = launcher4.GetComponent<SpriteRenderer>();
+
+        // Hepsinin transparan olarak baþlamasý
+        Color color1 = sr1.color; color1.a = 0; sr1.color = color1;
+        Color color2 = sr2.color; color2.a = 0; sr2.color = color2;
+        Color color3 = sr3.color; color3.a = 0; sr3.color = color3;
+        Color color4 = sr4.color; color4.a = 0; sr4.color = color4;
+
+        // Fade-in ayarlarý
+        float fadeTime = 1.5f;
         float elapsed = 0f;
 
-        // Ýlk lazer launcher'ý için fade-in
         while (elapsed < fadeTime)
         {
-            color1.a = Mathf.Lerp(0, 1, elapsed / fadeTime);
-            sr1.color = color1;
-            color2.a = Mathf.Lerp(0, 1, elapsed / fadeTime);
-            sr2.color = color2;
+            float alpha = Mathf.Lerp(0, 1, elapsed / fadeTime);
+
+            color1.a = alpha; sr1.color = color1;
+            color2.a = alpha; sr2.color = color2;
+            color3.a = alpha; sr3.color = color3;
+            color4.a = alpha; sr4.color = color4;
+
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Fade-in tamamlandýðýnda son halini ayarla
-        color1.a = 1;
-        sr1.color = color1;
-        color2.a = 1;
-        sr2.color = color2;
+        // Son alpha'yý garantiye al
+        color1.a = 1; sr1.color = color1;
+        color2.a = 1; sr2.color = color2;
+        color3.a = 1; sr3.color = color3;
+        color4.a = 1; sr4.color = color4;
 
         yield return null;
     }
+
 
 
     #endregion
