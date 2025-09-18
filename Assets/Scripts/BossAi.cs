@@ -92,9 +92,15 @@ public class BossController : MonoBehaviour
 
     IEnumerator BoulderAttack()
     {
-        GameObject boulder = Instantiate(boulderPrefab, boulderSpawnPoint.position, Quaternion.identity);
-        boulder.GetComponent<BoulderBehaviour>().Initialize(player.position.x);
-        yield return null;
+        int boulderCount = 3;          // How many boulders to drop
+        float delayBetween = 0.5f;     // Time between drops
+
+        for (int i = 0; i < boulderCount; i++)
+        {
+            GameObject boulder = Instantiate(boulderPrefab, boulderSpawnPoint.position, Quaternion.identity);
+            boulder.GetComponent<BoulderBehaviour>().Initialize(player.position.x);
+            yield return new WaitForSeconds(delayBetween);
+        }
     }
 
     IEnumerator LazerLauncherAttack()
