@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class EnemyAttackHitbox: MonoBehaviour
+public class EnemyAttackHitbox : MonoBehaviour
 {
     public int damage = 1;
     public LayerMask playerLayers; // Player layer'ını seç
@@ -13,7 +13,7 @@ public class EnemyAttackHitbox: MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other) => TryHit(other);
-    void OnTriggerStay2D(Collider2D other)  => TryHit(other);
+    void OnTriggerStay2D(Collider2D other)  => TryHit(other); // Sürekli hasar vermek için OnTriggerStay2D kullanıyoruz
 
     void TryHit(Collider2D other)
     {
@@ -23,6 +23,9 @@ public class EnemyAttackHitbox: MonoBehaviour
         var hs = other.GetComponentInParent<HealthSystem>();
         if (!hs) return;
 
-        hs.TakeDamage(damage, transform.position, GetComponent<Collider2D>());
+        if (!hs.IsInvulnerable()) // Player invulnerable değilse hasar uygula
+        {
+            hs.TakeDamage(damage, transform.position);
+        }
     }
 }
