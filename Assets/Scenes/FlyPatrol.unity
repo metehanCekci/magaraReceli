@@ -554,7 +554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8904884055748503870, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_Name
-      value: Enemy
+      value: FlyEnemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
