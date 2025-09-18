@@ -188,8 +188,9 @@ public class PlayerControllerInput : MonoBehaviour
         animator.SetTrigger("Attack");
         if (attackHitbox) attackHitbox.gameObject.SetActive(true);
         PlayOne(attackSound);
-        yield return new WaitForSeconds(attackDuration);
+        yield return new WaitForSeconds(0.1f);
         if (attackHitbox) attackHitbox.gameObject.SetActive(false);
+        yield return new WaitForSeconds(attackDuration - 0.1f);
         isAttacking = false;
     }
 

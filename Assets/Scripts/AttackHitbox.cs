@@ -4,7 +4,7 @@ public class AttackHitbox : MonoBehaviour
 {
     public int damage = 1;
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
 {
     // Düşman mı?
     var enemy = other.GetComponentInParent<EnemyHealth2D>();
