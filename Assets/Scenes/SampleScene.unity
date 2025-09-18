@@ -582,6 +582,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1154181778235337951, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1154181778235337951, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
+      propertyPath: currentHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1154181778235337951, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
+      propertyPath: invulnerableTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6078528723111086910, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
+      propertyPath: m_Constraints
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8904884055748503870, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_Name
       value: Enemy

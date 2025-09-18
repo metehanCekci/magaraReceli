@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerControllerInput : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("Input (New Input System)")]
     public InputActionReference Move;   // Vector2 (x) veya 1D Axis
@@ -33,8 +33,12 @@ public class PlayerControllerInput : MonoBehaviour
     bool isDashing; float dashTimer, lastDashTime;
 
     [Header("Combat")]
-    public Transform attackHitbox;
-    public float attackDuration = 0.25f;
+    public Transform attackHitbox;          // child; Collider2D isTrigger=true
+    public float attackDuration = 0.20f;    // hitbox açık kalma süresi
+    [SerializeField] float attackCooldown = 0.20f; // basışlar arası
+    float lastAttackTime;
+    int swingId;                            // <<< her basışta artar
+    public int CurrentSwingId => swingId;   // <<< hitbox bunu okur
     bool isAttacking;
 
     [Header("Healing")]
@@ -56,160 +60,170 @@ public class PlayerControllerInput : MonoBehaviour
     Vector2 moveInput;
     AbilityManager abilityManager;
 
-    void Awake(){
+    void Awake()
+    {
         rb = GetComponent<Rigidbody2D>();
         abilityManager = GetComponent<AbilityManager>();
         if (!animator) animator = GetComponent<Animator>();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
+        if (attackHitbox) attackHitbox.gameObject.SetActive(false); // güvenlik
         RecalcMaxJumps();
     }
 
-    void OnEnable(){
-        if (Move) Move.action.Enable();
-        if (Jump){ Jump.action.Enable(); Jump.action.performed += OnJumpPerformed; Jump.action.canceled += OnJumpCanceled; }
-        if (Dash){ Dash.action.Enable(); Dash.action.performed += OnDashPerformed; }
-        if (Attack){ Attack.action.Enable(); Attack.action.performed += OnAttackPerformed; }
-        if (Heal){ Heal.action.Enable(); Heal.action.performed += OnHealPerformed; }
+    void OnEnable()
+    {
+        if (Move)  Move.action.Enable();
+        if (Jump) { Jump.action.Enable(); Jump.action.performed += OnJumpPerformed; Jump.action.canceled += OnJumpCanceled; }
+        if (Dash) { Dash.action.Enable(); Dash.action.performed += OnDashPerformed; }
+        if (Attack){ Attack.action.Enable(); Attack.action.performed += OnAttackPerformed; } // sadece performed
+        if (Heal)  { Heal.action.Enable(); Heal.action.performed += OnHealPerformed; }
     }
 
-    void OnDisable(){
-        if (Move) Move.action.Disable();
-        if (Jump){ Jump.action.performed -= OnJumpPerformed; Jump.action.canceled -= OnJumpCanceled; Jump.action.Disable(); }
-        if (Dash){ Dash.action.performed -= OnDashPerformed; Dash.action.Disable(); }
+    void OnDisable()
+    {
+        if (Move)  Move.action.Disable();
+        if (Jump) { Jump.action.performed -= OnJumpPerformed; Jump.action.canceled -= OnJumpCanceled; Jump.action.Disable(); }
+        if (Dash) { Dash.action.performed -= OnDashPerformed; Dash.action.Disable(); }
         if (Attack){ Attack.action.performed -= OnAttackPerformed; Attack.action.Disable(); }
-        if (Heal){ Heal.action.performed -= OnHealPerformed; Heal.action.Disable(); }
+        if (Heal)  { Heal.action.performed -= OnHealPerformed; Heal.action.Disable(); }
     }
 
-    void RecalcMaxJumps(){
+    void RecalcMaxJumps()
+    {
         maxJumps = abilityManager ? abilityManager.GetMaxJumps() : baseMaxJumps;
         if (jumpCount > maxJumps) jumpCount = maxJumps;
     }
 
-    void Update(){
-        // Move read (Vector2 önerilir)
+    void Update()
+    {
+        // Move
         float x = 0f;
-        if (Move && Move.action != null){
+        if (Move && Move.action != null)
+        {
+            // Asset'te Move=Value+Vector2 ise:
             if (Move.action.expectedControlType == "Vector2") x = Move.action.ReadValue<Vector2>().x;
             else x = Move.action.ReadValue<float>();
         }
         moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
 
-        // Flip
+        // anlık hız (mario değil)
+        if (!isDashing)
+            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+
+        // flip
         if (Mathf.Abs(moveInput.x) > 0.01f)
             transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1);
 
-        // Jump buffer tüket
-        if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps)){
+        // jump buffer consume
+        if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
+        {
             DoJump();
             bufferCounter = 0f;
         }
 
-        // Variable jump
+        // variable jump
         if (!jumpHeld && rb.linearVelocity.y > 0f)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
 
-        // Anim
-        animator.SetFloat("Speed", Mathf.Abs(moveInput.x));
-        animator.SetBool("IsGrounded", IsGrounded());
+        // ground & coyote
+        if (IsGrounded()) { coyoteCounter = coyoteTime; jumpCount = 0; }
+        else coyoteCounter -= Time.deltaTime;
+
+        // anim
+        if (animator)
+        {
+            animator.SetFloat("Speed", Mathf.Abs(moveInput.x));
+            animator.SetBool("IsGrounded", IsGrounded());
+        }
 
         RecalcMaxJumps();
     }
 
-    void FixedUpdate(){
-        // ANİ hızlan/dur (smoothing yok)
-        if (!isDashing){
-            float targetX = moveInput.x * moveSpeed; // basınca anında bu hız
-            rb.linearVelocity = new Vector2(targetX, rb.linearVelocity.y);
-        }
+    // ===== Input Callbacks =====
+    void OnJumpPerformed(InputAction.CallbackContext ctx){ jumpHeld = true; bufferCounter = jumpBufferTime; }
+    void OnJumpCanceled (InputAction.CallbackContext ctx){ jumpHeld = false; }
 
-        // Ground & coyote
-        if (IsGrounded()){
-            coyoteCounter = coyoteTime;
-            jumpCount = 0;
-        } else {
-            coyoteCounter -= Time.fixedDeltaTime;
-        }
-
-        // Dash zamanlayıcı
-        if (isDashing){
-            dashTimer -= Time.fixedDeltaTime;
-            if (dashTimer <= 0f) isDashing = false;
-        }
-    }
-
-    // ---- Input callbacks ----
-    void OnJumpPerformed(InputAction.CallbackContext ctx){
-        jumpHeld = true;
-        bufferCounter = jumpBufferTime;
-    }
-    void OnJumpCanceled(InputAction.CallbackContext ctx){
-        jumpHeld = false;
-    }
-    void OnDashPerformed(InputAction.CallbackContext ctx){
+    void OnDashPerformed(InputAction.CallbackContext ctx)
+    {
         if (abilityManager && !abilityManager.CanDash()) return;
         if (Time.time < lastDashTime + dashCooldown) return;
         StartDash();
     }
-    void OnAttackPerformed(InputAction.CallbackContext ctx){
-        Debug.Log("Saldırdım");
-        if (!isAttacking) StartCoroutine(AttackRoutine());
+
+    void OnAttackPerformed(InputAction.CallbackContext ctx)
+    {
+        if (Time.time < lastAttackTime + attackCooldown) return;
+
+        Physics2D.SyncTransforms(); // fizik senkron
+        if (rb) rb.WakeUp();
+
+        swingId++; // <<< her basışta yeni swing
+        StartCoroutine(AttackSwing());
+        lastAttackTime = Time.time;
     }
-    void OnHealPerformed(InputAction.CallbackContext ctx){
+
+    void OnHealPerformed(InputAction.CallbackContext ctx)
+    {
         if (abilityManager && !abilityManager.CanHeal()) return;
         if (!isHealing) StartCoroutine(HealRoutine());
     }
 
-    // ---- Core ----
-    bool IsGrounded(){
+    // ===== Core =====
+    bool IsGrounded()
+    {
         if (!groundCheck) return false;
         return Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
     }
 
-    void DoJump(){
+    void DoJump()
+    {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
         rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        jumpCount++;
-        coyoteCounter = 0f;
-        animator.SetTrigger("Jump");
+        jumpCount++; coyoteCounter = 0f;
+        animator?.SetTrigger("Jump");
         PlayOne(jumpSound);
     }
 
-    void StartDash(){
-        isDashing = true;
-        dashTimer = dashDuration;
-        lastDashTime = Time.time;
+    void StartDash()
+    {
+        isDashing = true; dashTimer = dashDuration; lastDashTime = Time.time;
         rb.linearVelocity = new Vector2(transform.localScale.x * dashForce, rb.linearVelocity.y);
-        animator.SetTrigger("Dash");
+        animator?.SetTrigger("Dash");
         PlayOne(dashSound);
+        // dash bitişini Update/Fixed'de değil, korutinle de kapatabilirsin; gerek yoksa böyle kalabilir.
+        Invoke(nameof(_EndDash), dashDuration);
     }
+    void _EndDash(){ isDashing = false; }
 
-    System.Collections.IEnumerator AttackRoutine(){
+    System.Collections.IEnumerator AttackSwing()
+    {
         isAttacking = true;
-        animator.SetTrigger("Attack");
+        animator?.SetTrigger("Attack");
         if (attackHitbox) attackHitbox.gameObject.SetActive(true);
         PlayOne(attackSound);
-        yield return new WaitForSeconds(0.1f);
+
+        yield return new WaitForSeconds(attackDuration);
+
         if (attackHitbox) attackHitbox.gameObject.SetActive(false);
-        yield return new WaitForSeconds(attackDuration - 0.1f);
         isAttacking = false;
     }
 
-    System.Collections.IEnumerator HealRoutine(){
+    System.Collections.IEnumerator HealRoutine()
+    {
         isHealing = true;
-        animator.SetTrigger("Heal");
+        animator?.SetTrigger("Heal");
         PlayOne(healSound);
         yield return new WaitForSeconds(healTime);
-        var hs = GetComponent<HealthSystem>();
-        if (hs) hs.Heal(healAmount);
+        var hs = GetComponent<HealthSystem>(); if (hs) hs.Heal(healAmount);
         isHealing = false;
     }
 
-    void PlayOne(AudioClip clip){
-        if (clip && audioSource) audioSource.PlayOneShot(clip);
-    }
+    void PlayOne(AudioClip clip){ if (clip && audioSource) audioSource.PlayOneShot(clip); }
 
-    void OnDrawGizmosSelected(){
-        if (groundCheck){
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheck)
+        {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         }
