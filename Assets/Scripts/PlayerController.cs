@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -45,7 +46,7 @@ public class PlayerController : MonoBehaviour
     bool isAttacking;
 
     [Header("Healing")]
-    public float healTime = 1f;
+    public float healTime = 3f;
     public int healAmount = 1;
     bool isHealing;
 
@@ -114,6 +115,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (isPaused) return;
+
+        // Eğer healing yapılıyorsa, hareket ve saldırıyı engelle
+        if (isHealing) return; // Eğer healing işlemi devam ediyorsa, diğer tüm işlemleri engelle
 
         float x = 0f;
         if (Move != null && Move.action != null)
@@ -188,6 +192,9 @@ public class PlayerController : MonoBehaviour
 
     void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
+        // Eğer healing yapılıyorsa saldırıyı engelle
+        if (isHealing) return;
+
         if (Time.time < lastAttackTime + attackCooldown) return;
         Physics2D.SyncTransforms();
         rb?.WakeUp();
@@ -204,23 +211,60 @@ public class PlayerController : MonoBehaviour
 
     void OnHealPerformed(InputAction.CallbackContext ctx)
     {
+        // Soul tam doluysa
         if (Soul == MaxSoul)
         {
             var healthSystem = GetComponent<HealthSystem>();
+            rb.linearVelocity = Vector2.zero;
             if (healthSystem != null)
             {
-                healthSystem.Heal(60);
+                StartCoroutine(HealWaitRoutine());
+                healthSystem.Heal(60);  // Sağlık arttırma
                 Debug.Log("Player's health increased by 60.");
             }
 
-            Soul = 0f;
-            UpdateSoulBar();
+            Soul = 0f;  // Soul sıfırlanır
+            UpdateSoulBar();  // Soul barını güncelle
         }
-        else
-        {
-            Debug.Log("Cannot heal, Soul is not full.");
-        }
+        
     }
+
+
+    IEnumerator HealRoutine()
+    {
+        isHealing = true;
+        animator.SetTrigger("Heal");
+        PlayOne(healSound);
+
+        // Healing işlemi sırasında hareketi engelle
+        rb.linearVelocity = Vector2.zero;  // Hareketi sıfırlıyoruz
+
+        yield return new WaitForSeconds(healTime);
+
+        isHealing = false;
+
+        // Can yenileme tamamlandığında hareketi tekrar aktif et
+        rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+    }
+
+    IEnumerator HealWaitRoutine()
+    {
+        // Healing başladığında hareketi engelle
+        Move.action.Disable();  // Move aksiyonunu devre dışı bırak
+
+        isHealing = true;
+
+        animator.SetTrigger("Heal");  // Healing animasyonunu başlat
+        PlayOne(healSound);  // Healing sesi çal
+
+        yield return new WaitForSeconds(healTime);  // Healing tamamlanana kadar bekle
+
+        isHealing = false;
+
+        // Healing tamamlandığında hareketi tekrar aktif et
+        Move.action.Enable();  // Move aksiyonunu tekrar etkinleştir
+    }
+
 
     void OnPausePerformed(InputAction.CallbackContext ctx)
     {

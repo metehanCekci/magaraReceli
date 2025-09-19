@@ -54,9 +54,9 @@ ScriptedImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
     normalMap: 0
     textureFormat: 0
     maxTextureSize: 0
@@ -72,37 +72,37 @@ ScriptedImporter:
     textureFormatSet: 0
     applyGammaDecoding: 0
   previousAsepriteImporterSettings:
-    fileImportMode: 1
+    fileImportMode: 0
     importHiddenLayers: 0
-    layerImportMode: 1
-    defaultPivotSpace: 0
+    layerImportMode: 0
+    defaultPivotSpace: 1
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
-    addSortingGroup: 1
+    addSortingGroup: 0
     addShadowCasters: 0
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   asepriteImporterSettings:
-    fileImportMode: 1
+    fileImportMode: 0
     importHiddenLayers: 0
-    layerImportMode: 1
-    defaultPivotSpace: 0
+    layerImportMode: 0
+    defaultPivotSpace: 1
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
     mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
-    addSortingGroup: 1
+    addSortingGroup: 0
     addShadowCasters: 0
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 0
+  platformSettingsDirtyTick: 638938982230130479
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -127,9 +127,365 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: "tilemap \xE7imen ve toprak kenar"
+  - name: layer
     originalName: 
-    pivot: {x: 1.2666667, y: -0.95454544}
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 7
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 240
+      height: 176
+    spriteID: c0c92d98ccec1cd4e8abed19bc45138d
+    spriteBone: []
+    spriteOutline:
+    - outline:
+      - {x: -70, y: 40}
+      - {x: -70, y: 88}
+      - {x: -117, y: 88}
+      - {x: -120, y: 84}
+      - {x: -120, y: 38}
+      - {x: -72, y: 38}
+    - outline:
+      - {x: -6, y: 40}
+      - {x: -6, y: 87}
+      - {x: -7, y: 88}
+      - {x: -58, y: 88}
+      - {x: -58, y: 40}
+      - {x: -56, y: 38}
+      - {x: -8, y: 38}
+    - outline:
+      - {x: 58, y: 88}
+      - {x: 6, y: 88}
+      - {x: 6, y: 40}
+      - {x: 7, y: 38}
+      - {x: 58, y: 38}
+    - outline:
+      - {x: 120, y: 88}
+      - {x: 70, y: 88}
+      - {x: 70, y: 40}
+      - {x: 72, y: 38}
+      - {x: 120, y: 38}
+    - outline:
+      - {x: -70, y: -24}
+      - {x: -70, y: 24}
+      - {x: -72, y: 26}
+      - {x: -120, y: 26}
+      - {x: -120, y: -26}
+      - {x: -72, y: -26}
+    - outline:
+      - {x: -6, y: -24}
+      - {x: -6, y: 24}
+      - {x: -8, y: 26}
+      - {x: -56, y: 26}
+      - {x: -58, y: 24}
+      - {x: -58, y: -24}
+      - {x: -56, y: -26}
+      - {x: -8, y: -26}
+    - outline:
+      - {x: 58, y: 26}
+      - {x: 6, y: 26}
+      - {x: 6, y: -26}
+      - {x: 58, y: -26}
+    - outline:
+      - {x: 120, y: 26}
+      - {x: 72, y: 26}
+      - {x: 70, y: 24}
+      - {x: 70, y: -24}
+      - {x: 72, y: -26}
+      - {x: 120, y: -26}
+    - outline:
+      - {x: -70, y: -38}
+      - {x: -120, y: -38}
+      - {x: -120, y: -86}
+      - {x: -118, y: -88}
+      - {x: -70, y: -88}
+    - outline:
+      - {x: -6, y: -87}
+      - {x: -6, y: -40}
+      - {x: -8, y: -38}
+      - {x: -56, y: -38}
+      - {x: -58, y: -40}
+      - {x: -58, y: -88}
+      - {x: -7, y: -88}
+    - outline:
+      - {x: 58, y: -38}
+      - {x: 8, y: -38}
+      - {x: 6, y: -40}
+      - {x: 6, y: -88}
+      - {x: 58, y: -88}
+    - outline:
+      - {x: 120, y: -86}
+      - {x: 120, y: -38}
+      - {x: 70, y: -38}
+      - {x: 70, y: -88}
+      - {x: 118, y: -88}
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+  spriteSheetImportData:
+  - name: "tilemap \xE7imen ve toprak kenar_0"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 132
+      width: 48
+      height: 48
+    spriteID: 4f67a37b7056a0141bf60e1fa1328a98
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_1"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 68
+      y: 132
+      width: 48
+      height: 48
+    spriteID: 206a12cbe0cb83145a17b87823366f45
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_2"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 132
+      y: 132
+      width: 48
+      height: 48
+    spriteID: 8a0bacb785d57c44c8ba4169cfc271cb
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_3"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 196
+      y: 132
+      width: 48
+      height: 48
+    spriteID: a2f79f22abef3df4689df280b042b2f7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_4"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 68
+      width: 48
+      height: 48
+    spriteID: 7457b9f3d81c3b0418158c7ebe75719b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_5"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 68
+      y: 68
+      width: 48
+      height: 48
+    spriteID: 86a32ca0fff163d48bc0e5500cfeb494
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_6"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 132
+      y: 68
+      width: 48
+      height: 48
+    spriteID: fcf1c3cbc09126943808af32bb34af55
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_7"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 196
+      y: 68
+      width: 48
+      height: 48
+    spriteID: 91422917937a0054e99c7729725893ab
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_8"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 48
+      height: 48
+    spriteID: 79bea0f514b8ad14e9cb3336e188f63d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_9"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 68
+      y: 4
+      width: 48
+      height: 48
+    spriteID: 552a3f8225cee73499fa637df1ebb0be
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_10"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 132
+      y: 4
+      width: 48
+      height: 48
+    spriteID: 7c6e13de8e885524d9e025d46470168a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_11"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 196
+      y: 4
+      width: 48
+      height: 48
+    spriteID: d81caefe523af454a8beb12ea9fb13f0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  tileSetImportData:
+  - name: layer
+    originalName: 
+    pivot: {x: 1.3333334, y: 1.0227273}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -139,7 +495,7 @@ ScriptedImporter:
       y: 4
       width: 240
       height: 176
-    spriteID: 131c1a19801939a4cb7b69c0815d5274
+    spriteID: c0c92d98ccec1cd4e8abed19bc45138d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -148,22 +504,20 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  spriteSheetImportData: []
-  tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 3762705043
+      value0: 2515771111
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: "tilemap \xE7imen ve toprak kenar"
-    layerFlags: 0
+    name: layer
+    layerFlags: 3
     layerType: 0
     blendMode: 0
     cells:
-    - name: "tilemap \xE7imen ve toprak kenar"
+    - name: layer
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
@@ -171,13 +525,49 @@ ScriptedImporter:
         y: 168
         width: 240
         height: 176
-      spriteId: 131c1a19801939a4cb7b69c0815d5274
+      spriteId: c0c92d98ccec1cd4e8abed19bc45138d
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
     parentIndex: -1
   tileSets: []
-  platformSettings: []
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Android
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
