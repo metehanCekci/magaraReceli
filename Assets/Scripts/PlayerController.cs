@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour
         // Anlık hareket
         if (!isDashing)
         {
-            rb.velocity = new Vector2(moveInput.x * moveSpeed, rb.velocity.y);
+            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         }
 
         // Yön değiştirme
@@ -162,8 +162,8 @@ public class PlayerController : MonoBehaviour
         }
 
         // Variable jump (daha uzun zıplama)
-        if (!jumpHeld && rb.velocity.y > 0f)
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * variableJumpMultiplier);
+        if (!jumpHeld && rb.linearVelocity.y > 0f)
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
 
         // Ground / Coyote Check
         if (IsGrounded())
