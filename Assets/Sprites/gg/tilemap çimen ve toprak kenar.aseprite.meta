@@ -690,9 +690,9 @@ ScriptedImporter:
       additiveSortOrder: 0
       cellRect:
         x: 16
-        y: 105
+        y: 104
         width: 432
-        height: 240
+        height: 241
       spriteId: 00000000000000000000000000000000
     linkedCells: []
     tileCells: []
