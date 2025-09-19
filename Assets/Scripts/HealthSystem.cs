@@ -30,6 +30,7 @@ public class HealthSystem : MonoBehaviour
     void Awake()
     {
         currentHealth = maxHealth;
+
         if (!rb) rb = GetComponent<Rigidbody2D>();
         if (!spriteRenderer) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
@@ -40,9 +41,6 @@ public class HealthSystem : MonoBehaviour
 
     public bool IsInvulnerable() => invulnerable;
 
-    /// <summary>
-    /// Hasar al (düşman saldırısı vs.)
-    /// </summary>
     public void TakeDamage(int amount, Vector2 hitFrom)
     {
         if (invulnerable || currentHealth <= 0) return;
@@ -55,16 +53,14 @@ public class HealthSystem : MonoBehaviour
         }
 
         if (animator) animator.SetTrigger("Hurt");
-        SFXPlayer.Instance.PlayHurt();
+        if (audioSource && hurtSfx) audioSource.PlayOneShot(hurtSfx);
 
-        // UI update
         if (heartSystem != null)
             heartSystem.UpdateHealth(currentHealth, maxHealth);
 
-        // Knockback (opsiyonel)
         if (rb)
         {
-            Vector2 dir = (transform.position - (Vector3)hitFrom).normalized;
+            Vector2 dir = ((Vector2)transform.position - hitFrom).normalized;
             rb.AddForce(dir * 5f, ForceMode2D.Impulse);
         }
 
@@ -110,12 +106,11 @@ public class HealthSystem : MonoBehaviour
         if (heartSystem != null)
             heartSystem.UpdateHealth(0, maxHealth);
 
+        if (audioSource && deathSfx) audioSource.PlayOneShot(deathSfx);
 
         if (DeathMenu.Instance != null)
-        {
             DeathMenu.Instance.gameObject.SetActive(true);
-        }
+
         Time.timeScale = 0;
-        // TODO: game over, respawn, input disable
     }
 }

@@ -27,7 +27,8 @@ public class NPCScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Oyuncu objesinin tag'ýný kontrol et
+        Debug.Log("Trigger Enter'e girildi.");
+
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player NPC'ye yaklaþtý");
@@ -39,7 +40,8 @@ public class NPCScript : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        // Oyuncu objesinin tag'ýný kontrol et
+        Debug.Log("Trigger Exit'e girildi.");
+
         if (other.CompareTag("Player"))
         {
             Debug.Log("Player NPC'den ayrýldý");
@@ -51,6 +53,7 @@ public class NPCScript : MonoBehaviour
 
     IEnumerator DisplayDialogue()
     {
+        Debug.Log("DisplayDialogue baþlatýldý.");
         dialogueText.text = ""; // Önceden yazý varsa sýfýrla
         foreach (char letter in npcDialogue.ToCharArray())
         {
@@ -58,4 +61,5 @@ public class NPCScript : MonoBehaviour
             yield return new WaitForSeconds(0.05f); // Her harften sonra kýsa bir bekleme
         }
     }
+
 }
