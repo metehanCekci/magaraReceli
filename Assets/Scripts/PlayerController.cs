@@ -45,6 +45,12 @@ public class PlayerController : MonoBehaviour
     public int CurrentSwingId => swingId;
     bool isAttacking;
 
+    [Header("Combat Facing Lock")]
+    public float facingLockDuration = 0.3f; // Duration to lock facing after attack
+    bool facingLocked = false;
+    float facingLockTimer = 0f;
+    float lockedFacing = 1f;
+
     [Header("Healing")]
     public float healTime = 3f;
     public int healAmount = 1;
@@ -144,10 +150,19 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         }
 
-        // Set scale with X flip and keep Y=2
-        if (Mathf.Abs(moveInput.x) > 0.01f)
+        // Handle facing
+        if (!facingLocked && Mathf.Abs(moveInput.x) > 0.01f)
         {
-            transform.localScale = new Vector3(Mathf.Sign(moveInput.x) * 2f, 2f, 1f);
+            lockedFacing = Mathf.Sign(moveInput.x);
+        }
+        transform.localScale = new Vector3(lockedFacing * 2f, 2f, 1f);
+
+        // Update facing lock timer
+        if (facingLocked)
+        {
+            facingLockTimer -= Time.deltaTime;
+            if (facingLockTimer <= 0f)
+                facingLocked = false;
         }
 
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
@@ -182,8 +197,6 @@ public class PlayerController : MonoBehaviour
 
     void OnDashPerformed(InputAction.CallbackContext ctx)
     {
-        if (abilityManager && !abilityManager.CanDash()) return;
-        if (Time.time < lastDashTime + dashCooldown) return;
         StartDash();
     }
 
@@ -215,7 +228,6 @@ public class PlayerController : MonoBehaviour
             if (healthSystem != null)
             {
                 StartCoroutine(HealWaitRoutine());
-               
                 Debug.Log("Player's health increased by 60.");
             }
             Soul = 0f;
@@ -271,7 +283,6 @@ public class PlayerController : MonoBehaviour
         isDashing = true; lastDashTime = Time.time;
         rb.linearVelocity = new Vector2(transform.localScale.x * dashForce, rb.linearVelocity.y);
         animator?.SetTrigger("Dash");
-        PlayOne(dashSound);
         Invoke(nameof(_EndDash), dashDuration);
     }
 
@@ -280,6 +291,11 @@ public class PlayerController : MonoBehaviour
     IEnumerator AttackSwing()
     {
         isAttacking = true;
+
+        // Lock facing during attack
+        facingLocked = true;
+        facingLockTimer = facingLockDuration;
+
         animator?.SetTrigger("Swing1");
 
         if (SFXPlayer.Instance) SFXPlayer.Instance.PlayWhoosh();

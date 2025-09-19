@@ -129,7 +129,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: ThynnWallHold
     originalName: 
-    pivot: {x: 0.61728394, y: -0.13392858}
+    pivot: {x: 0.61728394, y: -0.094827585}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -138,7 +138,7 @@ ScriptedImporter:
       x: 4
       y: 4
       width: 81
-      height: 112
+      height: 116
     spriteID: 5c37d60207108f24d92af85f0a19307f
     spriteBone: []
     spriteOutline: []
@@ -168,9 +168,9 @@ ScriptedImporter:
       additiveSortOrder: 0
       cellRect:
         x: 14
-        y: 15
+        y: 11
         width: 81
-        height: 112
+        height: 116
       spriteId: 5c37d60207108f24d92af85f0a19307f
     linkedCells: []
     tileCells: []
