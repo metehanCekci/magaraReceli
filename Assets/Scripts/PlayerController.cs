@@ -1,15 +1,17 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Input (New Input System)")]
-    public InputActionReference Move;   // Vector2 (x) veya 1D Axis
-    public InputActionReference Jump;   // Button
-    public InputActionReference Dash;   // Button
-    public InputActionReference Attack; // Button
-    public InputActionReference Heal;   // Button
+    public InputActionReference Move;
+    public InputActionReference Jump;
+    public InputActionReference Dash;
+    public InputActionReference Attack;
+    public InputActionReference Heal;
+    public InputActionReference Pause;
 
     [Header("Movement")]
     public float moveSpeed = 8f;
@@ -30,15 +32,16 @@ public class PlayerController : MonoBehaviour
     public float dashForce = 20f;
     public float dashDuration = 0.20f;
     public float dashCooldown = 0.50f;
-    bool isDashing; float dashTimer, lastDashTime;
+    bool isDashing; 
+    float lastDashTime;
 
     [Header("Combat")]
-    public Transform attackHitbox;          // child; Collider2D isTrigger=true
-    public float attackDuration = 0.20f;    // hitbox açık kalma süresi
-    [SerializeField] float attackCooldown = 0.20f; // basışlar arası
+    public Transform attackHitbox;
+    public float attackDuration = 0.20f;
+    [SerializeField] float attackCooldown = 0.20f;
     float lastAttackTime;
-    int swingId;                            // <<< her basışta artar
-    public int CurrentSwingId => swingId;   // <<< hitbox bunu okur
+    int swingId;
+    public int CurrentSwingId => swingId;
     bool isAttacking;
 
     [Header("Healing")]
@@ -56,6 +59,10 @@ public class PlayerController : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip jumpSound, dashSound, attackSound, healSound;
 
+    [Header("Pause Menu")]
+    public GameObject pauseMenuUI; // Assign a Canvas panel in inspector
+
+    bool isPaused = false;
     Rigidbody2D rb;
     Vector2 moveInput;
     AbilityManager abilityManager;
@@ -66,26 +73,29 @@ public class PlayerController : MonoBehaviour
         abilityManager = GetComponent<AbilityManager>();
         if (!animator) animator = GetComponent<Animator>();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
-        if (attackHitbox) attackHitbox.gameObject.SetActive(false); // güvenlik
+        if (attackHitbox) attackHitbox.gameObject.SetActive(false);
+        if (pauseMenuUI) pauseMenuUI.SetActive(false);
         RecalcMaxJumps();
     }
 
     void OnEnable()
     {
-        if (Move)  Move.action.Enable();
+        if (Move) Move.action.Enable();
         if (Jump) { Jump.action.Enable(); Jump.action.performed += OnJumpPerformed; Jump.action.canceled += OnJumpCanceled; }
         if (Dash) { Dash.action.Enable(); Dash.action.performed += OnDashPerformed; }
-        if (Attack){ Attack.action.Enable(); Attack.action.performed += OnAttackPerformed; } // sadece performed
-        if (Heal)  { Heal.action.Enable(); Heal.action.performed += OnHealPerformed; }
+        if (Attack) { Attack.action.Enable(); Attack.action.performed += OnAttackPerformed; }
+        if (Heal) { Heal.action.Enable(); Heal.action.performed += OnHealPerformed; }
+        if (Pause) { Pause.action.Enable(); Pause.action.performed += OnPausePerformed; }
     }
 
     void OnDisable()
     {
-        if (Move)  Move.action.Disable();
+        if (Move) Move.action.Disable();
         if (Jump) { Jump.action.performed -= OnJumpPerformed; Jump.action.canceled -= OnJumpCanceled; Jump.action.Disable(); }
         if (Dash) { Dash.action.performed -= OnDashPerformed; Dash.action.Disable(); }
-        if (Attack){ Attack.action.performed -= OnAttackPerformed; Attack.action.Disable(); }
-        if (Heal)  { Heal.action.performed -= OnHealPerformed; Heal.action.Disable(); }
+        if (Attack) { Attack.action.performed -= OnAttackPerformed; Attack.action.Disable(); }
+        if (Heal) { Heal.action.performed -= OnHealPerformed; Heal.action.Disable(); }
+        if (Pause) { Pause.action.performed -= OnPausePerformed; Pause.action.Disable(); }
     }
 
     void RecalcMaxJumps()
@@ -96,40 +106,35 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Move
+        if (isPaused) return;
+
+        // Movement input
         float x = 0f;
         if (Move && Move.action != null)
         {
-            // Asset'te Move=Value+Vector2 ise:
             if (Move.action.expectedControlType == "Vector2") x = Move.action.ReadValue<Vector2>().x;
             else x = Move.action.ReadValue<float>();
         }
         moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
 
-        // anlık hız (mario değil)
         if (!isDashing)
             rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
 
-        // flip
         if (Mathf.Abs(moveInput.x) > 0.01f)
             transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1);
 
-        // jump buffer consume
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
         {
             DoJump();
             bufferCounter = 0f;
         }
 
-        // variable jump
         if (!jumpHeld && rb.linearVelocity.y > 0f)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
 
-        // ground & coyote
         if (IsGrounded()) { coyoteCounter = coyoteTime; jumpCount = 0; }
         else coyoteCounter -= Time.deltaTime;
 
-        // anim
         if (animator)
         {
             animator.SetFloat("Speed", Mathf.Abs(moveInput.x));
@@ -139,9 +144,8 @@ public class PlayerController : MonoBehaviour
         RecalcMaxJumps();
     }
 
-    // ===== Input Callbacks =====
-    void OnJumpPerformed(InputAction.CallbackContext ctx){ jumpHeld = true; bufferCounter = jumpBufferTime; }
-    void OnJumpCanceled (InputAction.CallbackContext ctx){ jumpHeld = false; }
+    void OnJumpPerformed(InputAction.CallbackContext ctx) { jumpHeld = true; bufferCounter = jumpBufferTime; }
+    void OnJumpCanceled(InputAction.CallbackContext ctx) { jumpHeld = false; }
 
     void OnDashPerformed(InputAction.CallbackContext ctx)
     {
@@ -153,11 +157,9 @@ public class PlayerController : MonoBehaviour
     void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
         if (Time.time < lastAttackTime + attackCooldown) return;
-
-        Physics2D.SyncTransforms(); // fizik senkron
-        if (rb) rb.WakeUp();
-
-        swingId++; // <<< her basışta yeni swing
+        Physics2D.SyncTransforms();
+        rb?.WakeUp();
+        swingId++;
         StartCoroutine(AttackSwing());
         lastAttackTime = Time.time;
     }
@@ -168,12 +170,14 @@ public class PlayerController : MonoBehaviour
         if (!isHealing) StartCoroutine(HealRoutine());
     }
 
-    // ===== Core =====
-    bool IsGrounded()
+    void OnPausePerformed(InputAction.CallbackContext ctx)
     {
-        if (!groundCheck) return false;
-        return Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
+        if (isPaused) ResumeGame();
+        else PauseGame();
     }
+
+    // Core functions
+    bool IsGrounded() => groundCheck && Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
 
     void DoJump()
     {
@@ -186,14 +190,13 @@ public class PlayerController : MonoBehaviour
 
     void StartDash()
     {
-        isDashing = true; dashTimer = dashDuration; lastDashTime = Time.time;
+        isDashing = true; lastDashTime = Time.time;
         rb.linearVelocity = new Vector2(transform.localScale.x * dashForce, rb.linearVelocity.y);
         animator?.SetTrigger("Dash");
         PlayOne(dashSound);
-        // dash bitişini Update/Fixed'de değil, korutinle de kapatabilirsin; gerek yoksa böyle kalabilir.
         Invoke(nameof(_EndDash), dashDuration);
     }
-    void _EndDash(){ isDashing = false; }
+    void _EndDash() => isDashing = false;
 
     System.Collections.IEnumerator AttackSwing()
     {
@@ -201,9 +204,7 @@ public class PlayerController : MonoBehaviour
         animator?.SetTrigger("Attack");
         if (attackHitbox) attackHitbox.gameObject.SetActive(true);
         PlayOne(attackSound);
-
         yield return new WaitForSeconds(attackDuration);
-
         if (attackHitbox) attackHitbox.gameObject.SetActive(false);
         isAttacking = false;
     }
@@ -218,7 +219,26 @@ public class PlayerController : MonoBehaviour
         isHealing = false;
     }
 
-    void PlayOne(AudioClip clip){ if (clip && audioSource) audioSource.PlayOneShot(clip); }
+    void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }
+
+    void PauseGame()
+    {
+        Time.timeScale = 0f;
+        isPaused = true;
+        if (pauseMenuUI) pauseMenuUI.SetActive(true);
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        isPaused = false;
+        if (pauseMenuUI) pauseMenuUI.SetActive(false);
+    }
+
+    // Called from UI Buttons
+    public void ResumeButton() => ResumeGame();
+    public void RestartButton() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    public void QuitButton() => Application.Quit();
 
     void OnDrawGizmosSelected()
     {
