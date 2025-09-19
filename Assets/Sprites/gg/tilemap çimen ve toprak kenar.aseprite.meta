@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2f8bf82835a2c014baacc9973baa894c
+guid: ee9067de0b2cf984bb64e890dc91be77
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: magara background
+  - name: "tilemap \xE7imen ve toprak kenar"
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 1.2666667, y: -0.95454544}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 48
-      height: 48
-    spriteID: 5602813baf381fd4694291c98a2ad1ec
+      width: 240
+      height: 176
+    spriteID: 131c1a19801939a4cb7b69c0815d5274
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,25 +153,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 2431511203
+      value0: 3762705043
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: magara background
+    name: "tilemap \xE7imen ve toprak kenar"
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: magara background
+    - name: "tilemap \xE7imen ve toprak kenar"
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 0
-        y: 0
-        width: 48
-        height: 48
-      spriteId: 5602813baf381fd4694291c98a2ad1ec
+        x: 16
+        y: 168
+        width: 240
+        height: 176
+      spriteId: 131c1a19801939a4cb7b69c0815d5274
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -181,5 +181,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 48, y: 48}
-  previousTextureSize: {x: 64, y: 64}
+  canvasSize: {x: 640, y: 360}
+  previousTextureSize: {x: 256, y: 256}
