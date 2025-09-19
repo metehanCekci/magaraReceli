@@ -14,7 +14,6 @@ public class HealthSystem : MonoBehaviour
 
     [Header("Hurt Feedback")]
     public float invulnerableTime = 0.15f;
-    public float flashTime = 0.08f;
     public SpriteRenderer spriteRenderer;
     public Animator animator;
     public AudioSource audioSource;
@@ -102,7 +101,7 @@ public class HealthSystem : MonoBehaviour
         if (!spriteRenderer) yield break;
         Color original = spriteRenderer.color;
         spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(flashTime);
+        yield return new WaitForSeconds(invulnerableTime);
         spriteRenderer.color = original;
     }
 
