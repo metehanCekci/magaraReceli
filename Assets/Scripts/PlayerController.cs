@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
@@ -45,7 +46,7 @@ public class PlayerController : MonoBehaviour
     bool isAttacking;
 
     [Header("Healing")]
-    public float healTime = 1f;
+    public float healTime = 3f;
     public int healAmount = 1;
     bool isHealing;
 
@@ -60,12 +61,11 @@ public class PlayerController : MonoBehaviour
     public AudioClip jumpSound, dashSound, attackSound, healSound;
 
     [Header("Pause Menu")]
-    public GameObject pauseMenuUI; // Assign a Canvas panel in inspector
+    public GameObject pauseMenuUI;
 
     [Header("Soul")]
-    public float MaxSoul = 100f;  // Maximum Soul değeri
-    public float Soul = 0f;       // Mevcut Soul değeri
-    //public int currentSoul = 0;
+    public float MaxSoul = 100f;
+    public float Soul = 0f;
 
     bool isPaused = false;
     Rigidbody2D rb;
@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
     AbilityManager abilityManager;
 
     [Header("Soul System")]
-    public SoulSystem soulSystem;  // SoulSystem referansı
+    public SoulSystem soulSystem;
 
     void Awake()
     {
@@ -116,20 +116,42 @@ public class PlayerController : MonoBehaviour
     {
         if (isPaused) return;
 
-        // Movement input
+        // Eğer healing yapılıyorsa, hareket ve saldırıyı engelle
+        if (isHealing) return; // Eğer healing işlemi devam ediyorsa, diğer tüm işlemleri engelle
+
         float x = 0f;
-        if (Move && Move.action != null)
+        if (Move != null && Move.action != null)
         {
-            if (Move.action.expectedControlType == "Vector2") x = Move.action.ReadValue<Vector2>().x;
-            else x = Move.action.ReadValue<float>();
+            if (Move.action.expectedControlType == "Vector2")
+            {
+                x = Move.action.ReadValue<Vector2>().x;
+            }
+            else
+            {
+                x = Move.action.ReadValue<float>();
+            }
+
+            if (Mathf.Abs(x) > 0.01f)
+            {
+                animator.SetBool("Walking", true);
+            }
+            else
+            {
+                animator.SetBool("Walking", false);
+            }
         }
+
         moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
 
         if (!isDashing)
+        {
             rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+        }
 
         if (Mathf.Abs(moveInput.x) > 0.01f)
+        {
             transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1);
+        }
 
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
         {
@@ -143,15 +165,9 @@ public class PlayerController : MonoBehaviour
         if (IsGrounded()) { coyoteCounter = coyoteTime; jumpCount = 0; }
         else coyoteCounter -= Time.deltaTime;
 
-        if (animator)
-        {
-            animator.SetFloat("Speed", Mathf.Abs(moveInput.x));
-            animator.SetBool("IsGrounded", IsGrounded());
-        }
+        animator.SetBool("IsGrounded", IsGrounded());
 
-        // Soul bar'ı güncelle
         UpdateSoulBar();
-
         RecalcMaxJumps();
     }
 
@@ -159,9 +175,8 @@ public class PlayerController : MonoBehaviour
     {
         if (soulSystem != null)
         {
-            // MaxSoul ile Soul'ün oranını alarak Soul bar'ının %'lik değerini hesaplıyoruz
             float soulPercentage = Soul / MaxSoul;
-            soulSystem.UpdateSoulBar(soulPercentage);  // Soul bar'ını güncelle
+            soulSystem.UpdateSoulBar(soulPercentage);
         }
     }
 
@@ -177,52 +192,78 @@ public class PlayerController : MonoBehaviour
 
     void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
+        // Eğer healing yapılıyorsa saldırıyı engelle
+        if (isHealing) return;
+
         if (Time.time < lastAttackTime + attackCooldown) return;
         Physics2D.SyncTransforms();
         rb?.WakeUp();
         swingId++;
         StartCoroutine(AttackSwing());
         lastAttackTime = Time.time;
-
-        // Soul'u artır
-        // Örnek olarak her saldırı ile 10 Soul arttırıyoruz, ihtiyaca göre düzenleyebilirsiniz.
     }
+
     public void IncreaseSoul(int amount)
     {
         Soul += amount;
         Debug.Log($"Soul increased by {amount}. Total soul: {Soul}");
     }
+
     void OnHealPerformed(InputAction.CallbackContext ctx)
     {
-        // Eğer Soul barı dolmuşsa
+        // Soul tam doluysa
         if (Soul == MaxSoul)
         {
-            // Heal komutunu aldığında, karakterin canına 60 ekleyelim
-            Debug.Log("Heal command received and Soul is full.");
-
-            // HealthSystem bileşenini al
             var healthSystem = GetComponent<HealthSystem>();
-
-            // Eğer HealthSystem bileşeni varsa, canı 60 artır
+            rb.linearVelocity = Vector2.zero;
             if (healthSystem != null)
             {
-                healthSystem.Heal(60); // 60 can ekliyoruz
+                StartCoroutine(HealWaitRoutine());
+                healthSystem.Heal(60);  // Sağlık arttırma
                 Debug.Log("Player's health increased by 60.");
             }
 
-            // Soul barını sıfırla
-            Soul = 0f;
-            Debug.Log("Soul bar reset to 0.");
-
-            // Soul barını güncelle
-            UpdateSoulBar(); // Yeni değeri güncelliyoruz
+            Soul = 0f;  // Soul sıfırlanır
+            UpdateSoulBar();  // Soul barını güncelle
         }
-        else
-        {
-            Debug.Log("Cannot heal, Soul is not full.");
-        }
+        
     }
 
+
+    IEnumerator HealRoutine()
+    {
+        isHealing = true;
+        animator.SetTrigger("Heal");
+        PlayOne(healSound);
+
+        // Healing işlemi sırasında hareketi engelle
+        rb.linearVelocity = Vector2.zero;  // Hareketi sıfırlıyoruz
+
+        yield return new WaitForSeconds(healTime);
+
+        isHealing = false;
+
+        // Can yenileme tamamlandığında hareketi tekrar aktif et
+        rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+    }
+
+    IEnumerator HealWaitRoutine()
+    {
+        // Healing başladığında hareketi engelle
+        Move.action.Disable();  // Move aksiyonunu devre dışı bırak
+
+        isHealing = true;
+
+        animator.SetTrigger("Heal");  // Healing animasyonunu başlat
+        PlayOne(healSound);  // Healing sesi çal
+
+        yield return new WaitForSeconds(healTime);  // Healing tamamlanana kadar bekle
+
+        isHealing = false;
+
+        // Healing tamamlandığında hareketi tekrar aktif et
+        Move.action.Enable();  // Move aksiyonunu tekrar etkinleştir
+    }
 
 
     void OnPausePerformed(InputAction.CallbackContext ctx)
@@ -250,27 +291,24 @@ public class PlayerController : MonoBehaviour
         PlayOne(dashSound);
         Invoke(nameof(_EndDash), dashDuration);
     }
+
     void _EndDash() => isDashing = false;
 
     System.Collections.IEnumerator AttackSwing()
     {
         isAttacking = true;
-        animator?.SetTrigger("Attack");
-        if (attackHitbox) attackHitbox.gameObject.SetActive(true);
+        animator?.SetTrigger("Swing1");
+        if (attackHitbox)
+            attackHitbox.gameObject.SetActive(true);
+
         PlayOne(attackSound);
         yield return new WaitForSeconds(attackDuration);
-        if (attackHitbox) attackHitbox.gameObject.SetActive(false);
-        isAttacking = false;
-    }
 
-    System.Collections.IEnumerator HealRoutine()
-    {
-        isHealing = true;
-        animator?.SetTrigger("Heal");
-        PlayOne(healSound);
-        yield return new WaitForSeconds(healTime);
-        var hs = GetComponent<HealthSystem>(); if (hs) hs.Heal(healAmount);
-        isHealing = false;
+        animator?.SetTrigger("Swing2");
+        if (attackHitbox)
+            attackHitbox.gameObject.SetActive(false);
+
+        isAttacking = false;
     }
 
     void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }
