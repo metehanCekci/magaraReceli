@@ -124,9 +124,16 @@ public class HealthSystem : MonoBehaviour
 
     void Die()
     {
-        if (animator) animator.SetTrigger("Die");
+        // Ölüm anında tüm kalpleri boş yap
+        if (heartSystem != null)
+        {
+            heartSystem.UpdateHealth(0, maxHealth); // 0 can olduğunda tüm kalpleri boş yap
+        }
+
+        // Ölüme dair diğer işlemler
         if (audioSource && deathSfx) audioSource.PlayOneShot(deathSfx);
         Debug.Log($"{name} died");
         // TODO: respawn / game over / disable input vb.
     }
+
 }

@@ -42,6 +42,7 @@ public class SaveTest : MonoBehaviour
 
     }
 
+
     void OnEnable()
     {
         // Save ve Load action'larına basıldığında ne olacağını belirliyoruz

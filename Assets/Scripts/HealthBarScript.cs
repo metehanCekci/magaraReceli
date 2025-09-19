@@ -20,12 +20,6 @@ public class HealthBarScript : MonoBehaviour
             else
                 hearts[i].sprite = emptyHeart; // Boş kalp
         }
-
-        // Son kalan can durumu
-        if (currentHealth <= 0)
-        {
-            Debug.Log("Selam ben degob");
-            hearts[hearts.Length - 1].sprite = emptyHeart; // Son kalp boş
-        }
     }
+
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class EnemyAttackHitbox : MonoBehaviour
 {
-    public int damage = 1;
+    public int damage = 20;
     public LayerMask playerLayers; // Player layer'ını seç
 
     void Awake()
