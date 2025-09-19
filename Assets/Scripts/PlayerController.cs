@@ -115,9 +115,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (isPaused) return;
-
-        // Eğer healing yapılıyorsa, hareket ve saldırıyı engelle
-        if (isHealing) return; // Eğer healing işlemi devam ediyorsa, diğer tüm işlemleri engelle
+        if (isHealing) return; // block everything while healing
 
         float x = 0f;
         if (Move != null && Move.action != null)
@@ -131,14 +129,7 @@ public class PlayerController : MonoBehaviour
                 x = Move.action.ReadValue<float>();
             }
 
-            if (Mathf.Abs(x) > 0.01f)
-            {
-                animator.SetBool("Walking", true);
-            }
-            else
-            {
-                animator.SetBool("Walking", false);
-            }
+            animator.SetBool("Walking", Mathf.Abs(x) > 0.01f);
         }
 
         moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
@@ -192,9 +183,7 @@ public class PlayerController : MonoBehaviour
 
     void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
-        // Eğer healing yapılıyorsa saldırıyı engelle
         if (isHealing) return;
-
         if (Time.time < lastAttackTime + attackCooldown) return;
         Physics2D.SyncTransforms();
         rb?.WakeUp();
@@ -211,7 +200,6 @@ public class PlayerController : MonoBehaviour
 
     void OnHealPerformed(InputAction.CallbackContext ctx)
     {
-        // Soul tam doluysa
         if (Soul == MaxSoul)
         {
             var healthSystem = GetComponent<HealthSystem>();
@@ -219,52 +207,39 @@ public class PlayerController : MonoBehaviour
             if (healthSystem != null)
             {
                 StartCoroutine(HealWaitRoutine());
-                healthSystem.Heal(60);  // Sağlık arttırma
+                healthSystem.Heal(60);
                 Debug.Log("Player's health increased by 60.");
             }
-
-            Soul = 0f;  // Soul sıfırlanır
-            UpdateSoulBar();  // Soul barını güncelle
+            Soul = 0f;
+            UpdateSoulBar();
         }
-        
     }
-
 
     IEnumerator HealRoutine()
     {
         isHealing = true;
         animator.SetTrigger("Heal");
-        PlayOne(healSound);
 
-        // Healing işlemi sırasında hareketi engelle
-        rb.linearVelocity = Vector2.zero;  // Hareketi sıfırlıyoruz
 
+        rb.linearVelocity = Vector2.zero;
         yield return new WaitForSeconds(healTime);
-
         isHealing = false;
-
-        // Can yenileme tamamlandığında hareketi tekrar aktif et
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
     }
 
     IEnumerator HealWaitRoutine()
     {
-        // Healing başladığında hareketi engelle
-        Move.action.Disable();  // Move aksiyonunu devre dışı bırak
-
+        Move.action.Disable();
         isHealing = true;
+        animator.SetTrigger("Heal");
 
-        animator.SetTrigger("Heal");  // Healing animasyonunu başlat
-        PlayOne(healSound);  // Healing sesi çal
+        // 🔊 Use your local clip (heal sound)
+        PlayOne(healSound);
 
-        yield return new WaitForSeconds(healTime);  // Healing tamamlanana kadar bekle
-
+        yield return new WaitForSeconds(healTime);
         isHealing = false;
-
-        // Healing tamamlandığında hareketi tekrar aktif et
-        Move.action.Enable();  // Move aksiyonunu tekrar etkinleştir
+        Move.action.Enable();
     }
-
 
     void OnPausePerformed(InputAction.CallbackContext ctx)
     {
@@ -294,14 +269,16 @@ public class PlayerController : MonoBehaviour
 
     void _EndDash() => isDashing = false;
 
-    System.Collections.IEnumerator AttackSwing()
+    IEnumerator AttackSwing()
     {
         isAttacking = true;
         animator?.SetTrigger("Swing1");
         if (attackHitbox)
             attackHitbox.gameObject.SetActive(true);
 
-        PlayOne(attackSound);
+        // 🔊 Use SFXPlayer global whoosh
+        if (SFXPlayer.Instance) SFXPlayer.Instance.PlayWhoosh();
+
         yield return new WaitForSeconds(attackDuration);
 
         animator?.SetTrigger("Swing2");
@@ -311,6 +288,7 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
 
+    // 🎵 You still keep this for jump/dash/heal sound variations
     void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }
 
     void PauseGame()
@@ -339,4 +317,6 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         }
     }
+
+
 }
