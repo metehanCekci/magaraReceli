@@ -347,9 +347,6 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 256
-  bossLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1001 &323749572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -632,9 +629,6 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 256
-  bossLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &377427467
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,9 +1059,6 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 256
-  bossLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &662257550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,9 +1167,6 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 256
-  bossLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!60 &662257554
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1337,9 +1325,6 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 256
-  bossLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!60 &728155427
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1993,9 +1978,6 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 256
-  bossLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &1125047782
 GameObject:
   m_ObjectHideFlags: 0
@@ -2415,9 +2397,6 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 256
-  bossLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &1371008005
 GameObject:
   m_ObjectHideFlags: 0
@@ -2980,9 +2959,6 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 256
-  bossLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!60 &1675426494
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -3085,9 +3061,6 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 256
-  bossLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1001 &6884400016741789667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3106,7 +3079,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 650010664164134310, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: rb
@@ -3119,6 +3092,10 @@ PrefabInstance:
     - target: {fileID: 2517637730954126968, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: m_Name
       value: Boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 3131083779413408309, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: m_Constraints
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: player
@@ -3144,6 +3121,10 @@ PrefabInstance:
       propertyPath: boulderSpawnPoint
       value: 
       objectReference: {fileID: 1230551591}
+    - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: lazerLauncherPrefab
       value: 
