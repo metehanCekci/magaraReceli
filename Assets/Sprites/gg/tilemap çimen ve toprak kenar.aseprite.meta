@@ -523,8 +523,8 @@ ScriptedImporter:
       cellRect:
         x: 16
         y: 168
-        width: 240
-        height: 176
+        width: 432
+        height: 177
       spriteId: c0c92d98ccec1cd4e8abed19bc45138d
     linkedCells: []
     tileCells: []
@@ -572,4 +572,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 640, y: 360}
-  previousTextureSize: {x: 256, y: 256}
+  previousTextureSize: {x: 512, y: 256}
