@@ -17,23 +17,28 @@ public class SaveSystem : MonoBehaviour
             Debug.LogError("HealthSystem component not found on the player!");
         }
     }
-    public void Save(GameObject player)
+    public void Save(GameObject player, Vector3 savePointPosition)
     {
         var abilitiesMgr = player.GetComponent<AbilityManager>();
-        var healthSystem = player.GetComponent<HealthSystem>();  // HealthSystem component'ını buraya ekliyoruz
+        var healthSystem = player.GetComponent<HealthSystem>();
 
         PlayerSaveData data = new PlayerSaveData();
-        data.health = healthSystem.currentHealth;  // Sağlık bilgisi
-        data.maxHealth = healthSystem.maxHealth;  // MaxHealth
+        data.health = healthSystem.currentHealth;
+        data.maxHealth = healthSystem.maxHealth;
+
+        // Bonfire pozisyonunu kaydet
+        data.position = new float[3];
+        data.position[0] = savePointPosition.x;
+        data.position[1] = savePointPosition.y;
+        data.position[2] = savePointPosition.z;
 
         // Yetenekleri kaydetme
         data.abilities = new List<string>();
         foreach (var ability in abilitiesMgr.GetUnlockedAbilities())
         {
-            data.abilities.Add(ability.ToString());  // AbilityType'ı string'e çevirip kaydediyoruz
+            data.abilities.Add(ability.ToString());
         }
 
-        // Dash durumu kaydediliyor
         data.dashUnlocked = abilitiesMgr.IsDashUnlocked();
 
         string json = JsonUtility.ToJson(data, true);
@@ -41,6 +46,7 @@ public class SaveSystem : MonoBehaviour
 
         Debug.Log("Player saved with health: " + data.health + " and dashUnlocked: " + data.dashUnlocked);
         Debug.Log("Saved Health: " + data.health + " MaxHealth: " + data.maxHealth);
+        Debug.Log($"Saved Bonfire Position: {data.position[0]}, {data.position[1]}, {data.position[2]}");
     }
 
     public void Load(GameObject player)
@@ -50,13 +56,13 @@ public class SaveSystem : MonoBehaviour
         string json = File.ReadAllText(savePath);
         PlayerSaveData data = JsonUtility.FromJson<PlayerSaveData>(json);
 
-        var healthSystem = player.GetComponent<HealthSystem>();  // HealthSystem component'ını alıyoruz
+        var healthSystem = player.GetComponent<HealthSystem>();
         if (healthSystem != null)
         {
-            Debug.Log("Loaded health: " + data.health + " maxHealth: " + data.maxHealth); // Yüklenen değerleri kontrol ediyoruz
+            Debug.Log("Loaded health: " + data.health + " maxHealth: " + data.maxHealth);
 
-            healthSystem.maxHealth = data.maxHealth;  // maxHealth'i yükle
-            healthSystem.currentHealth = Mathf.Clamp(data.health, 0, healthSystem.maxHealth);  // currentHealth'i yükle
+            healthSystem.maxHealth = data.maxHealth;
+            healthSystem.currentHealth = Mathf.Clamp(data.health, 0, healthSystem.maxHealth);
 
             // UI kalp barını güncelle
             if (healthBarScript != null)
@@ -69,6 +75,13 @@ public class SaveSystem : MonoBehaviour
             Debug.LogError("HealthSystem component not found on the player!");
         }
 
+        // Pozisyonu yükle
+        if (data.position != null && data.position.Length == 3)
+        {
+            player.transform.position = new Vector3(data.position[0], data.position[1], data.position[2]);
+            Debug.Log($"Loaded Position: {data.position[0]}, {data.position[1]}, {data.position[2]}");
+        }
+
         var abilitiesMgr = player.GetComponent<AbilityManager>();
         if (abilitiesMgr != null && data.abilities != null)
         {
@@ -77,10 +90,10 @@ public class SaveSystem : MonoBehaviour
             {
                 if (System.Enum.TryParse(s, out AbilityTypeList parsed))
                 {
-                    set.Add(parsed);  // String'i AbilityType'a çevirip set'e ekliyoruz
+                    set.Add(parsed);
                 }
             }
-            abilitiesMgr.SetUnlockedAbilities(set);  // Yetenekleri set'e ekliyoruz
+            abilitiesMgr.SetUnlockedAbilities(set);
         }
 
         if (abilitiesMgr != null)
@@ -94,9 +107,10 @@ public class SaveSystem : MonoBehaviour
     [System.Serializable]
     public class PlayerSaveData
     {
-        public int health;        // Can bilgisi
-        public int maxHealth;     // MaxHealth
-        public List<string> abilities;  // Yetenekler
-        public bool dashUnlocked;     // Dash yeteneğinin alınıp alınmadığı bilgisi
+        public int health;
+        public int maxHealth;
+        public float[] position; // [x, y, z]
+        public List<string> abilities;
+        public bool dashUnlocked;
     }
 }
