@@ -856,6 +856,27 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3eaa0766bc4f5f2a084b80f3e162b2e5, type: 3}
+--- !u!1 &1159467790 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6863078440359498397, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
+  m_PrefabInstance: {fileID: 8992455357927866658}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1159467797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1159467790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb9fff4d500c055c82ca60419403d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
+  damage: 20
+  playerLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &1347156741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1471,11 +1492,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1718876847950999274, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.175
+      value: 6.54
       objectReference: {fileID: 0}
     - target: {fileID: 1718876847950999274, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.39
+      value: 1.69
       objectReference: {fileID: 0}
     - target: {fileID: 1718876847950999274, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1509,6 +1530,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2999242865481868635, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
+      propertyPath: invulnerableTime
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 6863078440359498397, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
       propertyPath: m_Name
       value: FlyEnemy
@@ -1517,14 +1542,26 @@ PrefabInstance:
       propertyPath: damage
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 8339008165068505132, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8930481978046570938, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 580878778}
+    - target: {fileID: 8930481978046570938, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
+      propertyPath: stopDistance
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4947455464560312443, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6863078440359498397, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1159467797}
   m_SourcePrefab: {fileID: 100100000, guid: 821906b92fc1bf24a90c0b9be20888da, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
