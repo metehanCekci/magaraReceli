@@ -84,10 +84,15 @@ public class PlayerController : MonoBehaviour
         if (attackHitbox) attackHitbox.gameObject.SetActive(false);
         if (pauseMenuUI) pauseMenuUI.SetActive(false);
         RecalcMaxJumps();
+
+        // Ensure default scale is 2,2,1
+        transform.localScale = new Vector3(2f, 2f, 1f);
     }
 
     void OnEnable()
     {
+        attackHitbox.gameObject.SetActive(false);
+
         if (Move) Move.action.Enable();
         if (Jump) { Jump.action.Enable(); Jump.action.performed += OnJumpPerformed; Jump.action.canceled += OnJumpCanceled; }
         if (Dash) { Dash.action.Enable(); Dash.action.performed += OnDashPerformed; }
@@ -115,9 +120,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (isPaused) return;
-
-        // Eğer healing yapılıyorsa, hareket ve saldırıyı engelle
-        if (isHealing) return; // Eğer healing işlemi devam ediyorsa, diğer tüm işlemleri engelle
+        if (isHealing) return;
 
         float x = 0f;
         if (Move != null && Move.action != null)
@@ -131,14 +134,7 @@ public class PlayerController : MonoBehaviour
                 x = Move.action.ReadValue<float>();
             }
 
-            if (Mathf.Abs(x) > 0.01f)
-            {
-                animator.SetBool("Walking", true);
-            }
-            else
-            {
-                animator.SetBool("Walking", false);
-            }
+            animator.SetBool("Walking", Mathf.Abs(x) > 0.01f);
         }
 
         moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
@@ -148,9 +144,10 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         }
 
+        // Set scale with X flip and keep Y=2
         if (Mathf.Abs(moveInput.x) > 0.01f)
         {
-            transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1);
+            transform.localScale = new Vector3(Mathf.Sign(moveInput.x) * 2f, 2f, 1f);
         }
 
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
@@ -192,15 +189,15 @@ public class PlayerController : MonoBehaviour
 
     void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
-        // Eğer healing yapılıyorsa saldırıyı engelle
         if (isHealing) return;
-
         if (Time.time < lastAttackTime + attackCooldown) return;
         Physics2D.SyncTransforms();
         rb?.WakeUp();
         swingId++;
+        attackHitbox.gameObject.SetActive(false);
         StartCoroutine(AttackSwing());
         lastAttackTime = Time.time;
+        attackHitbox.gameObject.SetActive(false);
     }
 
     public void IncreaseSoul(int amount)
@@ -211,7 +208,6 @@ public class PlayerController : MonoBehaviour
 
     void OnHealPerformed(InputAction.CallbackContext ctx)
     {
-        // Soul tam doluysa
         if (Soul == MaxSoul)
         {
             var healthSystem = GetComponent<HealthSystem>();
@@ -219,52 +215,39 @@ public class PlayerController : MonoBehaviour
             if (healthSystem != null)
             {
                 StartCoroutine(HealWaitRoutine());
-                healthSystem.Heal(60);  // Sağlık arttırma
+               
                 Debug.Log("Player's health increased by 60.");
             }
-
-            Soul = 0f;  // Soul sıfırlanır
-            UpdateSoulBar();  // Soul barını güncelle
+            Soul = 0f;
+            UpdateSoulBar();
         }
-        
     }
-
 
     IEnumerator HealRoutine()
     {
         isHealing = true;
         animator.SetTrigger("Heal");
-        PlayOne(healSound);
 
-        // Healing işlemi sırasında hareketi engelle
-        rb.linearVelocity = Vector2.zero;  // Hareketi sıfırlıyoruz
-
+        rb.linearVelocity = Vector2.zero;
         yield return new WaitForSeconds(healTime);
-
         isHealing = false;
-
-        // Can yenileme tamamlandığında hareketi tekrar aktif et
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
     }
 
     IEnumerator HealWaitRoutine()
     {
-        // Healing başladığında hareketi engelle
-        Move.action.Disable();  // Move aksiyonunu devre dışı bırak
-
+        var healthSystem = GetComponent<HealthSystem>();
+        Move.action.Disable();
         isHealing = true;
+        animator.SetTrigger("Heal");
 
-        animator.SetTrigger("Heal");  // Healing animasyonunu başlat
-        PlayOne(healSound);  // Healing sesi çal
+        PlayOne(healSound);
 
-        yield return new WaitForSeconds(healTime);  // Healing tamamlanana kadar bekle
-
+        yield return new WaitForSeconds(healTime);
+        healthSystem.Heal(60);
         isHealing = false;
-
-        // Healing tamamlandığında hareketi tekrar aktif et
-        Move.action.Enable();  // Move aksiyonunu tekrar etkinleştir
+        Move.action.Enable();
     }
-
 
     void OnPausePerformed(InputAction.CallbackContext ctx)
     {
@@ -294,14 +277,13 @@ public class PlayerController : MonoBehaviour
 
     void _EndDash() => isDashing = false;
 
-    System.Collections.IEnumerator AttackSwing()
+    IEnumerator AttackSwing()
     {
         isAttacking = true;
         animator?.SetTrigger("Swing1");
-        if (attackHitbox)
-            attackHitbox.gameObject.SetActive(true);
 
-        PlayOne(attackSound);
+        if (SFXPlayer.Instance) SFXPlayer.Instance.PlayWhoosh();
+
         yield return new WaitForSeconds(attackDuration);
 
         animator?.SetTrigger("Swing2");
@@ -338,5 +320,17 @@ public class PlayerController : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         }
+    }
+
+    public void AttackHitboxEnable()
+    {
+        if (attackHitbox)
+            attackHitbox.gameObject.SetActive(true);
+    }
+
+    public void AttackHitboxDisable()
+    {
+        if (attackHitbox)
+            attackHitbox.gameObject.SetActive(false);
     }
 }
