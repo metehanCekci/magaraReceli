@@ -61,7 +61,7 @@ public class HealthSystem : MonoBehaviour
         // Feedback (Hurt animasyon, ses, kırmızı flash)
         if (animator) animator.SetTrigger("Hurt");
         if (audioSource && hurtSfx) audioSource.PlayOneShot(hurtSfx);
-        StartCoroutine(FlashRedRoutine());
+        
 
         // UI'daki kalp barını güncelle
         if (heartSystem != null)
@@ -105,7 +105,7 @@ public class HealthSystem : MonoBehaviour
         bool canIgnore = (enemyAttackLayer >= 0);
         if (canIgnore)
             Physics2D.IgnoreLayerCollision(playerLayer, enemyAttackLayer, true);
-
+        StartCoroutine(FlashRedRoutine());
         yield return new WaitForSeconds(invulnerableTime);
 
         invulnerable = false;
