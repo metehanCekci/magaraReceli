@@ -78,6 +78,7 @@ public class FadeInOutManager : MonoBehaviour
         float timer = 0f;
         Color color = fadeImage.color;
         fadeImage.gameObject.SetActive(true);
+        Time.timeScale = 1;
 
         while (timer < fadeDuration)
         {
