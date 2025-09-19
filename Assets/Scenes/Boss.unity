@@ -3749,6 +3749,29 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1741650709 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3990370746922926150, guid: ee3cd67574a115149b61674f656e6b66, type: 3}
+  m_PrefabInstance: {fileID: 2359911114917843030}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1741650712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741650709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b57ce3ef666ce54395b1ef38c558253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  gore: {fileID: 8300000, guid: 52e734e555876364ab8e7e0bb900fe45, type: 3}
+  hurt: {fileID: 8300000, guid: c0f946bec4b4a8f4d965ad0d177ee5ad, type: 3}
+  whoosh: {fileID: 8300000, guid: d184c27b604abcd4fa6a97dcd4bdb072, type: 3}
+  lazerfire: {fileID: 8300000, guid: 561b3d4214cbe64408df55b2142fe78b, type: 3}
+  gunfire: {fileID: 8300000, guid: f8b5dd961dce5794c8261b6bc7fe6c4e, type: 3}
+  kill: {fileID: 8300000, guid: da99c899dc439ca4cb31f91c022a3fa0, type: 3}
 --- !u!1 &1801524344 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2517637730954126968, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
@@ -3974,7 +3997,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3990370746922926150, guid: ee3cd67574a115149b61674f656e6b66, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1741650712}
   m_SourcePrefab: {fileID: 100100000, guid: ee3cd67574a115149b61674f656e6b66, type: 3}
 --- !u!1001 &6884400016741789667
 PrefabInstance:
