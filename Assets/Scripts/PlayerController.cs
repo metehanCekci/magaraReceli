@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -114,14 +115,61 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (isPaused) return;
-
-        // Movement input
         float x = 0f;
-        if (Move && Move.action != null)
+
+        if (Move != null && Move.action != null)
         {
-            if (Move.action.expectedControlType == "Vector2") x = Move.action.ReadValue<Vector2>().x;
-            else x = Move.action.ReadValue<float>();
+            // Move action'ını kullanarak hareket input'unu alıyoruz
+            if (Move.action.expectedControlType == "Vector2")
+            {
+                x = Move.action.ReadValue<Vector2>().x;
+            }
+            else
+            {
+                x = Move.action.ReadValue<float>();
+            }
+
+            // Yürüyüş animasyonunu kontrol ediyoruz
+            if (Mathf.Abs(x) > 0.01f)
+            {
+                animator.SetBool("Walking", true); // Hareket ediyoruz, yürüyüş animasyonunu oynat
+            }
+            else
+            {
+                animator.SetBool("Walking", false); // Hareket etmiyoruz, yürüyüş animasyonu durur
+            }
+        }
+
+        moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
+
+        // Anlık hareket
+        if (!isDashing)
+        {
+            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+        }
+
+        // Yön değiştirme
+        if (Mathf.Abs(moveInput.x) > 0.01f)
+        {
+            transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1); // Yönü değiştiriyoruz
+        }
+
+        // Jump buffer consume
+        if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
+        {
+            DoJump();
+            bufferCounter = 0f;
+        }
+
+        // Variable jump (daha uzun zıplama)
+        if (!jumpHeld && rb.linearVelocity.y > 0f)
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
+
+        // Ground / Coyote Check
+        if (IsGrounded())
+        {
+            coyoteCounter = coyoteTime;
+            jumpCount = 0;
         }
         moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
 
@@ -133,38 +181,15 @@ public class PlayerController : MonoBehaviour
 
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
         {
-            DoJump();
-            bufferCounter = 0f;
+            coyoteCounter -= Time.deltaTime;
         }
 
-        if (!jumpHeld && rb.linearVelocity.y > 0f)
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
-
-        if (IsGrounded()) { coyoteCounter = coyoteTime; jumpCount = 0; }
-        else coyoteCounter -= Time.deltaTime;
-
-        if (animator)
-        {
-            animator.SetFloat("Speed", Mathf.Abs(moveInput.x));
-            animator.SetBool("IsGrounded", IsGrounded());
-        }
-
-        // Soul bar'ı güncelle
-        UpdateSoulBar();
-
-        RecalcMaxJumps();
+        // Animator state
+        animator.SetBool("IsGrounded", IsGrounded());
     }
 
-    void UpdateSoulBar()
-    {
-        if (soulSystem != null)
-        {
-            // MaxSoul ile Soul'ün oranını alarak Soul bar'ının %'lik değerini hesaplıyoruz
-            float soulPercentage = Soul / MaxSoul;
-            soulSystem.UpdateSoulBar(soulPercentage);  // Soul bar'ını güncelle
-        }
-    }
 
+    // ===== Input Callbacks =====
     void OnJumpPerformed(InputAction.CallbackContext ctx) { jumpHeld = true; bufferCounter = jumpBufferTime; }
     void OnJumpCanceled(InputAction.CallbackContext ctx) { jumpHeld = false; }
 
@@ -215,7 +240,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Soul bar reset to 0.");
 
             // Soul barını güncelle
-            UpdateSoulBar(); // Yeni değeri güncelliyoruz
+            //UpdateSoulBar(); // Yeni değeri güncelliyoruz
         }
         else
         {
@@ -255,11 +280,23 @@ public class PlayerController : MonoBehaviour
     System.Collections.IEnumerator AttackSwing()
     {
         isAttacking = true;
-        animator?.SetTrigger("Attack");
-        if (attackHitbox) attackHitbox.gameObject.SetActive(true);
+
+        // İlk animasyonu tetikle
+        animator?.SetTrigger("Swing1"); // İlk animasyonu tetikleyen trigger
+
+        if (attackHitbox)
+            attackHitbox.gameObject.SetActive(true);
+
         PlayOne(attackSound);
+
         yield return new WaitForSeconds(attackDuration);
-        if (attackHitbox) attackHitbox.gameObject.SetActive(false);
+
+        // İlk animasyon bittiğinde, ikinci animasyonu tetikle
+        animator?.SetTrigger("Swing2"); // İkinci animasyonu tetikleyen trigger
+
+        if (attackHitbox)
+            attackHitbox.gameObject.SetActive(false);
+
         isAttacking = false;
     }
 
