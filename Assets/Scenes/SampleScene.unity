@@ -571,6 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackHitbox2D
   damage: 1
+  soulGainOnHit: 10
 --- !u!61 &902973760
 BoxCollider2D:
   m_ObjectHideFlags: 0
