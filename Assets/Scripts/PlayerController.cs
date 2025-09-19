@@ -95,49 +95,72 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update()
+{
+    float x = 0f;
+
+    if (Move != null && Move.action != null)
     {
-        // Move
-        float x = 0f;
-        if (Move && Move.action != null)
+        // Move action'ını kullanarak hareket input'unu alıyoruz
+        if (Move.action.expectedControlType == "Vector2")
         {
-            // Asset'te Move=Value+Vector2 ise:
-            if (Move.action.expectedControlType == "Vector2") x = Move.action.ReadValue<Vector2>().x;
-            else x = Move.action.ReadValue<float>();
+            x = Move.action.ReadValue<Vector2>().x;
         }
-        moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
-
-        // anlık hız (mario değil)
-        if (!isDashing)
-            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
-
-        // flip
-        if (Mathf.Abs(moveInput.x) > 0.01f)
-            transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1);
-
-        // jump buffer consume
-        if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
+        else
         {
-            DoJump();
-            bufferCounter = 0f;
+            x = Move.action.ReadValue<float>();
         }
 
-        // variable jump
-        if (!jumpHeld && rb.linearVelocity.y > 0f)
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
-
-        // ground & coyote
-        if (IsGrounded()) { coyoteCounter = coyoteTime; jumpCount = 0; }
-        else coyoteCounter -= Time.deltaTime;
-
-        // anim
-        if (animator)
+        // Yürüyüş animasyonunu kontrol ediyoruz
+        if (Mathf.Abs(x) > 0.01f)
         {
-            animator.SetFloat("Speed", Mathf.Abs(moveInput.x));
-            animator.SetBool("IsGrounded", IsGrounded());
+            animator.SetBool("Walking", true); // Hareket ediyoruz, yürüyüş animasyonunu oynat
         }
-
-        RecalcMaxJumps();
+        else
+        {
+            animator.SetBool("Walking", false); // Hareket etmiyoruz, yürüyüş animasyonu durur
+        }
     }
+
+    moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
+
+    // Anlık hareket
+    if (!isDashing)
+    {
+        rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
+    }
+
+    // Yön değiştirme
+    if (Mathf.Abs(moveInput.x) > 0.01f)
+    {
+        transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1); // Yönü değiştiriyoruz
+    }
+
+    // Jump buffer consume
+    if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
+    {
+        DoJump();
+        bufferCounter = 0f;
+    }
+
+    // Variable jump (daha uzun zıplama)
+    if (!jumpHeld && rb.linearVelocity.y > 0f)
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
+
+    // Ground / Coyote Check
+    if (IsGrounded())
+    {
+        coyoteCounter = coyoteTime;
+        jumpCount = 0;
+    }
+    else
+    {
+        coyoteCounter -= Time.deltaTime;
+    }
+
+    // Animator state
+    animator.SetBool("IsGrounded", IsGrounded());
+}
+
 
     // ===== Input Callbacks =====
     void OnJumpPerformed(InputAction.CallbackContext ctx){ jumpHeld = true; bufferCounter = jumpBufferTime; }
@@ -196,17 +219,27 @@ public class PlayerController : MonoBehaviour
     void _EndDash(){ isDashing = false; }
 
     System.Collections.IEnumerator AttackSwing()
-    {
-        isAttacking = true;
-        animator?.SetTrigger("Attack");
-        if (attackHitbox) attackHitbox.gameObject.SetActive(true);
-        PlayOne(attackSound);
+{
+    isAttacking = true;
 
-        yield return new WaitForSeconds(attackDuration);
+    // İlk animasyonu tetikle
+    animator?.SetTrigger("Swing1"); // İlk animasyonu tetikleyen trigger
 
-        if (attackHitbox) attackHitbox.gameObject.SetActive(false);
-        isAttacking = false;
-    }
+    if (attackHitbox) 
+        attackHitbox.gameObject.SetActive(true);
+
+    PlayOne(attackSound);
+
+    yield return new WaitForSeconds(attackDuration);
+
+    // İlk animasyon bittiğinde, ikinci animasyonu tetikle
+    animator?.SetTrigger("Swing2"); // İkinci animasyonu tetikleyen trigger
+
+    if (attackHitbox) 
+        attackHitbox.gameObject.SetActive(false);
+    
+    isAttacking = false;
+}
 
     System.Collections.IEnumerator HealRoutine()
     {
