@@ -21,8 +21,7 @@ public class EnemyHealth2D : MonoBehaviour
     public Animator animator;
     public SpriteRenderer spriteRenderer;
     public AudioSource audioSource;
-    public AudioClip hurtSfx;
-    public AudioClip deathSfx;
+
 
     bool invulnerable;
     void Awake()
@@ -50,7 +49,7 @@ public class EnemyHealth2D : MonoBehaviour
 
         // Hurt feedback
         if (animator) animator.SetTrigger("Hurt");
-        if (audioSource && hurtSfx) audioSource.PlayOneShot(hurtSfx);
+        SFXPlayer.Instance.PlayGore();
         StartCoroutine(FlashRoutine());
 
         // Knockback
@@ -92,8 +91,8 @@ public class EnemyHealth2D : MonoBehaviour
 
     void Die()
     {
+        SFXPlayer.Instance.PlayKill();
         if (animator) animator.SetTrigger("Die");
-        if (audioSource && deathSfx) audioSource.PlayOneShot(deathSfx);
 
         // İstersen burada loot/puan vb. ekle
         Destroy(gameObject, 0.25f);
