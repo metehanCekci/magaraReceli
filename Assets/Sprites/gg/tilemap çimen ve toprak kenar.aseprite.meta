@@ -691,11 +691,7 @@ ScriptedImporter:
       cellRect:
         x: 16
         y: 104
-<<<<<<< HEAD
-        width: 432
-=======
         width: 576
->>>>>>> e27a4d38e7ba12a7c43e21537701003eaa132e52
         height: 241
       spriteId: 00000000000000000000000000000000
     linkedCells: []
