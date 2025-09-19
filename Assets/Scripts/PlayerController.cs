@@ -207,7 +207,7 @@ public class PlayerController : MonoBehaviour
             if (healthSystem != null)
             {
                 StartCoroutine(HealWaitRoutine());
-                healthSystem.Heal(60);
+               
                 Debug.Log("Player's health increased by 60.");
             }
             Soul = 0f;
@@ -229,6 +229,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator HealWaitRoutine()
     {
+        var healthSystem = GetComponent<HealthSystem>();
         Move.action.Disable();
         isHealing = true;
         animator.SetTrigger("Heal");
@@ -237,6 +238,7 @@ public class PlayerController : MonoBehaviour
         PlayOne(healSound);
 
         yield return new WaitForSeconds(healTime);
+        healthSystem.Heal(60);
         isHealing = false;
         Move.action.Enable();
     }

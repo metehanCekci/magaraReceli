@@ -52,4 +52,20 @@ public class EnemyAttackHitbox : MonoBehaviour
             hs.TakeDamage(damage, transform.position);
         }
     }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (((1 << other.gameObject.layer) & playerLayers) != 0 && !CompareTag("Projectile"))
+        {
+            TryHit(other.collider);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (((1 << other.gameObject.layer) & playerLayers) != 0)
+        {
+            TryHit(other);
+        }
+    }
 }
