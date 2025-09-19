@@ -997,6 +997,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4265303545122163627, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
     - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: soulSystem
+      value: 
+      objectReference: {fileID: 1168466257}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: pauseMenuUI
       value: 
       objectReference: {fileID: 1921115909}
