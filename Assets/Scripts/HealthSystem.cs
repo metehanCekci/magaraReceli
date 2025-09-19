@@ -111,9 +111,12 @@ public class HealthSystem : MonoBehaviour
         if (heartSystem != null)
             heartSystem.UpdateHealth(0, maxHealth);
 
-        if (audioSource && deathSfx) audioSource.PlayOneShot(deathSfx);
 
-        Debug.Log($"{name} died");
+        if (DeathMenu.Instance != null)
+        {
+            DeathMenu.Instance.gameObject.SetActive(true);
+        }
+        Time.timeScale = 0;
         // TODO: game over, respawn, input disable
     }
 }
