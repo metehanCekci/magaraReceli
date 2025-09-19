@@ -25,7 +25,6 @@ public class EnemyHealth2D : MonoBehaviour
     public AudioClip deathSfx;
 
     bool invulnerable;
-
     void Awake()
     {
         currentHealth = maxHealth;
@@ -34,12 +33,13 @@ public class EnemyHealth2D : MonoBehaviour
         if (!audioSource) audioSource = GetComponent<AudioSource>();
     }
 
+
     /// <summary>
     /// hasar uygula. hitFrom: saldırının geldiği nokta (ör: player hitbox pozisyonu)
     /// </summary>
     public void TakeDamage(int amount, Vector2 hitFrom)
     {
-        if (invulnerable || currentHealth <= 0) return;
+        //if (invulnerable || currentHealth <= 0) return;
 
         currentHealth -= amount;
         if (currentHealth <= 0)
