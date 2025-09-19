@@ -26,6 +26,9 @@ public class HealthSystem : MonoBehaviour
     [Header("Knockback")]
     public Rigidbody2D rb;                     // yoksa otomatik bulur
 
+    [Header("Health UI")]
+    public HealthBarScript heartSystem;  // Health bar UI script'ine referans ekledik
+
     bool invulnerable;
 
     void Awake()
@@ -36,39 +39,50 @@ public class HealthSystem : MonoBehaviour
         if (!audioSource) audioSource = GetComponent<AudioSource>();
         if (!animator) animator = GetComponent<Animator>();
         if (playerLayer < 0) playerLayer = gameObject.layer; // auto
+        if (heartSystem == null) heartSystem = FindObjectOfType<HealthBarScript>();  // HeartSystem referansını buluyoruz
     }
 
     public bool IsInvulnerable()
-{
-    return invulnerable;  // Player invulnerable ise hasar almaz
-}
-
-public void TakeDamage(int amount, Vector2 hitFrom)
-{
-    if (invulnerable || currentHealth <= 0) return;
-
-    currentHealth -= amount;
-    if (currentHealth <= 0)
     {
-        Die();
-        return;
+        return invulnerable;  // Player invulnerable ise hasar almaz
     }
 
-    // Feedback (Hurt animasyon, ses, kırmızı flash)
-    if (animator) animator.SetTrigger("Hurt");
-    if (audioSource && hurtSfx) audioSource.PlayOneShot(hurtSfx);
-    StartCoroutine(FlashRedRoutine());
+    public void TakeDamage(int amount, Vector2 hitFrom)
+    {
+        if (invulnerable || currentHealth <= 0) return;
 
+        currentHealth -= amount;
+        if (currentHealth <= 0)
+        {
+            Die();
+            return;
+        }
 
-    // i-frame
-    StartCoroutine(InvulnerabilityRoutine());
-}
+        // Feedback (Hurt animasyon, ses, kırmızı flash)
+        if (animator) animator.SetTrigger("Hurt");
+        if (audioSource && hurtSfx) audioSource.PlayOneShot(hurtSfx);
+        
+
+        // UI'daki kalp barını güncelle
+        if (heartSystem != null)
+        {
+            heartSystem.UpdateHealth(currentHealth, maxHealth);  // UI güncellemesi
+        }
+
+        // i-frame
+        StartCoroutine(InvulnerabilityRoutine());
+    }
+
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+
+        // UI'yi güncelle
+        if (heartSystem != null)
+        {
+            heartSystem.UpdateHealth(currentHealth, maxHealth);  // UI güncellemesi
+        }
     }
-
-
 
     IEnumerator InvulnerabilityWithColliderRoutine(Collider2D source)
     {
@@ -83,20 +97,21 @@ public void TakeDamage(int amount, Vector2 hitFrom)
         invulnerable = false;
         foreach (var c in myCols) if (c && source) Physics2D.IgnoreCollision(c, source, false);
     }
+
     IEnumerator InvulnerabilityRoutine()
-{
-    invulnerable = true;
+    {
+        invulnerable = true;
 
-    bool canIgnore = (enemyAttackLayer >= 0);
-    if (canIgnore)
-        Physics2D.IgnoreLayerCollision(playerLayer, enemyAttackLayer, true);
+        bool canIgnore = (enemyAttackLayer >= 0);
+        if (canIgnore)
+            Physics2D.IgnoreLayerCollision(playerLayer, enemyAttackLayer, true);
+        StartCoroutine(FlashRedRoutine());
+        yield return new WaitForSeconds(invulnerableTime);
 
-    yield return new WaitForSeconds(invulnerableTime);
-
-    invulnerable = false;
-    if (canIgnore)
-        Physics2D.IgnoreLayerCollision(playerLayer, enemyAttackLayer, false);
-}
+        invulnerable = false;
+        if (canIgnore)
+            Physics2D.IgnoreLayerCollision(playerLayer, enemyAttackLayer, false);
+    }
 
     IEnumerator FlashRedRoutine()
     {
@@ -109,9 +124,16 @@ public void TakeDamage(int amount, Vector2 hitFrom)
 
     void Die()
     {
-        if (animator) animator.SetTrigger("Die");
+        // Ölüm anında tüm kalpleri boş yap
+        if (heartSystem != null)
+        {
+            heartSystem.UpdateHealth(0, maxHealth); // 0 can olduğunda tüm kalpleri boş yap
+        }
+
+        // Ölüme dair diğer işlemler
         if (audioSource && deathSfx) audioSource.PlayOneShot(deathSfx);
         Debug.Log($"{name} died");
         // TODO: respawn / game over / disable input vb.
     }
+
 }

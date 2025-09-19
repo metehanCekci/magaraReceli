@@ -4,33 +4,43 @@ using System.Collections.Generic;
 
 public class SaveSystem : MonoBehaviour
 {
+    public HealthBarScript healthBarScript;
     private string savePath => Application.persistentDataPath + "/player_save.json";
 
+    void Awake()
+    {
+
+        // player'daki HealthSystem component'ını almak
+        healthBarScript = GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBarScript>();
+        if (healthBarScript == null)
+        {
+            Debug.LogError("HealthSystem component not found on the player!");
+        }
+    }
     public void Save(GameObject player)
     {
-        var health = player.GetComponent<HealthSystem>();
         var abilitiesMgr = player.GetComponent<AbilityManager>();
+        var healthSystem = player.GetComponent<HealthSystem>();  // HealthSystem component'ını buraya ekliyoruz
 
         PlayerSaveData data = new PlayerSaveData();
-        data.health = health != null ? health.currentHealth : 0;
+        data.health = healthSystem.currentHealth;  // Sağlık bilgisi
+        data.maxHealth = healthSystem.maxHealth;  // MaxHealth
 
-        // HashSet<AbilityType> -> List<string> (LINQ'suz)
+        // Yetenekleri kaydetme
         data.abilities = new List<string>();
-        if (abilitiesMgr != null)
+        foreach (var ability in abilitiesMgr.GetUnlockedAbilities())
         {
-            var set = abilitiesMgr.GetUnlockedAbilities();
-            if (set != null)
-            {
-                foreach (var a in set)
-                    data.abilities.Add(a.ToString());
-            }
+            data.abilities.Add(ability.ToString());  // AbilityType'ı string'e çevirip kaydediyoruz
         }
+
+        // Dash durumu kaydediliyor
+        data.dashUnlocked = abilitiesMgr.IsDashUnlocked();
 
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
-#if UNITY_EDITOR
-        Debug.Log("Saved: " + savePath);
-#endif
+
+        Debug.Log("Player saved with health: " + data.health + " and dashUnlocked: " + data.dashUnlocked);
+        Debug.Log("Saved Health: " + data.health + " MaxHealth: " + data.maxHealth);
     }
 
     public void Load(GameObject player)
@@ -40,31 +50,53 @@ public class SaveSystem : MonoBehaviour
         string json = File.ReadAllText(savePath);
         PlayerSaveData data = JsonUtility.FromJson<PlayerSaveData>(json);
 
-        var health = player.GetComponent<HealthSystem>();
-        if (health != null)
-            health.currentHealth = Mathf.Clamp(data.health, 0, health.maxHealth);
-
-        // List<string> -> HashSet<AbilityType>
-        var abMgr = player.GetComponent<AbilityManager>();
-        if (abMgr != null && data.abilities != null)
+        var healthSystem = player.GetComponent<HealthSystem>();  // HealthSystem component'ını alıyoruz
+        if (healthSystem != null)
         {
-            var set = new HashSet<AbilityType>();
+            Debug.Log("Loaded health: " + data.health + " maxHealth: " + data.maxHealth); // Yüklenen değerleri kontrol ediyoruz
+
+            healthSystem.maxHealth = data.maxHealth;  // maxHealth'i yükle
+            healthSystem.currentHealth = Mathf.Clamp(data.health, 0, healthSystem.maxHealth);  // currentHealth'i yükle
+
+            // UI kalp barını güncelle
+            if (healthBarScript != null)
+            {
+                healthBarScript.UpdateHealth(healthSystem.currentHealth, healthSystem.maxHealth);
+            }
+        }
+        else
+        {
+            Debug.LogError("HealthSystem component not found on the player!");
+        }
+
+        var abilitiesMgr = player.GetComponent<AbilityManager>();
+        if (abilitiesMgr != null && data.abilities != null)
+        {
+            var set = new HashSet<AbilityTypeList>();
             foreach (var s in data.abilities)
             {
-                if (System.Enum.TryParse(s, out AbilityType parsed))
-                    set.Add(parsed);
+                if (System.Enum.TryParse(s, out AbilityTypeList parsed))
+                {
+                    set.Add(parsed);  // String'i AbilityType'a çevirip set'e ekliyoruz
+                }
             }
-            abMgr.SetUnlockedAbilities(set);
+            abilitiesMgr.SetUnlockedAbilities(set);  // Yetenekleri set'e ekliyoruz
         }
-#if UNITY_EDITOR
-        Debug.Log("Loaded: " + savePath);
-#endif
-    }
-}
 
-[System.Serializable]
-public class PlayerSaveData
-{
-    public int health;
-    public List<string> abilities;
+        if (abilitiesMgr != null)
+        {
+            abilitiesMgr.SetDashUnlocked(data.dashUnlocked);
+        }
+
+        Debug.Log("Player load test completed.");
+    }
+
+    [System.Serializable]
+    public class PlayerSaveData
+    {
+        public int health;        // Can bilgisi
+        public int maxHealth;     // MaxHealth
+        public List<string> abilities;  // Yetenekler
+        public bool dashUnlocked;     // Dash yeteneğinin alınıp alınmadığı bilgisi
+    }
 }
