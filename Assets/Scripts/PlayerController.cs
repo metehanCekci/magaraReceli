@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -61,12 +60,11 @@ public class PlayerController : MonoBehaviour
     public AudioClip jumpSound, dashSound, attackSound, healSound;
 
     [Header("Pause Menu")]
-    public GameObject pauseMenuUI; // Assign a Canvas panel in inspector
+    public GameObject pauseMenuUI;
 
     [Header("Soul")]
-    public float MaxSoul = 100f;  // Maximum Soul değeri
-    public float Soul = 0f;       // Mevcut Soul değeri
-    //public int currentSoul = 0;
+    public float MaxSoul = 100f;
+    public float Soul = 0f;
 
     bool isPaused = false;
     Rigidbody2D rb;
@@ -74,7 +72,7 @@ public class PlayerController : MonoBehaviour
     AbilityManager abilityManager;
 
     [Header("Soul System")]
-    public SoulSystem soulSystem;  // SoulSystem referansı
+    public SoulSystem soulSystem;
 
     void Awake()
     {
@@ -115,11 +113,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        float x = 0f;
+        if (isPaused) return;
 
+        float x = 0f;
         if (Move != null && Move.action != null)
         {
-            // Move action'ını kullanarak hareket input'unu alıyoruz
             if (Move.action.expectedControlType == "Vector2")
             {
                 x = Move.action.ReadValue<Vector2>().x;
@@ -129,67 +127,55 @@ public class PlayerController : MonoBehaviour
                 x = Move.action.ReadValue<float>();
             }
 
-            // Yürüyüş animasyonunu kontrol ediyoruz
             if (Mathf.Abs(x) > 0.01f)
             {
-                animator.SetBool("Walking", true); // Hareket ediyoruz, yürüyüş animasyonunu oynat
+                animator.SetBool("Walking", true);
             }
             else
             {
-                animator.SetBool("Walking", false); // Hareket etmiyoruz, yürüyüş animasyonu durur
+                animator.SetBool("Walking", false);
             }
         }
 
         moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
 
-        // Anlık hareket
         if (!isDashing)
         {
             rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         }
 
-        // Yön değiştirme
         if (Mathf.Abs(moveInput.x) > 0.01f)
         {
-            transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1); // Yönü değiştiriyoruz
+            transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1);
         }
 
-        // Jump buffer consume
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
         {
             DoJump();
             bufferCounter = 0f;
         }
 
-        // Variable jump (daha uzun zıplama)
         if (!jumpHeld && rb.linearVelocity.y > 0f)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
 
-        // Ground / Coyote Check
-        if (IsGrounded())
-        {
-            coyoteCounter = coyoteTime;
-            jumpCount = 0;
-        }
-        moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
+        if (IsGrounded()) { coyoteCounter = coyoteTime; jumpCount = 0; }
+        else coyoteCounter -= Time.deltaTime;
 
-        if (!isDashing)
-            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
-
-        if (Mathf.Abs(moveInput.x) > 0.01f)
-            transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1);
-
-        if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
-        {
-            coyoteCounter -= Time.deltaTime;
-        }
-
-        // Animator state
         animator.SetBool("IsGrounded", IsGrounded());
+
+        UpdateSoulBar();
+        RecalcMaxJumps();
     }
 
+    void UpdateSoulBar()
+    {
+        if (soulSystem != null)
+        {
+            float soulPercentage = Soul / MaxSoul;
+            soulSystem.UpdateSoulBar(soulPercentage);
+        }
+    }
 
-    // ===== Input Callbacks =====
     void OnJumpPerformed(InputAction.CallbackContext ctx) { jumpHeld = true; bufferCounter = jumpBufferTime; }
     void OnJumpCanceled(InputAction.CallbackContext ctx) { jumpHeld = false; }
 
@@ -208,47 +194,33 @@ public class PlayerController : MonoBehaviour
         swingId++;
         StartCoroutine(AttackSwing());
         lastAttackTime = Time.time;
-
-        // Soul'u artır
-        // Örnek olarak her saldırı ile 10 Soul arttırıyoruz, ihtiyaca göre düzenleyebilirsiniz.
     }
+
     public void IncreaseSoul(int amount)
     {
         Soul += amount;
         Debug.Log($"Soul increased by {amount}. Total soul: {Soul}");
     }
+
     void OnHealPerformed(InputAction.CallbackContext ctx)
     {
-        // Eğer Soul barı dolmuşsa
         if (Soul == MaxSoul)
         {
-            // Heal komutunu aldığında, karakterin canına 60 ekleyelim
-            Debug.Log("Heal command received and Soul is full.");
-
-            // HealthSystem bileşenini al
             var healthSystem = GetComponent<HealthSystem>();
-
-            // Eğer HealthSystem bileşeni varsa, canı 60 artır
             if (healthSystem != null)
             {
-                healthSystem.Heal(60); // 60 can ekliyoruz
+                healthSystem.Heal(60);
                 Debug.Log("Player's health increased by 60.");
             }
 
-            // Soul barını sıfırla
             Soul = 0f;
-            Debug.Log("Soul bar reset to 0.");
-
-            // Soul barını güncelle
-            //UpdateSoulBar(); // Yeni değeri güncelliyoruz
+            UpdateSoulBar();
         }
         else
         {
             Debug.Log("Cannot heal, Soul is not full.");
         }
     }
-
-
 
     void OnPausePerformed(InputAction.CallbackContext ctx)
     {
@@ -275,39 +247,24 @@ public class PlayerController : MonoBehaviour
         PlayOne(dashSound);
         Invoke(nameof(_EndDash), dashDuration);
     }
+
     void _EndDash() => isDashing = false;
 
     System.Collections.IEnumerator AttackSwing()
     {
         isAttacking = true;
-
-        // İlk animasyonu tetikle
-        animator?.SetTrigger("Swing1"); // İlk animasyonu tetikleyen trigger
-
+        animator?.SetTrigger("Swing1");
         if (attackHitbox)
             attackHitbox.gameObject.SetActive(true);
 
         PlayOne(attackSound);
-
         yield return new WaitForSeconds(attackDuration);
 
-        // İlk animasyon bittiğinde, ikinci animasyonu tetikle
-        animator?.SetTrigger("Swing2"); // İkinci animasyonu tetikleyen trigger
-
+        animator?.SetTrigger("Swing2");
         if (attackHitbox)
             attackHitbox.gameObject.SetActive(false);
 
         isAttacking = false;
-    }
-
-    System.Collections.IEnumerator HealRoutine()
-    {
-        isHealing = true;
-        animator?.SetTrigger("Heal");
-        PlayOne(healSound);
-        yield return new WaitForSeconds(healTime);
-        var hs = GetComponent<HealthSystem>(); if (hs) hs.Heal(healAmount);
-        isHealing = false;
     }
 
     void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }
