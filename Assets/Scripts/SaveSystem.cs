@@ -1,21 +1,30 @@
-using System;
 using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
 
 public class SaveSystem : MonoBehaviour
 {
+    public HealthBarScript healthBarScript;
     private string savePath => Application.persistentDataPath + "/player_save.json";
 
+    void Awake()
+    {
+
+        // player'daki HealthSystem component'ını almak
+        healthBarScript = GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBarScript>();
+        if (healthBarScript == null)
+        {
+            Debug.LogError("HealthSystem component not found on the player!");
+        }
+    }
     public void Save(GameObject player)
     {
         var abilitiesMgr = player.GetComponent<AbilityManager>();
+        var healthSystem = player.GetComponent<HealthSystem>();  // HealthSystem component'ını buraya ekliyoruz
 
         PlayerSaveData data = new PlayerSaveData();
-        data.health = player.GetComponent<HealthSystem>().currentHealth;
-
-        // maxHealth kontrolü ekleyelim (0 olursa 5'e atayalım)
-        data.maxHealth = player.GetComponent<HealthSystem>().maxHealth != 0 ? player.GetComponent<HealthSystem>().maxHealth : 5;
+        data.health = healthSystem.currentHealth;  // Sağlık bilgisi
+        data.maxHealth = healthSystem.maxHealth;  // MaxHealth
 
         // Yetenekleri kaydetme
         data.abilities = new List<string>();
@@ -41,18 +50,25 @@ public class SaveSystem : MonoBehaviour
         string json = File.ReadAllText(savePath);
         PlayerSaveData data = JsonUtility.FromJson<PlayerSaveData>(json);
 
-        var health = player.GetComponent<HealthSystem>();  // HealthSystem component'ini alıyoruz
-        if (health != null)
+        var healthSystem = player.GetComponent<HealthSystem>();  // HealthSystem component'ını alıyoruz
+        if (healthSystem != null)
         {
             Debug.Log("Loaded health: " + data.health + " maxHealth: " + data.maxHealth); // Yüklenen değerleri kontrol ediyoruz
 
-            health.maxHealth = data.maxHealth;  // maxHealth'i yükle
-            health.currentHealth = Mathf.Clamp(data.health, 0, health.maxHealth);  // currentHealth'i yükle
+            healthSystem.maxHealth = data.maxHealth;  // maxHealth'i yükle
+            healthSystem.currentHealth = Mathf.Clamp(data.health, 0, healthSystem.maxHealth);  // currentHealth'i yükle
+
+            // UI kalp barını güncelle
+            if (healthBarScript != null)
+            {
+                healthBarScript.UpdateHealth(healthSystem.currentHealth, healthSystem.maxHealth);
+            }
         }
         else
         {
             Debug.LogError("HealthSystem component not found on the player!");
         }
+
         var abilitiesMgr = player.GetComponent<AbilityManager>();
         if (abilitiesMgr != null && data.abilities != null)
         {
@@ -66,6 +82,7 @@ public class SaveSystem : MonoBehaviour
             }
             abilitiesMgr.SetUnlockedAbilities(set);  // Yetenekleri set'e ekliyoruz
         }
+
         if (abilitiesMgr != null)
         {
             abilitiesMgr.SetDashUnlocked(data.dashUnlocked);
@@ -77,10 +94,9 @@ public class SaveSystem : MonoBehaviour
     [System.Serializable]
     public class PlayerSaveData
     {
-        public int health;// Can bilgisi
-
-        public int maxHealth;
-        public List<string> abilities;     // Yetenekler
-        public bool dashUnlocked;          // Dash yeteneğinin alınıp alınmadığı bilgisi
+        public int health;        // Can bilgisi
+        public int maxHealth;     // MaxHealth
+        public List<string> abilities;  // Yetenekler
+        public bool dashUnlocked;     // Dash yeteneğinin alınıp alınmadığı bilgisi
     }
 }
