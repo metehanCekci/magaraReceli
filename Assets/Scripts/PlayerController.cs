@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviour
         RecalcMaxJumps();
 
         // Ensure default scale is 2,2,1
-        transform.localScale = new Vector3(2f, 2f, 1f);
+        transform.localScale = new Vector3(5f, 1f, 1f);
     }
 
     void OnEnable()
@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour
         {
             lockedFacing = Mathf.Sign(moveInput.x);
         }
-        transform.localScale = new Vector3(lockedFacing * 2f, 2f, 1f);
+        transform.localScale = new Vector3(lockedFacing * 5f, 1f, 1f);
 
         // Update facing lock timer
         if (facingLocked)
