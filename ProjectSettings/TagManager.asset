@@ -7,6 +7,8 @@ TagManager:
   - AttackHitbox
   - Ground
   - Enemy
+  - HurtBox
+  - Projectile
   layers:
   - Default
   - TransparentFX

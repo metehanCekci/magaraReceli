@@ -162,11 +162,11 @@ GameObject:
   - component: {fileID: 261866525}
   - component: {fileID: 261866524}
   - component: {fileID: 261866523}
-  - component: {fileID: 261866522}
+  - component: {fileID: 261866527}
   - component: {fileID: 261866521}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -198,22 +198,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &261866522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 261866520}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eb9fff4d500c055c82ca60419403d8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
-  damage: 1
-  playerLayers:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!61 &261866523
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -347,6 +331,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1371008010}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &261866527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261866520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb9fff4d500c055c82ca60419403d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
+  damage: 20
+  playerLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1001 &323749572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -395,6 +395,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 813221737}
+    - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: currentHealth
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: enemyAttackLayer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4776694086864521984, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: m_Name
       value: Player
@@ -428,11 +444,11 @@ GameObject:
   - component: {fileID: 350980177}
   - component: {fileID: 350980181}
   - component: {fileID: 350980180}
-  - component: {fileID: 350980179}
+  - component: {fileID: 350980183}
   - component: {fileID: 350980182}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -510,22 +526,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 378660597}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &350980179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 350980176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eb9fff4d500c055c82ca60419403d8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
-  damage: 1
-  playerLayers:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!61 &350980180
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -613,6 +613,22 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &350980183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 350980176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb9fff4d500c055c82ca60419403d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
+  damage: 20
+  playerLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &377427467
 GameObject:
   m_ObjectHideFlags: 0
@@ -858,11 +874,11 @@ GameObject:
   - component: {fileID: 436169735}
   - component: {fileID: 436169734}
   - component: {fileID: 436169733}
-  - component: {fileID: 436169732}
+  - component: {fileID: 436169737}
   - component: {fileID: 436169731}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -894,22 +910,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &436169732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 436169730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eb9fff4d500c055c82ca60419403d8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
-  damage: 1
-  playerLayers:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!61 &436169733
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1043,6 +1043,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 812106204}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &436169737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 436169730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb9fff4d500c055c82ca60419403d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
+  damage: 20
+  playerLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &662257550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,7 +1073,7 @@ GameObject:
   - component: {fileID: 662257553}
   m_Layer: 0
   m_Name: Pointy
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1215,7 +1231,7 @@ GameObject:
   - component: {fileID: 728155426}
   m_Layer: 0
   m_Name: Pointy (1)
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1544,6 +1560,16 @@ Transform:
   - {fileID: 436169736}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!95 &813221732 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6716727142501694644, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+  m_PrefabInstance: {fileID: 323749572}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &813221737 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 1163537010999393830, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+  m_PrefabInstance: {fileID: 323749572}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &926381185
 GameObject:
   m_ObjectHideFlags: 0
@@ -1767,11 +1793,11 @@ GameObject:
   - component: {fileID: 1074294895}
   - component: {fileID: 1074294894}
   - component: {fileID: 1074294893}
-  - component: {fileID: 1074294892}
+  - component: {fileID: 1074294897}
   - component: {fileID: 1074294891}
   m_Layer: 0
   m_Name: Square
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1803,22 +1829,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1074294892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1074294890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eb9fff4d500c055c82ca60419403d8f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
-  damage: 1
-  playerLayers:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!61 &1074294893
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1952,6 +1962,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1049295875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1074294897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1074294890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb9fff4d500c055c82ca60419403d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
+  damage: 20
+  playerLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &1125047782
 GameObject:
   m_ObjectHideFlags: 0
@@ -2197,7 +2223,7 @@ GameObject:
   - component: {fileID: 1230551594}
   m_Layer: 0
   m_Name: Boulder
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2839,7 +2865,7 @@ GameObject:
   - component: {fileID: 1675426493}
   m_Layer: 0
   m_Name: Pointy (2)
-  m_TagString: Untagged
+  m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3014,6 +3040,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1801524344 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2517637730954126968, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+  m_PrefabInstance: {fileID: 6884400016741789667}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1801524351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1801524344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1eb9fff4d500c055c82ca60419403d8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
+  damage: 20
+  playerLayers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1001 &6884400016741789667
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3022,18 +3069,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
-      propertyPath: maxHealth
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
-      propertyPath: currentHealth
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
-      propertyPath: knockbackForce
+    - target: {fileID: 435329362562246732, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 650010664164134310, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 650010664164134310, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 813221737}
+    - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 813221732}
     - target: {fileID: 2517637730954126968, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: m_Name
       value: Boss
@@ -3047,17 +3102,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 759581660}
     - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
-      propertyPath: lazerChance
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: leftTrigger
       value: 
       objectReference: {fileID: 1677022239}
-    - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
-      propertyPath: spikeChance
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: spikePrefab
       value: 
@@ -3067,10 +3114,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 17676133}
     - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
-      propertyPath: boulderChance
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: boulderPrefab
       value: 
       objectReference: {fileID: 1230551588}
@@ -3079,8 +3122,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1230551591}
     - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
-      propertyPath: timeBetweenAttacks
-      value: 3
+      propertyPath: groundLayer.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: lazerLauncherPrefab
@@ -3098,13 +3141,9 @@ PrefabInstance:
       propertyPath: lazerLauncherPrefab4
       value: 
       objectReference: {fileID: 812106199}
-    - target: {fileID: 8019010494067289331, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8019010494067289331, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5
+    - target: {fileID: 7801024436397056626, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8019010494067289331, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3147,9 +3186,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 435329362562246732, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2517637730954126968, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 1801524351}
   m_SourcePrefab: {fileID: 100100000, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

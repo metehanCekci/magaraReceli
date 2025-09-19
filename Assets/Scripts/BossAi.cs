@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class BossController : MonoBehaviour
+public class BossAi : MonoBehaviour
 {
     [Header("Movement")]
     public Transform leftTrigger;
@@ -30,9 +30,9 @@ public class BossController : MonoBehaviour
     public float timeBetweenAttacks = 2f;
 
     [Header("Attack Chances (percentages)")]
-    [Range(0,100)] public int spikeChance = 0;
-    [Range(0,100)] public int boulderChance = 100;
-    [Range(0,100)] public int lazerChance = 0;
+    [Range(0, 100)] public int spikeChance = 0;
+    [Range(0, 100)] public int boulderChance = 100;
+    [Range(0, 100)] public int lazerChance = 0;
 
     private void Start()
     {
@@ -40,6 +40,7 @@ public class BossController : MonoBehaviour
         StartCoroutine(AttackCycle());
     }
 
+    
     IEnumerator MovementLoop()
     {
         while (true)
@@ -123,7 +124,7 @@ public class BossController : MonoBehaviour
         GameObject[] topCannons = { lazerLauncherPrefab, lazerLauncherPrefab2 };
         GameObject[] bottomCannons = { lazerLauncherPrefab3, lazerLauncherPrefab4 };
 
-        // Üst cannonlar aktif edilir
+        // ï¿½st cannonlar aktif edilir
         yield return StartCoroutine(ActivateCannons(topCannons));
 
         // 1 saniye bekle
@@ -146,7 +147,7 @@ public class BossController : MonoBehaviour
             SpriteRenderer sr = cannon.GetComponent<SpriteRenderer>();
             StartCoroutine(FadeIn(sr, fadeTime));
 
-            // Cannon’u aktive et
+            // Cannonï¿½u aktive et
             LazerLauncher launcher = cannon.GetComponent<LazerLauncher>();
             launcher.ActivateCannon();
 
@@ -154,7 +155,7 @@ public class BossController : MonoBehaviour
             cannon.tag = "Cannon";
         }
 
-        // Bu sefer süre yok çünkü sürekli ateþ edecekler
+        // Bu sefer sï¿½re yok ï¿½ï¿½nkï¿½ sï¿½rekli ateï¿½ edecekler
         yield return null;
     }
 

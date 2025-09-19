@@ -35,6 +35,6 @@ public class AttackHitbox2D : MonoBehaviour
 
         enemy.TakeDamage(damage, transform.position);
         lastHitSwing[enemy] = currentSwing;
-        // Debug.Log($"Hit {enemy.name} on swing {currentSwing}");
+        Debug.Log($"Hit {enemy.name} on swing {currentSwing}");
     }
 }
