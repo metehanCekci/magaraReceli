@@ -35,7 +35,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.88291, y: -1.34357, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1141328431190398702}
@@ -89,12 +89,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
+  m_Sprite: {fileID: -7389600688560506938, guid: 134aeb29d395d0d059247f9af7bfef60, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 0.8, y: 1.17}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -144,6 +144,7 @@ MonoBehaviour:
   Dash: {fileID: -7471211009204490832, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   Attack: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   Heal: {fileID: 7476244043514120974, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  Pause: {fileID: 0}
   moveSpeed: 7
   jumpForce: 12
   variableJumpMultiplier: 0.5
@@ -169,6 +170,10 @@ MonoBehaviour:
   dashSound: {fileID: 0}
   attackSound: {fileID: 0}
   healSound: {fileID: 0}
+  pauseMenuUI: {fileID: 0}
+  MaxSoul: 100
+  Soul: 0
+  soulSystem: {fileID: 0}
 --- !u!114 &7676088459934626032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,6 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 742f669c129d98591910b30c09f33757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveSystem
+  healthBarScript: {fileID: 0}
 --- !u!70 &6909799025065235942
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -227,8 +233,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
+  m_Offset: {x: -0.028682351, y: 0.037118435}
+  m_Size: {x: 0.36898756, y: 1.1631491}
   m_Direction: 0
 --- !u!95 &6716727142501694644
 Animator:
@@ -276,8 +282,7 @@ MonoBehaviour:
   hurtSfx: {fileID: 0}
   deathSfx: {fileID: 0}
   rb: {fileID: 0}
-  knockbackForce: 8
-  knockbackUpFactor: 0.35
+  heartSystem: {fileID: 0}
 --- !u!82 &1657189960040081162
 AudioSource:
   m_ObjectHideFlags: 0
@@ -400,7 +405,7 @@ Transform:
   m_GameObject: {fileID: 5623392159882546808}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: -0.492, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -433,7 +438,7 @@ Transform:
   m_GameObject: {fileID: 8255352011368195476}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.078, y: 0.28, z: 0}
+  m_LocalPosition: {x: -0.063, y: 0.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -473,8 +478,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.8024568, y: 0.085305035}
-  m_Size: {x: 1.4049135, y: 1.4325341}
+  m_Offset: {x: 0.5325793, y: -0.039753437}
+  m_Size: {x: 0.86515856, y: 0.86515856}
   m_Direction: 0
 --- !u!114 &3167725689296828685
 MonoBehaviour:
@@ -489,3 +494,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackHitbox
   damage: 5
+  soulGainOnHit: 10

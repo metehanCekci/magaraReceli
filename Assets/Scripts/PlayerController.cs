@@ -84,10 +84,15 @@ public class PlayerController : MonoBehaviour
         if (attackHitbox) attackHitbox.gameObject.SetActive(false);
         if (pauseMenuUI) pauseMenuUI.SetActive(false);
         RecalcMaxJumps();
+
+        // Ensure default scale is 2,2,1
+        transform.localScale = new Vector3(2f, 2f, 1f);
     }
 
     void OnEnable()
     {
+        attackHitbox.gameObject.SetActive(false);
+
         if (Move) Move.action.Enable();
         if (Jump) { Jump.action.Enable(); Jump.action.performed += OnJumpPerformed; Jump.action.canceled += OnJumpCanceled; }
         if (Dash) { Dash.action.Enable(); Dash.action.performed += OnDashPerformed; }
@@ -115,7 +120,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (isPaused) return;
-        if (isHealing) return; // block everything while healing
+        if (isHealing) return;
 
         float x = 0f;
         if (Move != null && Move.action != null)
@@ -139,9 +144,10 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         }
 
+        // Set scale with X flip and keep Y=2
         if (Mathf.Abs(moveInput.x) > 0.01f)
         {
-            transform.localScale = new Vector3(Mathf.Sign(moveInput.x), 1, 1);
+            transform.localScale = new Vector3(Mathf.Sign(moveInput.x) * 2f, 2f, 1f);
         }
 
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
@@ -188,8 +194,10 @@ public class PlayerController : MonoBehaviour
         Physics2D.SyncTransforms();
         rb?.WakeUp();
         swingId++;
+        attackHitbox.gameObject.SetActive(false);
         StartCoroutine(AttackSwing());
         lastAttackTime = Time.time;
+        attackHitbox.gameObject.SetActive(false);
     }
 
     public void IncreaseSoul(int amount)
@@ -220,7 +228,6 @@ public class PlayerController : MonoBehaviour
         isHealing = true;
         animator.SetTrigger("Heal");
 
-
         rb.linearVelocity = Vector2.zero;
         yield return new WaitForSeconds(healTime);
         isHealing = false;
@@ -234,7 +241,6 @@ public class PlayerController : MonoBehaviour
         isHealing = true;
         animator.SetTrigger("Heal");
 
-        // 🔊 Use your local clip (heal sound)
         PlayOne(healSound);
 
         yield return new WaitForSeconds(healTime);
@@ -275,10 +281,7 @@ public class PlayerController : MonoBehaviour
     {
         isAttacking = true;
         animator?.SetTrigger("Swing1");
-        if (attackHitbox)
-            attackHitbox.gameObject.SetActive(true);
 
-        // 🔊 Use SFXPlayer global whoosh
         if (SFXPlayer.Instance) SFXPlayer.Instance.PlayWhoosh();
 
         yield return new WaitForSeconds(attackDuration);
@@ -290,7 +293,6 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
 
-    // 🎵 You still keep this for jump/dash/heal sound variations
     void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }
 
     void PauseGame()
@@ -320,5 +322,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void AttackHitboxEnable()
+    {
+        if (attackHitbox)
+            attackHitbox.gameObject.SetActive(true);
+    }
 
+    public void AttackHitboxDisable()
+    {
+        if (attackHitbox)
+            attackHitbox.gameObject.SetActive(false);
+    }
 }
