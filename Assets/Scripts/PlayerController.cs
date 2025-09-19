@@ -88,6 +88,8 @@ public class PlayerController : MonoBehaviour
 
     void OnEnable()
     {
+            attackHitbox.gameObject.SetActive(false);
+
         if (Move) Move.action.Enable();
         if (Jump) { Jump.action.Enable(); Jump.action.performed += OnJumpPerformed; Jump.action.canceled += OnJumpCanceled; }
         if (Dash) { Dash.action.Enable(); Dash.action.performed += OnDashPerformed; }
@@ -188,8 +190,10 @@ public class PlayerController : MonoBehaviour
         Physics2D.SyncTransforms();
         rb?.WakeUp();
         swingId++;
+        attackHitbox.gameObject.SetActive(false);
         StartCoroutine(AttackSwing());
         lastAttackTime = Time.time;
+        attackHitbox.gameObject.SetActive(false);
     }
 
     public void IncreaseSoul(int amount)
@@ -274,7 +278,7 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         animator?.SetTrigger("Swing1");
         if (attackHitbox)
-            attackHitbox.gameObject.SetActive(true);
+            //attackHitbox.gameObject.SetActive(true);
 
         // 🔊 Use SFXPlayer global whoosh
         if (SFXPlayer.Instance) SFXPlayer.Instance.PlayWhoosh();
@@ -318,5 +322,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Animasyon eventlerinden çağrılır
+    public void AttackHitboxEnable()
+    {
+        Debug.Log("AttackHitboxEnable called");
+        if (attackHitbox)
+            attackHitbox.gameObject.SetActive(true);
+    }
 
+    public void AttackHitboxDisable()
+    {
+        Debug.Log("AttackHitboxDisable called");
+        if (attackHitbox)
+            attackHitbox.gameObject.SetActive(false);
+    }
 }

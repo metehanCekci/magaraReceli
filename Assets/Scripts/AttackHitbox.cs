@@ -38,5 +38,7 @@ public class AttackHitbox2D : MonoBehaviour
 
         Debug.Log($"Hit {enemy.name} on swing {currentSwing}. Soul gained.");
         CameraShake.Instance.Shake(0.1f, 0.1f); // kamera sarsılması
+        gameObject.SetActive(false);
+
     }
 }
