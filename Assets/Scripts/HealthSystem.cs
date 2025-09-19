@@ -75,14 +75,17 @@ public class HealthSystem : MonoBehaviour
 
     public void Heal(int amount)
     {
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);  // Eğer can maxHealth'i aşarsa, maxHealth'e sabitleriz.
 
         // UI'yi güncelle
         if (heartSystem != null)
         {
-            heartSystem.UpdateHealth(currentHealth, maxHealth);  // UI güncellemesi
+            heartSystem.UpdateHealth(currentHealth, maxHealth);  // UI'yı güncelledik
         }
+
+        Debug.Log($"Player healed by {amount}. Current health: {currentHealth}");
     }
+
 
     IEnumerator InvulnerabilityWithColliderRoutine(Collider2D source)
     {

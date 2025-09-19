@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
     public float dashForce = 20f;
     public float dashDuration = 0.20f;
     public float dashCooldown = 0.50f;
-    bool isDashing; 
+    bool isDashing;
     float lastDashTime;
 
     [Header("Combat")]
@@ -62,10 +62,18 @@ public class PlayerController : MonoBehaviour
     [Header("Pause Menu")]
     public GameObject pauseMenuUI; // Assign a Canvas panel in inspector
 
+    [Header("Soul")]
+    public float MaxSoul = 100f;  // Maximum Soul değeri
+    public float Soul = 0f;       // Mevcut Soul değeri
+    //public int currentSoul = 0;
+
     bool isPaused = false;
     Rigidbody2D rb;
     Vector2 moveInput;
     AbilityManager abilityManager;
+
+    [Header("Soul System")]
+    public SoulSystem soulSystem;  // SoulSystem referansı
 
     void Awake()
     {
@@ -141,7 +149,20 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("IsGrounded", IsGrounded());
         }
 
+        // Soul bar'ı güncelle
+        UpdateSoulBar();
+
         RecalcMaxJumps();
+    }
+
+    void UpdateSoulBar()
+    {
+        if (soulSystem != null)
+        {
+            // MaxSoul ile Soul'ün oranını alarak Soul bar'ının %'lik değerini hesaplıyoruz
+            float soulPercentage = Soul / MaxSoul;
+            soulSystem.UpdateSoulBar(soulPercentage);  // Soul bar'ını güncelle
+        }
     }
 
     void OnJumpPerformed(InputAction.CallbackContext ctx) { jumpHeld = true; bufferCounter = jumpBufferTime; }
@@ -162,13 +183,47 @@ public class PlayerController : MonoBehaviour
         swingId++;
         StartCoroutine(AttackSwing());
         lastAttackTime = Time.time;
-    }
 
+        // Soul'u artır
+        // Örnek olarak her saldırı ile 10 Soul arttırıyoruz, ihtiyaca göre düzenleyebilirsiniz.
+    }
+    public void IncreaseSoul(int amount)
+    {
+        Soul += amount;
+        Debug.Log($"Soul increased by {amount}. Total soul: {Soul}");
+    }
     void OnHealPerformed(InputAction.CallbackContext ctx)
     {
-        if (abilityManager && !abilityManager.CanHeal()) return;
-        if (!isHealing) StartCoroutine(HealRoutine());
+        // Eğer Soul barı dolmuşsa
+        if (Soul == MaxSoul)
+        {
+            // Heal komutunu aldığında, karakterin canına 60 ekleyelim
+            Debug.Log("Heal command received and Soul is full.");
+
+            // HealthSystem bileşenini al
+            var healthSystem = GetComponent<HealthSystem>();
+
+            // Eğer HealthSystem bileşeni varsa, canı 60 artır
+            if (healthSystem != null)
+            {
+                healthSystem.Heal(60); // 60 can ekliyoruz
+                Debug.Log("Player's health increased by 60.");
+            }
+
+            // Soul barını sıfırla
+            Soul = 0f;
+            Debug.Log("Soul bar reset to 0.");
+
+            // Soul barını güncelle
+            UpdateSoulBar(); // Yeni değeri güncelliyoruz
+        }
+        else
+        {
+            Debug.Log("Cannot heal, Soul is not full.");
+        }
     }
+
+
 
     void OnPausePerformed(InputAction.CallbackContext ctx)
     {
@@ -176,7 +231,6 @@ public class PlayerController : MonoBehaviour
         else PauseGame();
     }
 
-    // Core functions
     bool IsGrounded() => groundCheck && Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
 
     void DoJump()
@@ -235,7 +289,6 @@ public class PlayerController : MonoBehaviour
         if (pauseMenuUI) pauseMenuUI.SetActive(false);
     }
 
-    // Called from UI Buttons
     public void ResumeButton() => ResumeGame();
     public void RestartButton() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     public void QuitButton() => Application.Quit();
