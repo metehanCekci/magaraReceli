@@ -201,7 +201,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 273009685}
   - component: {fileID: 273009687}
   - component: {fileID: 273009686}
+  - component: {fileID: 273009688}
   m_Layer: 5
   m_Name: Soul
   m_TagString: Untagged
@@ -275,7 +276,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0.425
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -288,6 +289,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 273009684}
   m_CullTransparentMesh: 1
+--- !u!114 &273009688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 273009684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad85867967fa1a4e90a284648acef43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  soulImage: {fileID: 273009686}
 --- !u!1 &333461010
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,6 +677,10 @@ PrefabInstance:
       propertyPath: invulnerableTime
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: soulSystem
+      value: 
+      objectReference: {fileID: 273009688}
     - target: {fileID: 4776694086864521984, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: m_Name
       value: Player
