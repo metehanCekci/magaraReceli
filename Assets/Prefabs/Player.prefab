@@ -152,7 +152,7 @@ MonoBehaviour:
   jumpBufferTime: 0.2
   baseMaxJumps: 1
   dashForce: 20
-  dashDuration: 0.2
+  dashDuration: 0.1
   dashCooldown: 0.5
   attackHitbox: {fileID: 1141328431190398702}
   attackDuration: 0.1
@@ -233,8 +233,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.028682351, y: 0.037118435}
-  m_Size: {x: 0.36898756, y: 1.1631491}
+  m_Offset: {x: -0.10000324, y: -0.010428786}
+  m_Size: {x: 0.22634578, y: 1.0680547}
   m_Direction: 0
 --- !u!95 &6716727142501694644
 Animator:
@@ -275,7 +275,6 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   invulnerableTime: 1
-  flashTime: 0.08
   spriteRenderer: {fileID: 0}
   animator: {fileID: 0}
   audioSource: {fileID: 0}
@@ -420,8 +419,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1141328431190398702}
-  - component: {fileID: 3781422349540710473}
   - component: {fileID: 3167725689296828685}
+  - component: {fileID: 6204916737306977840}
   m_Layer: 0
   m_Name: AttackHitbox
   m_TagString: AttackHitbox
@@ -438,14 +437,28 @@ Transform:
   m_GameObject: {fileID: 8255352011368195476}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.063, y: 0.28, z: 0}
+  m_LocalPosition: {x: 0.515, y: 0.287, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 763666937889821566}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &3781422349540710473
-CapsuleCollider2D:
+--- !u!114 &3167725689296828685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8255352011368195476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19fc00dc30fde49eeb441e670a9f0fe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackHitbox
+  damage: 5
+  soulGainOnHit: 10
+--- !u!58 &6204916737306977840
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -474,24 +487,9 @@ CapsuleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.5325793, y: -0.039753437}
-  m_Size: {x: 0.86515856, y: 0.86515856}
-  m_Direction: 0
---- !u!114 &3167725689296828685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8255352011368195476}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19fc00dc30fde49eeb441e670a9f0fe5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AttackHitbox
-  damage: 5
-  soulGainOnHit: 10
+  m_Offset: {x: -0.11618385, y: 0}
+  m_Radius: 0.40849468

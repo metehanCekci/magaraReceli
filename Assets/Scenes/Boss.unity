@@ -2010,18 +2010,13 @@ Transform:
   m_GameObject: {fileID: 812106199}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 7.75, y: -2.48, z: 0}
+  m_LocalPosition: {x: 7.75, y: -1.36, z: 0}
   m_LocalScale: {x: 1, y: 0.3863, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 436169736}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!95 &813221732 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6716727142501694644, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-  m_PrefabInstance: {fileID: 323749572}
-  m_PrefabAsset: {fileID: 0}
 --- !u!50 &813221737 stripped
 Rigidbody2D:
   m_CorrespondingSourceObject: {fileID: 1163537010999393830, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
@@ -2229,7 +2224,7 @@ Transform:
   m_GameObject: {fileID: 1049295870}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.87, y: -2.48, z: 0}
+  m_LocalPosition: {x: -7.87, y: -1.36, z: 0}
   m_LocalScale: {x: 1, y: 0.3863, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3606,6 +3601,11 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 256
+--- !u!50 &1801524354 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 3131083779413408309, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+  m_PrefabInstance: {fileID: 6884400016741789667}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1911709937 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3510270478415925817, guid: d9dcf5fcbda137e428f4b96c0e751d66, type: 3}
@@ -4072,11 +4072,15 @@ PrefabInstance:
     - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: rb
       value: 
-      objectReference: {fileID: 813221737}
+      objectReference: {fileID: 1801524354}
     - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: animator
       value: 
-      objectReference: {fileID: 813221732}
+      objectReference: {fileID: 0}
+    - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: knockbackForce
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2517637730954126968, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: m_Name
       value: Boss
@@ -4084,6 +4088,14 @@ PrefabInstance:
     - target: {fileID: 3131083779413408309, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: m_Constraints
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3131083779413408309, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3131083779413408309, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3954740621512406687, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: player
