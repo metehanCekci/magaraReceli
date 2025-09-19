@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: aebb2ded9a83bb0438707add3501cb42
+guid: c50215c0083d8f44ca61d31cc6883950
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,51 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Frame_0
+  - name: ThynnWallHold
     originalName: 
-    pivot: {x: 0.5, y: -0.016806724}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 98
-      y: 121
-      width: 80
-      height: 119
-    spriteID: 9d2a8be1bdc8bc846a1b2c25313ce5fa
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 98, y: 121}
-  - name: Frame_1
-    originalName: 
-    pivot: {x: 0.54651165, y: -0.016806724}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 121
-      width: 86
-      height: 119
-    spriteID: c05f0036021bff748b3c73fa111b01ba
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 121}
-  - name: Frame_2
-    originalName: 
-    pivot: {x: 0.62, y: -0.09174311}
+    pivot: {x: 0.61728394, y: -0.13392858}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -179,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 100
-      height: 109
-    spriteID: 9ae34df6833f22f478726c1bb248df34
+      width: 81
+      height: 112
+    spriteID: 5c37d60207108f24d92af85f0a19307f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -190,78 +148,30 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: Frame_3
-    originalName: 
-    pivot: {x: 0.60784316, y: -0.19}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 112
-      y: 4
-      width: 102
-      height: 100
-    spriteID: 95f7cbed0f346cd4ea97146a7fec79d7
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 112, y: 4}
   spriteSheetImportData: []
   tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 2649061015
+      value0: 2490087980
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: ThynnJump
+    name: ThynnWallHold
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Frame_0
+    - name: ThynnWallHold
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 24
-        y: 2
-        width: 80
-        height: 119
-      spriteId: 9d2a8be1bdc8bc846a1b2c25313ce5fa
-    - name: Frame_1
-      frameIndex: 1
-      additiveSortOrder: 0
-      cellRect:
-        x: 17
-        y: 2
-        width: 86
-        height: 119
-      spriteId: c05f0036021bff748b3c73fa111b01ba
-    - name: Frame_2
-      frameIndex: 2
-      additiveSortOrder: 0
-      cellRect:
-        x: 2
-        y: 10
-        width: 100
-        height: 109
-      spriteId: 9ae34df6833f22f478726c1bb248df34
-    - name: Frame_3
-      frameIndex: 3
-      additiveSortOrder: 0
-      cellRect:
-        x: 2
-        y: 19
-        width: 102
-        height: 100
-      spriteId: 95f7cbed0f346cd4ea97146a7fec79d7
+        x: 14
+        y: 15
+        width: 81
+        height: 112
+      spriteId: 5c37d60207108f24d92af85f0a19307f
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -272,4 +182,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 128, y: 128}
-  previousTextureSize: {x: 256, y: 256}
+  previousTextureSize: {x: 128, y: 128}
