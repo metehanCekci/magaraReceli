@@ -5,29 +5,26 @@ using UnityEngine;
 public class HealthSystem : MonoBehaviour
 {
     [Header("Layer Ignore (i-frame)")]
-    [Tooltip("Player'ın layer'ı (boş bırakılırsa bu objenin layer'ı kullanılır)")]
     public int playerLayer = -1;
-    [Tooltip("Düşman saldırı/hitbox layer'ı (Inspector'dan atayın: EnemyAttack vb.)")]
     public int enemyAttackLayer = -1;
-
 
     [Header("Health")]
     public int maxHealth = 5;
     public int currentHealth;
 
     [Header("Hurt Feedback")]
-    public float invulnerableTime = 0.15f;     // i-frame
-    public float flashTime = 0.08f;            // kırmızı kalma süresi
-    public SpriteRenderer spriteRenderer;      // yoksa otomatik bulmaya çalışır
-    public Animator animator;                  // opsiyonel: "Hurt"/"Die" trigger
-    public AudioSource audioSource;            // opsiyonel
-    public AudioClip hurtSfx, deathSfx;        // opsiyonel
+    public float invulnerableTime = 0.15f;
+    public float flashTime = 0.08f;
+    public SpriteRenderer spriteRenderer;
+    public Animator animator;
+    public AudioSource audioSource;
+    public AudioClip hurtSfx, deathSfx;
 
     [Header("Knockback")]
-    public Rigidbody2D rb;                     // yoksa otomatik bulur
+    public Rigidbody2D rb;
 
     [Header("Health UI")]
-    public HealthBarScript heartSystem;  // Health bar UI script'ine referans ekledik
+    public HealthBarScript heartSystem;
 
     bool invulnerable;
 
@@ -38,15 +35,15 @@ public class HealthSystem : MonoBehaviour
         if (!spriteRenderer) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
         if (!animator) animator = GetComponent<Animator>();
-        if (playerLayer < 0) playerLayer = gameObject.layer; // auto
-        if (heartSystem == null) heartSystem = FindObjectOfType<HealthBarScript>();  // HeartSystem referansını buluyoruz
+        if (playerLayer < 0) playerLayer = gameObject.layer;
+        if (heartSystem == null) heartSystem = FindObjectOfType<HealthBarScript>();
     }
 
-    public bool IsInvulnerable()
-    {
-        return invulnerable;  // Player invulnerable ise hasar almaz
-    }
+    public bool IsInvulnerable() => invulnerable;
 
+    /// <summary>
+    /// Hasar al (düşman saldırısı vs.)
+    /// </summary>
     public void TakeDamage(int amount, Vector2 hitFrom)
     {
         if (invulnerable || currentHealth <= 0) return;
@@ -58,61 +55,45 @@ public class HealthSystem : MonoBehaviour
             return;
         }
 
-        // Feedback (Hurt animasyon, ses, kırmızı flash)
         if (animator) animator.SetTrigger("Hurt");
-        if (audioSource && hurtSfx) audioSource.PlayOneShot(hurtSfx);
-        
+        SFXPlayer.Instance.PlayHurt();
 
-        // UI'daki kalp barını güncelle
+        // UI update
         if (heartSystem != null)
+            heartSystem.UpdateHealth(currentHealth, maxHealth);
+
+        // Knockback (opsiyonel)
+        if (rb)
         {
-            heartSystem.UpdateHealth(currentHealth, maxHealth);  // UI güncellemesi
+            Vector2 dir = (transform.position - (Vector3)hitFrom).normalized;
+            rb.AddForce(dir * 5f, ForceMode2D.Impulse);
         }
 
-        // i-frame
         StartCoroutine(InvulnerabilityRoutine());
     }
 
     public void Heal(int amount)
     {
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);  // Eğer can maxHealth'i aşarsa, maxHealth'e sabitleriz.
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
 
-        // UI'yi güncelle
         if (heartSystem != null)
-        {
-            heartSystem.UpdateHealth(currentHealth, maxHealth);  // UI'yı güncelledik
-        }
+            heartSystem.UpdateHealth(currentHealth, maxHealth);
 
         Debug.Log($"Player healed by {amount}. Current health: {currentHealth}");
-    }
-
-
-    IEnumerator InvulnerabilityWithColliderRoutine(Collider2D source)
-    {
-        invulnerable = true;
-
-        // player tarafındaki tüm collider’larla bu 'source'u geçici olarak ignore et
-        var myCols = GetComponentsInChildren<Collider2D>(includeInactive: false);
-        foreach (var c in myCols) if (c && source) Physics2D.IgnoreCollision(c, source, true);
-
-        yield return new WaitForSeconds(invulnerableTime);
-
-        invulnerable = false;
-        foreach (var c in myCols) if (c && source) Physics2D.IgnoreCollision(c, source, false);
     }
 
     IEnumerator InvulnerabilityRoutine()
     {
         invulnerable = true;
-
-        bool canIgnore = (enemyAttackLayer >= 0);
-        if (canIgnore)
+        if (enemyAttackLayer >= 0)
             Physics2D.IgnoreLayerCollision(playerLayer, enemyAttackLayer, true);
+
         StartCoroutine(FlashRedRoutine());
+
         yield return new WaitForSeconds(invulnerableTime);
 
         invulnerable = false;
-        if (canIgnore)
+        if (enemyAttackLayer >= 0)
             Physics2D.IgnoreLayerCollision(playerLayer, enemyAttackLayer, false);
     }
 
@@ -127,16 +108,15 @@ public class HealthSystem : MonoBehaviour
 
     void Die()
     {
-        // Ölüm anında tüm kalpleri boş yap
         if (heartSystem != null)
+            heartSystem.UpdateHealth(0, maxHealth);
+
+
+        if (DeathMenu.Instance != null)
         {
-            heartSystem.UpdateHealth(0, maxHealth); // 0 can olduğunda tüm kalpleri boş yap
+            DeathMenu.Instance.gameObject.SetActive(true);
         }
-
-        // Ölüme dair diğer işlemler
-        if (audioSource && deathSfx) audioSource.PlayOneShot(deathSfx);
-        Debug.Log($"{name} died");
-        // TODO: respawn / game over / disable input vb.
+        Time.timeScale = 0;
+        // TODO: game over, respawn, input disable
     }
-
 }
