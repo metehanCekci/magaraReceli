@@ -122,6 +122,10 @@ public class PlayerController : MonoBehaviour
     private bool isHeavying = false;
 
     [Header("Limb Throw (Fırlayan El)")]
+
+    public Sprite[] limbFrames;   // Inspector'dan atayacağın sprite animasyonu
+    public float frameTime = 0.05f; // her frame süresi
+
     public GameObject limbPrefab; // Inspector'dan atanacak prefab
     public float limbThrowSpeed = 15f;
     public float limbPullDuration = 0.5f;
@@ -571,56 +575,64 @@ private IEnumerator HeavyAttackRoutine()
     // Pull input action callback
     void OnPullPerformed(InputAction.CallbackContext ctx)
     {
-    Debug.Log("Pull input tetiklendi, el fırlatılıyor!");
-    FireLimbAndPullEnemy();
+        Debug.Log("Pull input tetiklendi, el fırlatılıyor!");
+        StartCoroutine(FireLimbSpriteAnimRoutine());
+        
     }
-    public void FireLimbAndPullEnemy()
+    private IEnumerator FireLimbSpriteAnimRoutine()
     {
-        StartCoroutine(FireLimbAndPullRoutine());
-    }
+        // Animator’da Pull bool’unu aktif et
+        animator.SetBool("Pull", true);
 
-    private IEnumerator FireLimbAndPullRoutine()
-    {
-        // 1. El prefabını ileriye fırlat
-        Vector3 spawnPos = transform.position + transform.right * 0.5f; // Karakterin önünde doğsun
-        GameObject limb = Instantiate(limbPrefab, spawnPos, Quaternion.identity);
-        Rigidbody2D limbRb = limb.GetComponent<Rigidbody2D>();
-        limbRb.linearVelocity = transform.right * limbThrowSpeed * transform.localScale.x;
+        GameObject limb = Instantiate(limbPrefab, transform.position, Quaternion.identity);
+        SpriteRenderer sr = limb.GetComponent<SpriteRenderer>();
+        if (sr == null) sr = limb.AddComponent<SpriteRenderer>();
 
         EnemyHealth2D hitEnemy = null;
-        bool hit = false;
-        while (!hit && limb != null)
+        int frameIndex = 0;
+
+        // İleri oynatma
+        while (frameIndex < limbFrames.Length)
         {
+            sr.sprite = limbFrames[frameIndex];
+
+            // Çarpışma kontrolü
             Collider2D[] hits = Physics2D.OverlapCircleAll(limb.transform.position, 0.3f, enemyLayer);
             foreach (var col in hits)
             {
                 hitEnemy = col.GetComponent<EnemyHealth2D>();
                 if (hitEnemy != null)
                 {
-                    hit = true;
-                    break;
+                    Debug.Log("Düşmana çarptı! Geri sarıyor...");
+                    goto ReverseAnim;
                 }
             }
-            if (hit) break;
-            yield return null;
-        }
 
-        if (hitEnemy != null)
+            frameIndex++;
+            yield return new WaitForSeconds(frameTime);
+            animator.SetBool("Pull", false);
+        }   
+
+    ReverseAnim:
+        // Geri sarma
+        while (frameIndex >= 0)
         {
-            // 2. Düşmanı karaktere doğru çek
-            float t = 0f;
-            Vector3 start = hitEnemy.transform.position;
-            Vector3 target = transform.position;
-            while (t < limbPullDuration)
+            sr.sprite = limbFrames[frameIndex];
+
+            if (hitEnemy != null)
             {
-                t += Time.deltaTime;
-                hitEnemy.transform.position = Vector3.Lerp(start, target, t / limbPullDuration);
-                yield return null;
+                // Düşmanı karaktere doğru çek
+                Vector3 target = transform.position;
+                hitEnemy.transform.position = Vector3.Lerp(hitEnemy.transform.position, target, 0.2f);
             }
+
+            frameIndex--;
+            yield return new WaitForSeconds(frameTime);
         }
 
-        // 3. El objesini yok et
-        if (limb != null)
-            Destroy(limb);
+        Destroy(limb);
+
+        // Animasyon bitti → Pull bool’unu kapat
+        animator.SetBool("Pull", false);
     }
 }
