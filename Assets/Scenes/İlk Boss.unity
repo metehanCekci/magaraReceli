@@ -587,6 +587,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 917311261768753317, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: healthBarScript
+      value: 
+      objectReference: {fileID: 84982817}
     - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: rb
       value: 
@@ -611,6 +615,10 @@ PrefabInstance:
       propertyPath: Pause
       value: 
       objectReference: {fileID: 4265303545122163627, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: healTime
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: soulSystem
       value: 
@@ -2186,11 +2194,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5374987825126223261, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -381
+      value: -0.000000096858
       objectReference: {fileID: 0}
     - target: {fileID: 5374987825126223261, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 111.00001
+      value: 0.000000029802
       objectReference: {fileID: 0}
     - target: {fileID: 7522722575516055093, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_Name
@@ -2566,8 +2574,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.110300004, y: -0.24632752}
-  m_Size: {x: 0.2890198, y: 1.6527183}
+  m_Offset: {x: 0.013133511, y: -0.24632752}
+  m_Size: {x: 0.48335278, y: 1.6527183}
   m_Direction: 0
 --- !u!1001 &7547713996301656764
 PrefabInstance:
@@ -2838,7 +2846,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9041608997050927515}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -2865,8 +2873,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.2041012, y: 0.37419775}
-  m_Size: {x: 0.2853469, y: 0.49832383}
+  m_Offset: {x: -0.20287116, y: 0.37419775}
+  m_Size: {x: 0.2828868, y: 0.49832383}
   m_Direction: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
