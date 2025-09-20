@@ -103,8 +103,13 @@ public class PlayerController : MonoBehaviour
     // **SaveSystem** i�in bir referans ekleyelim
     private SaveSystem saveSystem;  // Add SaveSystem reference
 
+    // Çoklu raycast için offset
+    [Header("Wall Raycast Offsets")]
+    public float wallRaycastVerticalOffset = 0.3f;
     // Wall jump input buffer
     private bool wallJumpRequested = false;
+    private float wallJumpBufferTime = 0.15f;
+    private float wallJumpBufferCounter = 0f;
 
     void Awake()
     {
@@ -210,8 +215,11 @@ public class PlayerController : MonoBehaviour
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
         {
             wallJumpRequested = true;
+            wallJumpBufferCounter = wallJumpBufferTime;
             bufferCounter = 0f;
         }
+        if (wallJumpBufferCounter > 0f)
+            wallJumpBufferCounter -= Time.deltaTime;
 
         if (!jumpHeld && rb.linearVelocity.y > 0f)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
@@ -225,14 +233,25 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("IsGrounded", IsGrounded());
 
-        // Wall check logic (raycast ile)
+        // Wall check logic (gelişmiş raycast ile)
         bool wasOnWall = isOnWall;
         isOnWall = false;
         wallDir = 0;
         if (!IsGrounded())
         {
-            RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, wallLayer);
-            RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, wallLayer);
+            Vector2 pos = transform.position;
+            Vector2 upOffset = pos + Vector2.up * wallRaycastVerticalOffset;
+            Vector2 downOffset = pos + Vector2.down * wallRaycastVerticalOffset;
+            RaycastHit2D hitRight = Physics2D.Raycast(pos, Vector2.right, wallCheckDistance, wallLayer);
+            if (hitRight.collider == null)
+                hitRight = Physics2D.Raycast(upOffset, Vector2.right, wallCheckDistance, wallLayer);
+            if (hitRight.collider == null)
+                hitRight = Physics2D.Raycast(downOffset, Vector2.right, wallCheckDistance, wallLayer);
+            RaycastHit2D hitLeft = Physics2D.Raycast(pos, Vector2.left, wallCheckDistance, wallLayer);
+            if (hitLeft.collider == null)
+                hitLeft = Physics2D.Raycast(upOffset, Vector2.left, wallCheckDistance, wallLayer);
+            if (hitLeft.collider == null)
+                hitLeft = Physics2D.Raycast(downOffset, Vector2.left, wallCheckDistance, wallLayer);
             if (hitRight.collider != null)
             {
                 wallDir = 1;
@@ -269,10 +288,11 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (wallJumpRequested)
+        if (wallJumpRequested && wallJumpBufferCounter > 0f)
         {
             DoJump();
             wallJumpRequested = false;
+            wallJumpBufferCounter = 0f;
         }
     }
 
@@ -369,6 +389,7 @@ public class PlayerController : MonoBehaviour
             int jumpWallDir = wallDir;
             if (jumpWallDir == 0) jumpWallDir = lastWallDir;
             if (jumpWallDir == 0) jumpWallDir = (int)Mathf.Sign(transform.localScale.x);
+            // Friction etkisini azaltmak için velocity'yi doğrudan ayarla
             rb.linearVelocity = new Vector2(wallJumpHorizontalForce * -jumpWallDir, wallJumpVerticalForce);
             wallCoyoteCounter = 0f;
             lastWallCoyoteCounter = 0f;
