@@ -238,9 +238,9 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 4
-      y: 195
-      width: 48
+      x: 12
+      y: 196
+      width: 40
       height: 48
     spriteID: 4f67a37b7056a0141bf60e1fa1328a98
     spriteBone: []
@@ -260,7 +260,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 68
-      y: 195
+      y: 196
       width: 48
       height: 48
     spriteID: 206a12cbe0cb83145a17b87823366f45
@@ -281,7 +281,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 132
-      y: 195
+      y: 196
       width: 48
       height: 48
     spriteID: 8a0bacb785d57c44c8ba4169cfc271cb
@@ -302,8 +302,8 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 196
-      y: 195
-      width: 48
+      y: 196
+      width: 40
       height: 48
     spriteID: a2f79f22abef3df4689df280b042b2f7
     spriteBone: []
@@ -323,7 +323,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 260
-      y: 225
+      y: 226
       width: 48
       height: 19
     spriteID: 7457b9f3d81c3b0418158c7ebe75719b
@@ -344,7 +344,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 324
-      y: 227
+      y: 228
       width: 48
       height: 16
     spriteID: 86a32ca0fff163d48bc0e5500cfeb494
@@ -365,7 +365,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 388
-      y: 227
+      y: 228
       width: 48
       height: 16
     spriteID: fcf1c3cbc09126943808af32bb34af55
@@ -385,10 +385,10 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 260
-      y: 195
-      width: 48
-      height: 16
+      x: 471
+      y: 196
+      width: 10
+      height: 48
     spriteID: 91422917937a0054e99c7729725893ab
     spriteBone: []
     spriteOutline: []
@@ -406,10 +406,10 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 324
-      y: 195
-      width: 48
-      height: 16
+      x: 503
+      y: 212
+      width: 10
+      height: 32
     spriteID: 79bea0f514b8ad14e9cb3336e188f63d
     spriteBone: []
     spriteOutline: []
@@ -427,10 +427,10 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 388
-      y: 195
+      x: 532
+      y: 212
       width: 48
-      height: 16
+      height: 32
     spriteID: 552a3f8225cee73499fa637df1ebb0be
     spriteBone: []
     spriteOutline: []
@@ -448,10 +448,10 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 4
-      y: 131
+      x: 260
+      y: 196
       width: 48
-      height: 48
+      height: 16
     spriteID: 7c6e13de8e885524d9e025d46470168a
     spriteBone: []
     spriteOutline: []
@@ -469,10 +469,10 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 68
-      y: 131
+      x: 324
+      y: 196
       width: 48
-      height: 48
+      height: 16
     spriteID: d81caefe523af454a8beb12ea9fb13f0
     spriteBone: []
     spriteOutline: []
@@ -490,10 +490,10 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 132
-      y: 131
+      x: 388
+      y: 196
       width: 48
-      height: 48
+      height: 16
     spriteID: dfd217d95cba34848beb5d7c4688f0b7
     spriteBone: []
     spriteOutline: []
@@ -511,9 +511,9 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 196
-      y: 131
-      width: 48
+      x: 12
+      y: 132
+      width: 40
       height: 48
     spriteID: c38b4a5593a473c45bb23d3bb7d64766
     spriteBone: []
@@ -532,8 +532,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 4
-      y: 67
+      x: 68
+      y: 132
       width: 48
       height: 48
     spriteID: 04bc41e485909454fac2feda2bfc8ef8
@@ -553,8 +553,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 68
-      y: 67
+      x: 132
+      y: 132
       width: 48
       height: 48
     spriteID: bac57c6b5c2ba9e4b94c8b21637d95b1
@@ -574,9 +574,9 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 132
-      y: 67
-      width: 48
+      x: 196
+      y: 132
+      width: 40
       height: 48
     spriteID: 90188b06e6ed2264aa1bc83ecb63dc88
     spriteBone: []
@@ -595,8 +595,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 196
-      y: 67
+      x: 260
+      y: 132
       width: 48
       height: 48
     spriteID: be246cde3d4708e4491451853c12e575
@@ -616,8 +616,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 260
-      y: 67
+      x: 324
+      y: 132
       width: 48
       height: 48
     spriteID: ebb915538aa6f914785ce74db810a22f
@@ -637,11 +637,158 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
+      x: 12
+      y: 76
+      width: 40
+      height: 40
+    spriteID: 2cfba01e211da9c42aa6dae7cb443a52
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_20"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 68
+      y: 76
+      width: 48
+      height: 40
+    spriteID: b5835f566bfa2a24d8739e8a6881e244
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_21"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 132
+      y: 76
+      width: 48
+      height: 40
+    spriteID: 4058b18af165a4040ad7ad1f8a945468
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_22"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
       x: 196
+      y: 76
+      width: 40
+      height: 40
+    spriteID: 635b5363024efbc419778c511f0077d0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_23"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 260
+      y: 68
+      width: 48
+      height: 48
+    spriteID: 8393a4f5edd2a1c40aefe7bbf2fefdff
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_24"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 324
+      y: 68
+      width: 48
+      height: 48
+    spriteID: cf3b5b8cba6dfe64d833b446c10c0724
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_25"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
       y: 4
       width: 48
       height: 48
-    spriteID: 2cfba01e211da9c42aa6dae7cb443a52
+    spriteID: 5f39d96e914df0443b05477d32caee93
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: "tilemap \xE7imen ve toprak kenar_26"
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 68
+      y: 4
+      width: 48
+      height: 48
+    spriteID: 29f5d1c4b99acf34f9c90db7ed369e3b
     spriteBone: []
     spriteOutline: []
     vertices: []
