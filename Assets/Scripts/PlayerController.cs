@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
         RecalcMaxJumps();
 
         // Ensure default scale is 2,2,1
-        transform.localScale = new Vector3(5f, 1f, 1f);
+        transform.localScale = new Vector3(1f, 1f, 1f);
     }
 
     void OnEnable()
@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour
         {
             lockedFacing = Mathf.Sign(moveInput.x);
         }
-        transform.localScale = new Vector3(lockedFacing * 5f, 1f, 1f);
+        transform.localScale = new Vector3(lockedFacing * 1f, 1f, 1f);
 
         // Update facing lock timer
         if (facingLocked)
@@ -301,7 +301,7 @@ public class PlayerController : MonoBehaviour
     coyoteCounter = 0f;
     
     PlayOne(jumpSound);
-    animator.SetBool("Jump", true); // Zıplama başladığında Jump bool'unu aç
+    
     }
 
     void StartDash()
@@ -358,7 +358,6 @@ public class PlayerController : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         if (groundCheck){
-            animator.SetBool("Jump", false); // Yere değdiğinde Jump bool'unu kapat
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         }

@@ -112,7 +112,10 @@ public class KafaBossAi : MonoBehaviour
         {
             yield return new WaitForSeconds(0.2f);
             handCollider.enabled = true;
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.1f);
+            SFXPlayer.Instance.PlaySlam();
+            yield return new WaitForSeconds(0.2f);
+            
             handCollider.enabled = false;
         }
 
@@ -170,6 +173,7 @@ public class KafaBossAi : MonoBehaviour
             {
                 GameObject laser = Instantiate(laserPrefab, arenaLeft.position, Quaternion.identity);
                 laser.SetActive(true);
+                SFXPlayer.Instance.PlayLazerFire();
 
                 Vector2 direction = (player.position - arenaLeft.position).normalized;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -211,6 +215,7 @@ public class KafaBossAi : MonoBehaviour
         {
             GameObject missile = Instantiate(missilePrefab, head.position, Quaternion.identity);
             missile.SetActive(true);
+            SFXPlayer.Instance.PlayGunFire();
 
             HomingMissile hm = missile.AddComponent<HomingMissile>();
             hm.target = player;
