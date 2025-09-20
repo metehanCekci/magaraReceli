@@ -278,6 +278,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db491c063657a008096b4a9551b910b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  wallJumpHorizontalForce: 40
+  wallJumpVerticalForce: 10
+  wallCoyoteTime: 0.15
   Move: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   Jump: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   Dash: {fileID: -7471211009204490832, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
@@ -297,7 +300,7 @@ MonoBehaviour:
   attackDuration: 0.1
   attackCooldown: 0.3
   facingLockDuration: 0.3
-  healTime: 2
+  healTime: 1.5
   healAmount: 2
   groundCheck: {fileID: 127239123338225834}
   groundRadius: 0.15
@@ -318,6 +321,7 @@ MonoBehaviour:
   MaxSoul: 100
   Soul: 0
   soulSystem: {fileID: 0}
+  wallRaycastVerticalOffset: 0.3
 --- !u!114 &7676088459934626032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,9 +425,6 @@ MonoBehaviour:
   invulnerableTime: 1
   spriteRenderer: {fileID: 4374133188994718376}
   animator: {fileID: 6716727142501694644}
-  audioSource: {fileID: 0}
-  hurtSfx: {fileID: 0}
-  deathSfx: {fileID: 0}
   rb: {fileID: 1163537010999393830}
   heartSystem: {fileID: 0}
 --- !u!82 &1657189960040081162

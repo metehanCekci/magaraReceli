@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
     float lockedFacing = 1f;
 
     [Header("Healing")]
-    public float healTime = 3f;
+    public float healTime = 1.5f;
     public int healAmount = 1;
     bool isHealing;
 
@@ -357,7 +357,10 @@ public class PlayerController : MonoBehaviour
     public void IncreaseSoul(int amount)
     {
         Soul += amount;
-        Debug.Log($"Soul increased by {amount}. Total soul: {Soul}");
+        if (Soul >= MaxSoul)
+        {
+            Soul = MaxSoul;
+        }
     }
 
     void OnHealPerformed(InputAction.CallbackContext ctx)

@@ -629,11 +629,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: wallJumpVerticalForce
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: wallJumpHorizontalForce
-      value: 100
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 4374133188994718376, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: m_SortingOrder
@@ -2182,11 +2182,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5374987825126223261, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -381
+      value: -0.00000025705
       objectReference: {fileID: 0}
     - target: {fileID: 5374987825126223261, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 111.00001
+      value: -0.0000000037253
       objectReference: {fileID: 0}
     - target: {fileID: 7522722575516055093, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_Name
