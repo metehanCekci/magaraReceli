@@ -1205,6 +1205,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: Pull
+      value: 
+      objectReference: {fileID: -4433465598353161012, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: limbPrefab
       value: 
       objectReference: {fileID: 1019855902}
@@ -1225,7 +1229,8 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8262628758864651163, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 763666937889821566, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       insertIndex: -1
