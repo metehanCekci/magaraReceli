@@ -11,15 +11,7 @@ public class EnemyAttackHitbox : MonoBehaviour
     {
         hitboxCollider = GetComponent<Collider2D>();
 
-        // Eğer bu objenin tag'ı "Projectile" ise, collider'ı Trigger yapıyoruz
-        if (CompareTag("Projectile") || GameObject.Find("Player"))
-        {
-            hitboxCollider.isTrigger = true;  // "Projectile" tag'ine sahip objeler için Trigger yapıyoruz
-        }
-        else
-        {
-            hitboxCollider.isTrigger = false; // Diğer objeler için Trigger yapmıyoruz
-        }
+
     }
 
     // Trigger olduğunda Player'a hasar vermek

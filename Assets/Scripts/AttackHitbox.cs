@@ -30,7 +30,7 @@ public class AttackHitbox2D : MonoBehaviour
         if (lastHitSwing.TryGetValue(enemy, out int last) && last == currentSwing)
             return; // aynı swing'de tekrar vurma
 
-        enemy.TakeDamage(damage, transform.position);
+        enemy.TakeDamage(damage);
         lastHitSwing[enemy] = currentSwing;
 
         // Soul kazanımı ekleme

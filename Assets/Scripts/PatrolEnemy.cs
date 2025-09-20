@@ -1,81 +1,85 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class PatrolEnemy : MonoBehaviour
 {
-    public Transform[] patrolPoints;  // Düşmanın gideceği noktalar
-    public float moveSpeed = 3f;      // Düşmanın hızını ayarlıyoruz
-    public float detectionRadius = 5f; // Düşmanın algılama yarıçapı
-    public LayerMask playerLayer;     // Oyuncu layer'ı
-    private int currentPatrolIndex = 0; // Şu anki gidiş noktası
-    private bool isChasingPlayer = false; // Oyuncuya kitlenme durumu
+    [Header("Movement")]
+    public Transform[] patrolPoints;
+    public float patrolSpeed = 1f;
+    public float chaseSpeed = 2f;
 
-    private Transform player; // Oyuncu objesi
+    [Header("Detection")]
+    public float detectionRadius = 5f;
+    public LayerMask playerLayer;
+
+    private int currentPatrolIndex = 0;
+    private bool isChasingPlayer = false;
+
+    private Transform player;
+    private Rigidbody2D rb;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;  // Oyuncuyu buluyoruz
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        rb = GetComponent<Rigidbody2D>();
+
+        // Freeze all movement during patrol
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+
     }
 
     void Update()
     {
+        DetectPlayer();
+
         if (isChasingPlayer)
         {
-            // Eğer oyuncu görüldüyse, onu takip et
+            // Set constraints for chasing
+            if (rb.constraints != RigidbodyConstraints2D.FreezeRotation)
+                rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+
             ChasePlayer();
         }
         else
         {
-            // Oyuncu görünmüyorsa, patrol yap
+            // Freeze all movement during patrol
+            if (rb.constraints != RigidbodyConstraints2D.FreezeAll)
+                rb.constraints = RigidbodyConstraints2D.FreezeAll;
+
             Patrol();
         }
     }
 
     void Patrol()
     {
-        if (patrolPoints.Length == 0)
-            return;
+        if (patrolPoints.Length == 0) return;
 
-        // Hedef noktaya doğru hareket
-        Transform targetPatrolPoint = patrolPoints[currentPatrolIndex];
-        Vector3 direction = targetPatrolPoint.position - transform.position;
+        Transform target = patrolPoints[currentPatrolIndex];
+        Vector3 direction = target.position - transform.position;
 
-        transform.position = Vector3.MoveTowards(transform.position, targetPatrolPoint.position, moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target.position, patrolSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, targetPatrolPoint.position) < 0.2f)
-        {
-            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;  // Gelecek noktaya geç (dönüp başa sar)
-        }
+        if (direction.x > 0) transform.localScale = new Vector3(0.5f, 0.5f, 1);
+        else if (direction.x < 0) transform.localScale = new Vector3(-0.5f, 0.5f, 1);
 
-        // Oyuncuyu algılamaya çalış
-        DetectPlayer();
+        if (Vector3.Distance(transform.position, target.position) < 0.2f)
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
     }
 
     void DetectPlayer()
     {
-        // Oyuncuyu algılamak için bir alanda kontrol yapıyoruz
         Collider2D playerCollider = Physics2D.OverlapCircle(transform.position, detectionRadius, playerLayer);
-
-        if (playerCollider != null)
-        {
-            // Eğer oyuncu bu alandaysa, düşman ona doğru hareket etmeye başlar
-            isChasingPlayer = true;
-        }
-        else
-        {
-            isChasingPlayer = false;
-        }
+        isChasingPlayer = playerCollider != null;
     }
 
     void ChasePlayer()
     {
-        // Oyuncu görüldü, ona doğru hareket et
-        Vector3 direction = player.position - transform.position;
-        transform.position = Vector3.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
+        Vector3 targetPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
+        Vector3 direction = targetPosition - transform.position;
 
-        // Hedefe yaklaşırken, yönünü oyuncuya çevir
-        if (direction.x > 0) 
-            transform.localScale = new Vector3(1, 1, 1); // Sağ
-        else 
-            transform.localScale = new Vector3(-1, 1, 1); // Sol
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, chaseSpeed * Time.deltaTime);
+
+        if (direction.x > 0) transform.localScale = new Vector3(0.5f, 0.5f, 1);
+        else if (direction.x < 0) transform.localScale = new Vector3(-0.5f, 0.5f, 1);
     }
 }

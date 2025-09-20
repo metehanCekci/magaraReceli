@@ -566,6 +566,10 @@ PrefabInstance:
       propertyPath: soulSystem
       value: 
       objectReference: {fileID: 1323933249}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: wallLayer.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 4374133188994718376, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: m_SortingOrder
       value: 2
@@ -1215,6 +1219,10 @@ PrefabInstance:
     - target: {fileID: 6182527618514598358, guid: bd9d60d2f240e5644aa8aae5d8458107, type: 3}
       propertyPath: m_Name
       value: FadeInOutManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6182527618514598358, guid: bd9d60d2f240e5644aa8aae5d8458107, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7934534064844674902, guid: bd9d60d2f240e5644aa8aae5d8458107, type: 3}
       propertyPath: m_LocalPosition.x
