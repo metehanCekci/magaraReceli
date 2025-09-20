@@ -157,8 +157,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 5
-      y: 196
+      x: 12
+      y: 260
       width: 40
       height: 40
     spriteID: 1ad72e91e932d4f4ba1717051f1bb8a7
@@ -178,8 +178,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 61
-      y: 196
+      x: 68
+      y: 260
       width: 48
       height: 41
     spriteID: ce960e66b446c7d4abb8c61b6d56a4ec
@@ -199,8 +199,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 125
-      y: 196
+      x: 132
+      y: 260
       width: 39
       height: 40
     spriteID: 87e37472983868f4f8cbe30b40887e29
@@ -220,8 +220,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 189
-      y: 196
+      x: 196
+      y: 260
       width: 48
       height: 48
     spriteID: 52dabd4a6f381274aa12ec299332bd2c
@@ -241,8 +241,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 253
-      y: 196
+      x: 260
+      y: 260
       width: 48
       height: 48
     spriteID: 19df34ebfec97344b8c47e86d7db6296
@@ -262,8 +262,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 317
-      y: 196
+      x: 324
+      y: 260
       width: 48
       height: 40
     spriteID: ae1632dc6787e2740ae37dc982755a8f
@@ -283,8 +283,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 381
-      y: 196
+      x: 388
+      y: 260
       width: 48
       height: 41
     spriteID: 6ff6cdfa4c0b31e45af90fc2fe99ef0f
@@ -304,8 +304,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 4
-      y: 132
+      x: 11
+      y: 196
       width: 41
       height: 48
     spriteID: ad23f439bbe59f94881c38f147a979bb
@@ -325,8 +325,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 61
-      y: 132
+      x: 68
+      y: 196
       width: 48
       height: 48
     spriteID: 09fdb12ad92936b408e90fb704174167
@@ -346,8 +346,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 125
-      y: 132
+      x: 132
+      y: 196
       width: 40
       height: 48
     spriteID: 2193dbcc8eb664245b246edb10cdf96f
@@ -367,8 +367,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 189
-      y: 132
+      x: 196
+      y: 196
       width: 48
       height: 48
     spriteID: 7aa1d5b29e78a644c97307dba9bd8868
@@ -388,8 +388,8 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 253
-      y: 132
+      x: 260
+      y: 196
       width: 48
       height: 48
     spriteID: f0735795a864c624286922f75f79458a
@@ -409,10 +409,10 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 5
-      y: 77
-      width: 40
-      height: 39
+      x: 324
+      y: 196
+      width: 48
+      height: 40
     spriteID: 7235cedcf4c2785449ab5f0c5e65acaa
     spriteBone: []
     spriteOutline: []
@@ -430,10 +430,10 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 61
-      y: 76
-      width: 48
-      height: 40
+      x: 12
+      y: 141
+      width: 40
+      height: 39
     spriteID: 6135ae29370883341b5cd185517ed7e6
     spriteBone: []
     spriteOutline: []
@@ -451,10 +451,10 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 125
-      y: 77
-      width: 39
-      height: 39
+      x: 68
+      y: 140
+      width: 48
+      height: 40
     spriteID: 3a20b773d97a83444ac0132d0c8c48d5
     spriteBone: []
     spriteOutline: []
@@ -472,10 +472,10 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 189
-      y: 68
-      width: 48
-      height: 40
+      x: 132
+      y: 141
+      width: 39
+      height: 39
     spriteID: cbd86cb9c9e36114a85460cc3d76294e
     spriteBone: []
     spriteOutline: []
@@ -493,10 +493,10 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 253
-      y: 68
+      x: 196
+      y: 132
       width: 48
-      height: 48
+      height: 40
     spriteID: e5e51425af6df674d935ccff9462f524
     spriteBone: []
     spriteOutline: []
@@ -514,9 +514,9 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 197
-      y: 4
-      width: 40
+      x: 260
+      y: 132
+      width: 48
       height: 48
     spriteID: 12227015aba1342468f1ade4c27c496c
     spriteBone: []
@@ -535,11 +535,158 @@ ScriptedImporter:
     customData: 
     rect:
       serializedVersion: 2
-      x: 253
+      x: 324
+      y: 132
+      width: 48
+      height: 40
+    spriteID: f7d48c1c964f59a49800a96e284b0443
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: magara tilemap_19
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 100
+      width: 48
+      height: 16
+    spriteID: 84945989d44b68d4086b6b4620b66306
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: magara tilemap_20
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 68
+      y: 100
+      width: 48
+      height: 16
+    spriteID: 5e395c55562c4cd4680c8a1a76a409dd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: magara tilemap_21
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 132
+      y: 100
+      width: 48
+      height: 16
+    spriteID: 6e51a4c9cbb3aed428ede4f17497808c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: magara tilemap_22
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 204
+      y: 68
+      width: 40
+      height: 48
+    spriteID: baf2ed3a50c7aa34a961992d7ac9f4df
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: magara tilemap_23
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 260
+      y: 68
+      width: 48
+      height: 48
+    spriteID: 53bd6a8efc621694d966b18f25ea3432
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: magara tilemap_24
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 324
+      y: 68
+      width: 40
+      height: 48
+    spriteID: 704060c779d3ef142940df752b7f02e7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: magara tilemap_25
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 196
       y: 4
       width: 48
       height: 48
-    spriteID: f7d48c1c964f59a49800a96e284b0443
+    spriteID: f4386ab0ca989834382cced2fa02dcca
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -566,10 +713,10 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 23
-        y: 244
-        width: 425
-        height: 240
+        x: 16
+        y: 180
+        width: 432
+        height: 304
       spriteId: e92381e8d7460874d840bf1a3a3fb6ae
     linkedCells: []
     tileCells: []
@@ -617,4 +764,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 500, y: 500}
-  previousTextureSize: {x: 512, y: 256}
+  previousTextureSize: {x: 512, y: 512}
