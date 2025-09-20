@@ -8,19 +8,22 @@ public class KafaBossAi : MonoBehaviour
 
     public Transform leftHand;
     public Transform rightHand;
-    public Transform head;                // still used for missile attacks
-    public GameObject laserPrefab;        // laser projectile prefab
-    public GameObject missilePrefab;      // homing missile prefab
+    public Transform head;                
+    public GameObject laserPrefab;        
+    public GameObject missilePrefab;      
 
     [Header("Arena Bounds")]
-    public Transform arenaLeft;           // left spawn point for lasers
-    public Transform arenaRight;          // right spawn point for lasers
+    public Transform arenaLeft;           
+    public Transform arenaRight;          
 
-    [Header("Attack Settings")]
-    public float timeBetweenAttacks = 3f;
-    public float hoverHeight = 5f;        // height above current hand position
-    public float moveSpeed = 5f;          // speed of hand movement
-    public float hoverDuration = 2f;      // time to stay above player
+    [Header("General Attack Settings")]
+    public float handAttackInterval = 3f;   // time between hand attacks
+    public float headAttackInterval = 4f;   // time between head attacks
+
+    [Header("Hand Settings")]
+    public float hoverHeight = 5f;        
+    public float moveSpeed = 5f;          
+    public float hoverDuration = 2f;      
 
     [Header("Swipe Animation Triggers")]
     public string leftSwipeTrigger = "SwipeLeft";
@@ -28,8 +31,8 @@ public class KafaBossAi : MonoBehaviour
 
     [Header("Laser Settings")]
     public float laserSpeed = 10f;
-    public int laserBursts = 3;           // number of lasers per attack
-    public float laserInterval = 0.5f;    // delay between each laser
+    public int laserBursts = 3;           
+    public float laserInterval = 0.5f;    
 
     [Header("Missile Settings")]
     public float missileSpeed = 6f;
@@ -40,39 +43,40 @@ public class KafaBossAi : MonoBehaviour
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        StartCoroutine(AttackLoop());
+
+        // Start both loops at once
+        StartCoroutine(HandAttackLoop());
+        StartCoroutine(HeadAttackLoop());
     }
 
-    IEnumerator AttackLoop()
+    IEnumerator HandAttackLoop()
     {
         while (true)
         {
-            yield return new WaitForSeconds(timeBetweenAttacks);
+            yield return new WaitForSeconds(handAttackInterval);
 
-            // Randomly decide attack type:
-            // 0 = hover/slam, 1 = swipe, 2 = arena laser, 3 = missile
-            int attackType = Random.Range(0, 4);
+            Transform currentHand = useLeftNext ? leftHand : rightHand;
+            useLeftNext = !useLeftNext;
 
-            if (attackType == 0)
-            {
-                Transform currentHand = useLeftNext ? leftHand : rightHand;
-                useLeftNext = !useLeftNext;
+            // Randomly pick hover or swipe
+            if (Random.value > 0.5f)
                 StartCoroutine(HandHover(currentHand));
-            }
-            else if (attackType == 1)
-            {
-                Transform currentHand = useLeftNext ? leftHand : rightHand;
-                useLeftNext = !useLeftNext;
+            else
                 StartCoroutine(HandSwipe(currentHand));
-            }
-            else if (attackType == 2)
-            {
+        }
+    }
+
+    IEnumerator HeadAttackLoop()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(headAttackInterval);
+
+            // Randomly pick laser or missile
+            if (Random.value > 0.5f)
                 StartCoroutine(HeadLaserAttack());
-            }
-            else if (attackType == 3)
-            {
+            else
                 StartCoroutine(HomingMissileAttack());
-            }
         }
     }
 
@@ -92,9 +96,7 @@ public class KafaBossAi : MonoBehaviour
         // Trigger slam anim
         Animator handAnimator = hand.GetComponentInChildren<Animator>();
         if (handAnimator != null)
-        {
             handAnimator.SetTrigger("Slam");
-        }
 
         // Hover above player
         float timer = 0f;
@@ -110,9 +112,12 @@ public class KafaBossAi : MonoBehaviour
         CircleCollider2D handCollider = hand.GetComponentInChildren<CircleCollider2D>();
         if (handCollider != null)
         {
+            SFXPlayer.Instance.PlayBleep();
             yield return new WaitForSeconds(0.2f);
             handCollider.enabled = true;
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.1f);
+            SFXPlayer.Instance.PlaySlam();
+            yield return new WaitForSeconds(0.2f);
             handCollider.enabled = false;
         }
 
@@ -139,6 +144,7 @@ public class KafaBossAi : MonoBehaviour
                 CircleCollider2D handCollider = hand.GetComponentInChildren<CircleCollider2D>();
                 if (handCollider != null)
                 {
+                    SFXPlayer.Instance.PlayBleep();
                     handCollider.enabled = true;
                     yield return new WaitForSeconds(0.3f);
                     handCollider.enabled = false;
@@ -170,6 +176,7 @@ public class KafaBossAi : MonoBehaviour
             {
                 GameObject laser = Instantiate(laserPrefab, arenaLeft.position, Quaternion.identity);
                 laser.SetActive(true);
+                SFXPlayer.Instance.PlayLazerFire();
 
                 Vector2 direction = (player.position - arenaLeft.position).normalized;
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -177,9 +184,7 @@ public class KafaBossAi : MonoBehaviour
 
                 Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
                 if (rb != null)
-                {
                     rb.linearVelocity = direction * laserSpeed;
-                }
             }
 
             // RIGHT ARENA LASER
@@ -194,9 +199,7 @@ public class KafaBossAi : MonoBehaviour
 
                 Rigidbody2D rb = laser.GetComponent<Rigidbody2D>();
                 if (rb != null)
-                {
                     rb.linearVelocity = direction * laserSpeed;
-                }
             }
 
             yield return new WaitForSeconds(laserInterval);
@@ -205,12 +208,11 @@ public class KafaBossAi : MonoBehaviour
 
     IEnumerator HomingMissileAttack()
     {
-        Debug.Log("Homing Missile Attack!");
-
         if (missilePrefab != null && head != null)
         {
             GameObject missile = Instantiate(missilePrefab, head.position, Quaternion.identity);
             missile.SetActive(true);
+            SFXPlayer.Instance.PlayGunFire();
 
             HomingMissile hm = missile.AddComponent<HomingMissile>();
             hm.target = player;
