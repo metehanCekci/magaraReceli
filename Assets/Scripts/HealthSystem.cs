@@ -16,8 +16,8 @@ public class HealthSystem : MonoBehaviour
     public float invulnerableTime = 0.15f;
     public SpriteRenderer spriteRenderer;
     public Animator animator;
-    public AudioSource audioSource;
-    public AudioClip hurtSfx, deathSfx;
+
+
 
     [Header("Knockback")]
     public Rigidbody2D rb;
@@ -33,7 +33,6 @@ public class HealthSystem : MonoBehaviour
 
         if (!rb) rb = GetComponent<Rigidbody2D>();
         if (!spriteRenderer) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        if (!audioSource) audioSource = GetComponent<AudioSource>();
         if (!animator) animator = GetComponent<Animator>();
         if (playerLayer < 0) playerLayer = gameObject.layer;
         if (heartSystem == null) heartSystem = FindObjectOfType<HealthBarScript>();
@@ -53,7 +52,7 @@ public class HealthSystem : MonoBehaviour
         }
 
         if (animator) animator.SetTrigger("Hurt");
-        if (audioSource && hurtSfx) audioSource.PlayOneShot(hurtSfx);
+        SFXPlayer.Instance.PlayHurt();
 
         if (heartSystem != null)
             heartSystem.UpdateHealth(currentHealth, maxHealth);
@@ -106,7 +105,7 @@ public class HealthSystem : MonoBehaviour
         if (heartSystem != null)
             heartSystem.UpdateHealth(0, maxHealth);
 
-        if (audioSource && deathSfx) audioSource.PlayOneShot(deathSfx);
+        SFXPlayer.Instance.PlayHurt();
 
         if (DeathMenu.Instance != null)
             DeathMenu.Instance.gameObject.SetActive(true);

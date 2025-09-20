@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3990370746922926150
+--- !u!1 &2788382538239460319
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5523337569602257315}
-  - component: {fileID: 4633300446458221514}
+  - component: {fileID: 4482804780245470239}
+  - component: {fileID: 8064565117560034726}
+  - component: {fileID: 1327812703544173688}
   m_Layer: 0
   m_Name: SFX
   m_TagString: Untagged
@@ -17,13 +18,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5523337569602257315
+--- !u!4 &4482804780245470239
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3990370746922926150}
+  m_GameObject: {fileID: 2788382538239460319}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 469.7875, y: 308.3915, z: 0}
@@ -32,13 +33,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &4633300446458221514
+--- !u!82 &8064565117560034726
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3990370746922926150}
+  m_GameObject: {fileID: 2788382538239460319}
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
@@ -129,3 +130,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1327812703544173688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2788382538239460319}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b57ce3ef666ce54395b1ef38c558253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  gore: {fileID: 8300000, guid: 52e734e555876364ab8e7e0bb900fe45, type: 3}
+  hurt: {fileID: 8300000, guid: c0f946bec4b4a8f4d965ad0d177ee5ad, type: 3}
+  whoosh: {fileID: 8300000, guid: d184c27b604abcd4fa6a97dcd4bdb072, type: 3}
+  lazerfire: {fileID: 8300000, guid: 561b3d4214cbe64408df55b2142fe78b, type: 3}
+  gunfire: {fileID: 8300000, guid: f8b5dd961dce5794c8261b6bc7fe6c4e, type: 3}
+  kill: {fileID: 8300000, guid: da99c899dc439ca4cb31f91c022a3fa0, type: 3}
+  slam: {fileID: 8300000, guid: f20b47c6ec019144990cd335a72095f1, type: 3}

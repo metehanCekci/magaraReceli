@@ -172,12 +172,13 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.88291, y: -1.34357, z: 0}
-  m_LocalScale: {x: 5, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1141328431190398702}
   - {fileID: 127239123338225834}
   - {fileID: 1852084736005332902}
+  - {fileID: 2820971813348332329}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4374133188994718376
@@ -283,8 +284,8 @@ MonoBehaviour:
   Attack: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   Heal: {fileID: 7476244043514120974, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   Pause: {fileID: 0}
-  moveSpeed: 7
-  jumpForce: 12
+  moveSpeed: 5
+  jumpForce: 11
   variableJumpMultiplier: 0.5
   coyoteTime: 0.15
   jumpBufferTime: 0.2
@@ -303,6 +304,10 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  wallCheckDistance: 0.5
+  wallLayer:
+    serializedVersion: 2
+    m_Bits: 0
   animator: {fileID: 0}
   audioSource: {fileID: 0}
   jumpSound: {fileID: 0}
