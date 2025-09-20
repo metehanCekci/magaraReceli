@@ -177,11 +177,7 @@ Transform:
   m_Children:
   - {fileID: 1141328431190398702}
   - {fileID: 127239123338225834}
-<<<<<<< HEAD
   - {fileID: 1852084736005332902}
-=======
-  - {fileID: 2820971813348332329}
->>>>>>> 89ecb3fbcd8d9cc81f80b4a1e2fd4d29f7906d27
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4374133188994718376
@@ -416,11 +412,7 @@ MonoBehaviour:
   playerLayer: -1
   enemyAttackLayer: 7
   maxHealth: 100
-<<<<<<< HEAD
   currentHealth: 100
-=======
-  currentHealth: 50
->>>>>>> 89ecb3fbcd8d9cc81f80b4a1e2fd4d29f7906d27
   invulnerableTime: 1
   spriteRenderer: {fileID: 4374133188994718376}
   animator: {fileID: 6716727142501694644}
