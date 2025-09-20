@@ -804,6 +804,14 @@ PrefabInstance:
       propertyPath: pauseMenuUI
       value: 
       objectReference: {fileID: 1921115909}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: wallLayer.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: wallCheckDistance
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 4374133188994718376, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -3215,9 +3223,9 @@ GameObject:
   - component: {fileID: 1160337154}
   - component: {fileID: 1160337153}
   - component: {fileID: 1160337152}
-  m_Layer: 0
-  m_Name: Square (1)
-  m_TagString: Untagged
+  m_Layer: 9
+  m_Name: Wall
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3785,9 +3793,9 @@ GameObject:
   - component: {fileID: 1411534318}
   - component: {fileID: 1411534317}
   - component: {fileID: 1411534316}
-  m_Layer: 0
-  m_Name: Square
-  m_TagString: Untagged
+  m_Layer: 9
+  m_Name: Wall
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

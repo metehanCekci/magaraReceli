@@ -175,14 +175,15 @@ public class PlayerController : MonoBehaviour
             //animator.SetBool("Jump", true); // Zıplama başladığında Jump bool'unu aç
             DoJump();
             Debug.Log("Zıpladım ANA");
-            
+
             bufferCounter = 0f;
         }
 
         if (!jumpHeld && rb.linearVelocity.y > 0f)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
 
-        if (IsGrounded()) {
+        if (IsGrounded())
+        {
             coyoteCounter = coyoteTime;
             jumpCount = 0;
         }
@@ -193,12 +194,18 @@ public class PlayerController : MonoBehaviour
 
         // Wall check logic (tag ve layer ile)
         bool isOnWall = false;
-        if (!IsGrounded()) {
+        if (!IsGrounded())
+        {
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, wallCheckDistance);
-            foreach (var hit in hits) {
-                if (hit != null && hit.gameObject != this.gameObject) {
-                    if (hit.CompareTag("Wall") && ((1 << hit.gameObject.layer) & wallLayer.value) != 0) {
+            foreach (var hit in hits)
+            {
+                if (hit != null && hit.gameObject != this.gameObject)
+                {
+                    if (hit.CompareTag("Wall") && ((1 << hit.gameObject.layer) & wallLayer.value) != 0)
+                    {
                         isOnWall = true;
+                        coyoteCounter = coyoteTime;
+                        jumpCount = 0;
                         break;
                     }
                 }
@@ -299,14 +306,14 @@ public class PlayerController : MonoBehaviour
 
     void DoJump()
     {
-    Debug.Log("Zıpladım");
-    rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-    rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-    jumpCount++;
-    coyoteCounter = 0f;
-    
-    PlayOne(jumpSound);
-    
+        Debug.Log("Zıpladım");
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        jumpCount++;
+        coyoteCounter = 0f;
+
+        PlayOne(jumpSound);
+
     }
 
     void StartDash()
@@ -362,7 +369,8 @@ public class PlayerController : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        if (groundCheck){
+        if (groundCheck)
+        {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         }
