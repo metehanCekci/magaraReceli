@@ -149,3 +149,4 @@ MonoBehaviour:
   gunfire: {fileID: 8300000, guid: f8b5dd961dce5794c8261b6bc7fe6c4e, type: 3}
   kill: {fileID: 8300000, guid: da99c899dc439ca4cb31f91c022a3fa0, type: 3}
   slam: {fileID: 8300000, guid: f20b47c6ec019144990cd335a72095f1, type: 3}
+  bleep: {fileID: 8300000, guid: 80ba9f698563a4b41b0b6bb356142d72, type: 3}

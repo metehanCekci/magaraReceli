@@ -10,6 +10,7 @@ public class SFXPlayer : MonoBehaviour
     public AudioClip gunfire;
     public AudioClip kill;
     public AudioClip slam;
+    public AudioClip bleep;
 
     public static SFXPlayer Instance;
 
@@ -68,5 +69,10 @@ public class SFXPlayer : MonoBehaviour
     public void PlaySlam()
     {
         audioSource.PlayOneShot(slam);
+    }
+
+    public void PlayBleep()
+    {
+        audioSource.PlayOneShot(bleep);
     }
 }
