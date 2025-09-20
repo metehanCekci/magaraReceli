@@ -427,8 +427,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
-  orthographic: 1
-  orthographic size: 8
+  orthographic: 0
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -623,29 +623,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: magara background (4)
       objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 8439223215288018661, guid: aeb88563ccb24034aabd0194d22fe64c, type: 3}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 29.9
+      value: 44.548008
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 19.9575
+      value: 29.912302
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.8447
+      value: 21.379295
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 31.010002
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 173
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -804,6 +808,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 577491978421104776, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: orthographic size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 763666937889821566, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.88291
@@ -848,6 +856,10 @@ PrefabInstance:
       propertyPath: healthBarScript
       value: 
       objectReference: {fileID: 1841074099}
+    - target: {fileID: 3207285710856896108, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: orthographic size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: rb
       value: 
@@ -905,7 +917,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8262628758864651163, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+    - {fileID: 1546523445830515929, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 763666937889821566, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       insertIndex: -1
@@ -1199,29 +1213,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: magara background (1)
       objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 8439223215288018661, guid: aeb88563ccb24034aabd0194d22fe64c, type: 3}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 29.9
+      value: 44.548008
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 19.9575
+      value: 29.912302
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.2490997
+      value: 0.38119888
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 31.010002
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 173
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1266,6 +1284,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1080637243}
   - component: {fileID: 1080637242}
+  - component: {fileID: 1080637244}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -1301,6 +1320,52 @@ Transform:
   - {fileID: 1794890609}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1080637244
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080637241}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.8064554, y: -2.0821836}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.6129093, y: 0.18659258}
+  m_EdgeRadius: 0
 --- !u!1001 &1137831247
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1574,29 +1639,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: magara background (3)
       objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 8439223215288018661, guid: aeb88563ccb24034aabd0194d22fe64c, type: 3}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 29.9
+      value: 44.548008
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 19.9575
+      value: 29.912302
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.2490997
+      value: 0.38119888
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 21.430792
+      value: 1.6421986
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 173
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1649,23 +1718,23 @@ PrefabInstance:
       objectReference: {fileID: 8439223215288018661, guid: aeb88563ccb24034aabd0194d22fe64c, type: 3}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 29.9
+      value: 44.548008
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 19.9575
+      value: 29.912302
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.6
+      value: -21
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 31.01
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 173
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1712,29 +1781,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: magara background (2)
       objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 8439223215288018661, guid: aeb88563ccb24034aabd0194d22fe64c, type: 3}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 29.9
+      value: 44.548008
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 19.9575
+      value: 29.912302
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.599998
+      value: -21.000002
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 21.430792
+      value: 1.6421986
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 173
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1786,29 +1859,33 @@ PrefabInstance:
       propertyPath: m_Name
       value: magara background (5)
       objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 8439223215288018661, guid: aeb88563ccb24034aabd0194d22fe64c, type: 3}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 29.9
+      value: 44.548008
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 19.9575
+      value: 29.912302
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.8447
+      value: 21.379295
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 21.430792
+      value: 1.6421986
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 173
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
       propertyPath: m_LocalRotation.w
