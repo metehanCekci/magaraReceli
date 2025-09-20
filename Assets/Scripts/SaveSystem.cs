@@ -27,7 +27,7 @@ public class SaveSystem : MonoBehaviour
 
         // Sağlık verilerini kaydet
        // data.health = healthSystem.currentHealth;
-       // data.maxHealth = healthSystem.maxHealth;
+        //data.maxHealth = healthSystem.maxHealth;
 
         // Yetenekleri kaydetme
         data.abilities = new List<string>();
@@ -43,7 +43,7 @@ public class SaveSystem : MonoBehaviour
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
 
-       
+    
     }
 
     // Load fonksiyonu - Oyuncu verilerini yükler
@@ -60,7 +60,7 @@ public class SaveSystem : MonoBehaviour
             
 
             // Sağlık ve max sağlık değerlerini yükle
-            /**healthSystem.maxHealth = data.maxHealth;
+           /** healthSystem.maxHealth = data.maxHealth;
             if (data.health ==0)
             {
                 return;
@@ -94,8 +94,8 @@ public class SaveSystem : MonoBehaviour
     [System.Serializable]
     public class PlayerSaveData
     {
-       // public int health;
-       // public int maxHealth;
+        //public int health;
+        //public int maxHealth;
         public List<string> abilities;
         public bool dashUnlocked; // Dash durumu kaydedildi
     }

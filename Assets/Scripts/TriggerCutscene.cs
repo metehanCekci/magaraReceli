@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class TriggerCutscene : MonoBehaviour
 {
+    public Animator anim;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -16,6 +17,8 @@ public class TriggerCutscene : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D other)
     {
-        other.gameObject.GetComponent<Animator>().SetTrigger("HoleCutscene");
+        other.gameObject.transform.GetChild(2).SetParent(anim.transform);
+        Destroy(other.gameObject);
+        anim.SetTrigger("HoleCutscene");
     }
 }

@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
     float lockedFacing = 1f;
 
     [Header("Healing")]
-    public float healTime = 1.5f;
+    public float healTime = 3f;
     public int healAmount = 1;
     bool isHealing;
 
@@ -366,10 +366,7 @@ public class PlayerController : MonoBehaviour
     public void IncreaseSoul(int amount)
     {
         Soul += amount;
-        if (Soul >= MaxSoul)
-        {
-            Soul = MaxSoul;
-        }
+        Debug.Log($"Soul increased by {amount}. Total soul: {Soul}");
     }
 
     void OnHealPerformed(InputAction.CallbackContext ctx)
@@ -539,13 +536,12 @@ public class PlayerController : MonoBehaviour
     // Pull input action callback
     void OnPullPerformed(InputAction.CallbackContext ctx)
     {
-        Debug.Log("[DEBUG] Pull input tetiklendi, FireLimbAndPullEnemy çağrılıyor.");
-        FireLimbAndPullEnemy();
+    Debug.Log("Pull input tetiklendi, el fırlatılıyor!");
+    FireLimbAndPullEnemy();
     }
     public void FireLimbAndPullEnemy()
     {
-    Debug.Log("[DEBUG] FireLimbAndPullEnemy başladı, coroutine başlatılıyor.");
-    StartCoroutine(FireLimbAndPullRoutine());
+        StartCoroutine(FireLimbAndPullRoutine());
     }
 
     private IEnumerator FireLimbAndPullRoutine()
@@ -553,17 +549,8 @@ public class PlayerController : MonoBehaviour
         // 1. El prefabını ileriye fırlat
         Vector3 spawnPos = transform.position + transform.right * 0.5f; // Karakterin önünde doğsun
         GameObject limb = Instantiate(limbPrefab, spawnPos, Quaternion.identity);
-        Debug.Log("[DEBUG] Limb prefabı instantiate edildi: " + (limb != null));
         Rigidbody2D limbRb = limb.GetComponent<Rigidbody2D>();
-        if (limbRb != null)
-        {
-            limbRb.linearVelocity = transform.right * limbThrowSpeed * transform.localScale.x;
-            Debug.Log("[DEBUG] Limb linearVelocity ayarlandı: " + limbRb.linearVelocity);
-        }
-        else
-        {
-            Debug.LogWarning("[DEBUG] Limb prefabında Rigidbody2D yok!");
-        }
+        limbRb.linearVelocity = transform.right * limbThrowSpeed * transform.localScale.x;
 
         EnemyHealth2D hitEnemy = null;
         bool hit = false;
@@ -576,7 +563,6 @@ public class PlayerController : MonoBehaviour
                 if (hitEnemy != null)
                 {
                     hit = true;
-                    Debug.Log("[DEBUG] Düşman bulundu ve çekilecek: " + hitEnemy.name);
                     break;
                 }
             }
@@ -586,7 +572,6 @@ public class PlayerController : MonoBehaviour
 
         if (hitEnemy != null)
         {
-            Debug.Log("[DEBUG] Düşman çekme işlemi başlıyor: " + hitEnemy.name);
             // 2. Düşmanı karaktere doğru çek
             float t = 0f;
             Vector3 start = hitEnemy.transform.position;
@@ -597,14 +582,10 @@ public class PlayerController : MonoBehaviour
                 hitEnemy.transform.position = Vector3.Lerp(start, target, t / limbPullDuration);
                 yield return null;
             }
-            Debug.Log("[DEBUG] Düşman çekme işlemi bitti: " + hitEnemy.name);
         }
 
         // 3. El objesini yok et
         if (limb != null)
-        {
-            Debug.Log("[DEBUG] Limb objesi yok ediliyor.");
             Destroy(limb);
-        }
     }
 }
