@@ -1,11 +1,18 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+// Tek class ve attribute tanımı bırakıldı
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Wall Jump")]
+    public float wallJumpHorizontalForce = 10f;
+    public float wallJumpVerticalForce = 12f;
+    private bool isOnWall = false;
+    private int wallDir = 0; // -1: sol duvar, 1: sağ duvar
     [Header("Input (New Input System)")]
     public InputActionReference Move;
     public InputActionReference Jump;
@@ -193,7 +200,8 @@ public class PlayerController : MonoBehaviour
 
 
         // Wall check logic (tag ve layer ile)
-        bool isOnWall = false;
+        isOnWall = false;
+        wallDir = 0;
         if (!IsGrounded())
         {
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, wallCheckDistance);
@@ -203,6 +211,10 @@ public class PlayerController : MonoBehaviour
                 {
                     if (hit.CompareTag("Wall") && ((1 << hit.gameObject.layer) & wallLayer.value) != 0)
                     {
+                        // Duvarın hangi tarafta olduğunu bul
+                        float dir = hit.transform.position.x - transform.position.x;
+                        if (dir > 0.01f) wallDir = 1; // Sağ duvar
+                        else if (dir < -0.01f) wallDir = -1; // Sol duvar
                         isOnWall = true;
                         coyoteCounter = coyoteTime;
                         jumpCount = 0;
@@ -307,13 +319,19 @@ public class PlayerController : MonoBehaviour
     void DoJump()
     {
         Debug.Log("Zıpladım");
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        if (isOnWall && wallDir != 0 && !IsGrounded())
+        {
+            // Wall jump: duvardan dışarı ve hafif yukarı
+            rb.linearVelocity = new Vector2(wallJumpHorizontalForce * -wallDir, wallJumpVerticalForce);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
         jumpCount++;
         coyoteCounter = 0f;
-
         PlayOne(jumpSound);
-
     }
 
     void StartDash()

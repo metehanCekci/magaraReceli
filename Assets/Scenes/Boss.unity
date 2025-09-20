@@ -812,6 +812,14 @@ PrefabInstance:
       propertyPath: wallCheckDistance
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: wallJumpVerticalForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: wallJumpHorizontalForce
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4374133188994718376, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: m_SortingOrder
       value: 1
@@ -1155,9 +1163,6 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   invulnerableTime: 0.2
-  knockbackForce: 0
-  knockbackScale: {x: 1, y: 0.5}
-  rb: {fileID: 0}
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
@@ -2079,9 +2084,6 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   invulnerableTime: 0.2
-  knockbackForce: 0
-  knockbackScale: {x: 1, y: 0.5}
-  rb: {fileID: 0}
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
@@ -2468,9 +2470,6 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   invulnerableTime: 0.2
-  knockbackForce: 0
-  knockbackScale: {x: 1, y: 0.5}
-  rb: {fileID: 0}
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
@@ -3656,9 +3655,6 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   invulnerableTime: 0.2
-  knockbackForce: 0
-  knockbackScale: {x: 1, y: 0.5}
-  rb: {fileID: 0}
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
