@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -208,7 +207,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("IsGrounded", IsGrounded());
 
 
-        // Wall check logic (tag ve layer ile)
+        // Wall check logic (raycast ile)
         bool wasOnWall = isOnWall;
         isOnWall = false;
         wallDir = 0;
@@ -217,9 +216,8 @@ public class PlayerController : MonoBehaviour
             // Raycast ile sağ ve sol duvar kontrolü
             RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, wallLayer);
             RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, wallLayer);
-            if (hitRight.collider != null)
-            {
-                wallDir = 1;
+            if (hitRight.collider != null){
+            wallDir = 1;
                 isOnWall = true;
                 coyoteCounter = coyoteTime;
                 jumpCount = 0;
