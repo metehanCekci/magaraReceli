@@ -1,5 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
 guid: fe83108bdfcee2b48a4312db28f18e84
+=======
+<<<<<<< HEAD
+guid: 6aac8792999bf9d408c67350bca57013
+=======
+guid: fe83108bdfcee2b48a4312db28f18e84
+>>>>>>> 0d229ee49ce2f3b078c9ec3d81997acc59f176b7
+>>>>>>> Stashed changes
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -72,7 +80,15 @@ ScriptedImporter:
     textureFormatSet: 0
     applyGammaDecoding: 0
   previousAsepriteImporterSettings:
+<<<<<<< Updated upstream
     fileImportMode: 1
+=======
+<<<<<<< HEAD
+    fileImportMode: 0
+=======
+    fileImportMode: 1
+>>>>>>> 0d229ee49ce2f3b078c9ec3d81997acc59f176b7
+>>>>>>> Stashed changes
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -87,7 +103,15 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   asepriteImporterSettings:
+<<<<<<< Updated upstream
     fileImportMode: 1
+=======
+<<<<<<< HEAD
+    fileImportMode: 0
+=======
+    fileImportMode: 1
+>>>>>>> 0d229ee49ce2f3b078c9ec3d81997acc59f176b7
+>>>>>>> Stashed changes
     importHiddenLayers: 0
     layerImportMode: 1
     defaultPivotSpace: 0
@@ -102,7 +126,15 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
+<<<<<<< Updated upstream
   platformSettingsDirtyTick: 0
+=======
+<<<<<<< HEAD
+  platformSettingsDirtyTick: 638939911901152042
+=======
+  platformSettingsDirtyTick: 0
+>>>>>>> 0d229ee49ce2f3b078c9ec3d81997acc59f176b7
+>>>>>>> Stashed changes
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -139,7 +171,15 @@ ScriptedImporter:
       y: 4
       width: 112
       height: 78
+<<<<<<< Updated upstream
     spriteID: ad030f7de2e7ff34b9916630be7888e5
+=======
+<<<<<<< HEAD
+    spriteID: 866cd2e020fac1a4788f37c6a02d867c
+=======
+    spriteID: ad030f7de2e7ff34b9916630be7888e5
+>>>>>>> 0d229ee49ce2f3b078c9ec3d81997acc59f176b7
+>>>>>>> Stashed changes
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -148,7 +188,57 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
+<<<<<<< Updated upstream
   spriteSheetImportData: []
+=======
+<<<<<<< HEAD
+  spriteSheetImportData:
+  - name: castle tilemap_0
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 48
+      height: 48
+    spriteID: 8bc8637ec2c175f4398facdf36f95cf4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: castle tilemap_1
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 68
+      y: 4
+      width: 48
+      height: 78
+    spriteID: eccc0bc0aa59b154a996e3c727f8a853
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+=======
+  spriteSheetImportData: []
+>>>>>>> 0d229ee49ce2f3b078c9ec3d81997acc59f176b7
+>>>>>>> Stashed changes
   tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -171,13 +261,65 @@ ScriptedImporter:
         y: 264
         width: 112
         height: 78
+<<<<<<< Updated upstream
       spriteId: ad030f7de2e7ff34b9916630be7888e5
+=======
+<<<<<<< HEAD
+      spriteId: 866cd2e020fac1a4788f37c6a02d867c
+=======
+      spriteId: ad030f7de2e7ff34b9916630be7888e5
+>>>>>>> 0d229ee49ce2f3b078c9ec3d81997acc59f176b7
+>>>>>>> Stashed changes
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
     parentIndex: -1
   tileSets: []
+<<<<<<< Updated upstream
   platformSettings: []
+=======
+<<<<<<< HEAD
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Android
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+=======
+  platformSettings: []
+>>>>>>> 0d229ee49ce2f3b078c9ec3d81997acc59f176b7
+>>>>>>> Stashed changes
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
