@@ -9,28 +9,25 @@ public class SaveSystem : MonoBehaviour
 
     void Awake()
     {
-
-        // player'daki HealthSystem component'ını almak
+        // Player'daki HealthSystem component'ını almak
         healthBarScript = GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBarScript>();
         if (healthBarScript == null)
         {
             Debug.LogError("HealthSystem component not found on the player!");
         }
     }
-    public void Save(GameObject player, Vector3 savePointPosition)
+
+    // Save fonksiyonu - Oyuncu verilerini kaydeder
+    public void Save(GameObject player)
     {
         var abilitiesMgr = player.GetComponent<AbilityManager>();
         var healthSystem = player.GetComponent<HealthSystem>();
 
         PlayerSaveData data = new PlayerSaveData();
+
+        // Sağlık verilerini kaydet
         data.health = healthSystem.currentHealth;
         data.maxHealth = healthSystem.maxHealth;
-
-        // Bonfire pozisyonunu kaydet
-        data.position = new float[3];
-        data.position[0] = savePointPosition.x;
-        data.position[1] = savePointPosition.y;
-        data.position[2] = savePointPosition.z;
 
         // Yetenekleri kaydetme
         data.abilities = new List<string>();
@@ -39,16 +36,17 @@ public class SaveSystem : MonoBehaviour
             data.abilities.Add(ability.ToString());
         }
 
-        data.dashUnlocked = abilitiesMgr.IsDashUnlocked();
+        // Dash yeteneği kaydediliyor
+        data.dashUnlocked = abilitiesMgr.IsDashUnlocked(); // Dash durumu kaydedildi
 
+        // Veriyi JSON formatında kaydet
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
 
         Debug.Log("Player saved with health: " + data.health + " and dashUnlocked: " + data.dashUnlocked);
-        Debug.Log("Saved Health: " + data.health + " MaxHealth: " + data.maxHealth);
-        Debug.Log($"Saved Bonfire Position: {data.position[0]}, {data.position[1]}, {data.position[2]}");
     }
 
+    // Load fonksiyonu - Oyuncu verilerini yükler
     public void Load(GameObject player)
     {
         if (!File.Exists(savePath)) return;
@@ -61,30 +59,16 @@ public class SaveSystem : MonoBehaviour
         {
             Debug.Log("Loaded health: " + data.health + " maxHealth: " + data.maxHealth);
 
+            // Sağlık ve max sağlık değerlerini yükle
             healthSystem.maxHealth = data.maxHealth;
             healthSystem.currentHealth = Mathf.Clamp(data.health, 0, healthSystem.maxHealth);
-
-            // UI kalp barını güncelle
-            if (healthBarScript != null)
-            {
-                healthBarScript.UpdateHealth(healthSystem.currentHealth, healthSystem.maxHealth);
-            }
-        }
-        else
-        {
-            Debug.LogError("HealthSystem component not found on the player!");
         }
 
-        // Pozisyonu yükle
-        if (data.position != null && data.position.Length == 3)
-        {
-            player.transform.position = new Vector3(data.position[0], data.position[1], data.position[2]);
-            Debug.Log($"Loaded Position: {data.position[0]}, {data.position[1]}, {data.position[2]}");
-        }
-
+        // Dash yeteneğini yükle
         var abilitiesMgr = player.GetComponent<AbilityManager>();
-        if (abilitiesMgr != null && data.abilities != null)
+        if (abilitiesMgr != null)
         {
+            // Yetenekleri yükle
             var set = new HashSet<AbilityTypeList>();
             foreach (var s in data.abilities)
             {
@@ -94,10 +78,8 @@ public class SaveSystem : MonoBehaviour
                 }
             }
             abilitiesMgr.SetUnlockedAbilities(set);
-        }
 
-        if (abilitiesMgr != null)
-        {
+            // Dash durumu yükle
             abilitiesMgr.SetDashUnlocked(data.dashUnlocked);
         }
 
@@ -109,8 +91,7 @@ public class SaveSystem : MonoBehaviour
     {
         public int health;
         public int maxHealth;
-        public float[] position; // [x, y, z]
         public List<string> abilities;
-        public bool dashUnlocked;
+        public bool dashUnlocked; // Dash durumu kaydedildi
     }
 }

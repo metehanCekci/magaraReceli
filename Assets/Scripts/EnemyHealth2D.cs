@@ -11,36 +11,31 @@ public class EnemyHealth2D : MonoBehaviour
     [Header("Invulnerability (i-frames)")]
     public float invulnerableTime = 0.2f;
 
-    [Header("Knockback")]
-    public float knockbackForce = 6f;
-    [Tooltip("X: yatay itiş çarpanı, Y: dikey itiş çarpanı")]
-    public Vector2 knockbackScale = new Vector2(1f, 0.5f);
-
-    [Header("Refs (opsiyonel)")]
-    public Rigidbody2D rb;
+    [Header("Refs (optional)")]
     public Animator animator;
     public SpriteRenderer spriteRenderer;
     public AudioSource audioSource;
 
+    private bool invulnerable;
 
-    bool invulnerable;
     void Awake()
     {
         currentHealth = maxHealth;
-        if (!rb) rb = GetComponent<Rigidbody2D>();
         if (!spriteRenderer) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
+        if (!animator) animator = GetComponent<Animator>();
     }
 
-
     /// <summary>
-    /// hasar uygula. hitFrom: saldırının geldiği nokta (ör: player hitbox pozisyonu)
+    /// Apply damage to the enemy
     /// </summary>
-    public void TakeDamage(int amount, Vector2 hitFrom)
+    /// <param name="amount">Damage amount</param>
+    public void TakeDamage(int amount)
     {
-        //if (invulnerable || currentHealth <= 0) return;
+        if (invulnerable || currentHealth <= 0) return;
 
         currentHealth -= amount;
+
         if (currentHealth <= 0)
         {
             Die();
@@ -49,38 +44,21 @@ public class EnemyHealth2D : MonoBehaviour
 
         // Hurt feedback
         if (animator) animator.SetTrigger("Hurt");
-        SFXPlayer.Instance.PlayGore();
+        if (SFXPlayer.Instance) SFXPlayer.Instance.PlayGore();
         StartCoroutine(FlashRoutine());
-
-        // Knockback
-        ApplyKnockback(hitFrom);
 
         // i-frames
         StartCoroutine(InvulnerabilityRoutine());
     }
 
-    void ApplyKnockback(Vector2 hitFrom)
-    {
-        if (!rb) return;
-
-        // darbeyi vuran taraftan uzağa doğru
-        Vector2 dir = ((Vector2)transform.position - hitFrom).normalized;
-        Vector2 force = new Vector2(dir.x * knockbackForce * knockbackScale.x,
-                                    Mathf.Abs(dir.y) * knockbackForce * knockbackScale.y);
-
-        // yatay hızı sıfırla, sonra it
-        rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
-        rb.AddForce(force, ForceMode2D.Impulse);
-    }
-
-    IEnumerator InvulnerabilityRoutine()
+    private IEnumerator InvulnerabilityRoutine()
     {
         invulnerable = true;
         yield return new WaitForSeconds(invulnerableTime);
         invulnerable = false;
     }
 
-    IEnumerator FlashRoutine()
+    private IEnumerator FlashRoutine()
     {
         if (!spriteRenderer) yield break;
         Color original = spriteRenderer.color;
@@ -89,12 +67,12 @@ public class EnemyHealth2D : MonoBehaviour
         spriteRenderer.color = original;
     }
 
-    void Die()
+    private void Die()
     {
-        SFXPlayer.Instance.PlayKill();
+        if (SFXPlayer.Instance) SFXPlayer.Instance.PlayKill();
         if (animator) animator.SetTrigger("Die");
 
-        // İstersen burada loot/puan vb. ekle
-        Destroy(gameObject, 0.25f);
+        // Destroy the enemy immediately
+        Destroy(gameObject);
     }
 }

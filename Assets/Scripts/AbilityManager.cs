@@ -9,15 +9,25 @@ public class AbilityManager : MonoBehaviour
     // Dash'ın kilidini açma
     public void UnlockDash()
     {
-        dashUnlocked = true;
-        unlockedAbilities.Add(AbilityTypeList.Dash);
+        if (!dashUnlocked)
+        {
+            dashUnlocked = true;
+            Debug.Log("Dash yeteneği açıldı.");
+        }
     }
 
     // Dash'ın kilidini açıp açmadığını kontrol et
-    public bool IsDashUnlocked() => dashUnlocked;
+    public bool IsDashUnlocked()
+    {
+        return dashUnlocked;
+    }
 
     // Dash durumu ayarla (Load sırasında)
-    public void SetDashUnlocked(bool value) => dashUnlocked = value;
+    public void SetDashUnlocked(bool value)
+    {
+        dashUnlocked = value;
+        Debug.Log("Dash durumu setlendi: " + dashUnlocked);
+    }
 
     // Yeteneklerin kilidini açma
     public void UnlockAbility(AbilityTypeList ability)

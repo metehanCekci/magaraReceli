@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - HurtBox
   - Projectile
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Ground
   - Enemy
   - Player
-  - 
+  - Wall
   - 
   - 
   - 

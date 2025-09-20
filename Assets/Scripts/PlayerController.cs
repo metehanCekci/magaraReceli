@@ -6,6 +6,21 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Wall Jump")]
+    public float wallJumpHorizontalForce = 10f;
+    public float wallJumpVerticalForce = 12f;
+    private bool isOnWall = false;
+    private int wallDir = 0; // -1: sol duvar, 1: sað duvar
+
+    // Wall jump için son geçerli wallDir'i ve coyote süresini sakla
+    private int lastWallDir = 0;
+    private float lastWallCoyoteCounter = 0f;
+
+    // Wall coyote time: duvardan ayrýldýktan sonra kýsa süre wall jump hakký
+    [Header("Wall Coyote Time")]
+    public float wallCoyoteTime = 0.15f;
+    private float wallCoyoteCounter = 0f;
+
     [Header("Input (New Input System)")]
     public InputActionReference Move;
     public InputActionReference Jump;
@@ -61,6 +76,10 @@ public class PlayerController : MonoBehaviour
     public float groundRadius = 0.15f;
     public LayerMask groundLayer;
 
+    [Header("Wall Check")]
+    public float wallCheckDistance = 0.5f;
+    public LayerMask wallLayer;
+
     [Header("References")]
     public Animator animator;
     public AudioSource audioSource;
@@ -81,10 +100,16 @@ public class PlayerController : MonoBehaviour
     [Header("Soul System")]
     public SoulSystem soulSystem;
 
+    // **SaveSystem** için bir referans ekleyelim
+    private SaveSystem saveSystem;  // Add SaveSystem reference
+
     void Awake()
     {
+        Time.timeScale = 1;
         rb = GetComponent<Rigidbody2D>();
         abilityManager = GetComponent<AbilityManager>();
+        saveSystem = GetComponent<SaveSystem>();  // Initialize SaveSystem
+
         if (!animator) animator = GetComponent<Animator>();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
         if (attackHitbox) attackHitbox.gameObject.SetActive(false);
@@ -92,7 +117,21 @@ public class PlayerController : MonoBehaviour
         RecalcMaxJumps();
 
         // Ensure default scale is 2,2,1
-        transform.localScale = new Vector3(5f, 1f, 1f);
+        transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    void Start()
+    {
+        // Game baþladýðýnda kaydedilmiþ veriyi yükle
+        if (saveSystem != null)
+            saveSystem.Load(gameObject);  // Yükleme iþlemi
+    }
+
+    void OnApplicationQuit()
+    {
+        // Oyundan çýkmadan önce kaydet
+        if (saveSystem != null)
+            saveSystem.Save(gameObject);  // Kaydetme iþlemi
     }
 
     void OnEnable()
@@ -155,7 +194,7 @@ public class PlayerController : MonoBehaviour
         {
             lockedFacing = Mathf.Sign(moveInput.x);
         }
-        transform.localScale = new Vector3(lockedFacing * 5f, 1f, 1f);
+        transform.localScale = new Vector3(lockedFacing * 1f, 1f, 1f);
 
         // Update facing lock timer
         if (facingLocked)
@@ -174,10 +213,52 @@ public class PlayerController : MonoBehaviour
         if (!jumpHeld && rb.linearVelocity.y > 0f)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
 
-        if (IsGrounded()) { coyoteCounter = coyoteTime; jumpCount = 0; }
+        if (IsGrounded())
+        {
+            coyoteCounter = coyoteTime;
+            jumpCount = 0;
+        }
         else coyoteCounter -= Time.deltaTime;
 
         animator.SetBool("IsGrounded", IsGrounded());
+
+        // Wall check logic (raycast ile)
+        bool wasOnWall = isOnWall;
+        isOnWall = false;
+        wallDir = 0;
+        if (!IsGrounded())
+        {
+            RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, wallLayer);
+            RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, wallLayer);
+            if (hitRight.collider != null)
+            {
+                wallDir = 1;
+                isOnWall = true;
+                coyoteCounter = coyoteTime;
+                jumpCount = 0;
+            }
+            else if (hitLeft.collider != null)
+            {
+                wallDir = -1;
+                isOnWall = true;
+                coyoteCounter = coyoteTime;
+                jumpCount = 0;
+            }
+        }
+
+        // Wall coyote time ve wallDir buffer güncelle
+        if (isOnWall)
+        {
+            wallCoyoteCounter = wallCoyoteTime;
+            lastWallDir = wallDir != 0 ? wallDir : lastWallDir;
+            lastWallCoyoteCounter = wallCoyoteTime;
+        }
+        else
+        {
+            wallCoyoteCounter -= Time.deltaTime;
+            lastWallCoyoteCounter -= Time.deltaTime;
+        }
+        animator.SetBool("WallJump", isOnWall);
 
         UpdateSoulBar();
         RecalcMaxJumps();
@@ -271,10 +352,22 @@ public class PlayerController : MonoBehaviour
 
     void DoJump()
     {
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        jumpCount++; coyoteCounter = 0f;
-        animator?.SetTrigger("Jump");
+        if (((isOnWall || wallCoyoteCounter > 0f || lastWallCoyoteCounter > 0f)) && !IsGrounded())
+        {
+            int jumpWallDir = wallDir;
+            if (jumpWallDir == 0) jumpWallDir = lastWallDir;
+            if (jumpWallDir == 0) jumpWallDir = (int)Mathf.Sign(transform.localScale.x);
+            rb.linearVelocity = new Vector2(wallJumpHorizontalForce * -jumpWallDir, wallJumpVerticalForce);
+            wallCoyoteCounter = 0f;
+            lastWallCoyoteCounter = 0f;
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
+        jumpCount++;
+        coyoteCounter = 0f;
         PlayOne(jumpSound);
     }
 

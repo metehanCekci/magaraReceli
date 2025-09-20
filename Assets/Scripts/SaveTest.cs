@@ -62,7 +62,7 @@ public class SaveTest : MonoBehaviour
     {
         if (Player != null)
         {
-            saveSystem.Save(Player, Player.transform.position);  // Save fonksiyonunu çağırıyoruz
+            saveSystem.Save(Player);  // Save fonksiyonunu çağırıyoruz
             Debug.Log("Player save test completed.");
         }
         Debug.Log("Player save test completed.");
