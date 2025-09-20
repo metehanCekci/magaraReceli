@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
     public InputActionReference Attack;
     public InputActionReference Heal;
     public InputActionReference Pause;
+    public InputActionReference HeavyAttack; // sağ tık için yeni input action
+
 
     [Header("Movement")]
     public float moveSpeed = 8f;
@@ -126,6 +128,8 @@ public class PlayerController : MonoBehaviour
     public LayerMask enemyLayer;
     public InputActionReference Pull; // Input System aksiyonu
 
+    private bool heavyAttackButtonHeld = false;
+
     void Awake()
     {
         Time.timeScale = 1;
@@ -168,6 +172,8 @@ public class PlayerController : MonoBehaviour
         if (Heal) { Heal.action.Enable(); Heal.action.performed += OnHealPerformed; }
         if (Pause) { Pause.action.Enable(); Pause.action.performed += OnPausePerformed; }
     if (Pull) { Pull.action.Enable(); Pull.action.performed += OnPullPerformed; }
+    if (HeavyAttack != null)
+        HeavyAttack.action.performed += OnHeavyAttack;
         // HeavyAttack kaldırıldı
     }
 
@@ -180,6 +186,8 @@ public class PlayerController : MonoBehaviour
         if (Heal) { Heal.action.performed -= OnHealPerformed; Heal.action.Disable(); }
         if (Pause) { Pause.action.performed -= OnPausePerformed; Pause.action.Disable(); }
     if (Pull) { Pull.action.performed -= OnPullPerformed; Pull.action.Disable(); }
+    if (HeavyAttack != null)
+        HeavyAttack.action.performed -= OnHeavyAttack;
         // HeavyAttack kaldırıldı
     }
 
@@ -305,22 +313,33 @@ public class PlayerController : MonoBehaviour
         RecalcMaxJumps();
 
         // Mouse attack tuşu basılı tutulma kontrolü (Heavy Attack)
-        if (Attack != null && Attack.action != null)
+// --- Heavy Attack Hold & Release ---
+if (Attack != null && Attack.action != null)
+{
+    if (Attack.action.IsPressed())
+    {
+        if (!heavyAttackButtonHeld) // first press
         {
-            if (Attack.action.IsPressed())
-            {
-                attackButtonHeldTime += Time.deltaTime;
-                if (attackButtonHeldTime >= heavyAttackHoldTime && !isHeavying && Time.time > lastHeavyAttackTime + heavyAttackCooldown)
-                {
-                    StartCoroutine(HeavyAttackRoutine());
-                    attackButtonHeldTime = 0f;
-                }
-            }
-            else
-            {
-                attackButtonHeldTime = 0f;
-            }
+            heavyAttackButtonHeld = true;
+            attackButtonHeldTime = 0f;
         }
+
+        attackButtonHeldTime += Time.deltaTime;
+    }
+    else if (heavyAttackButtonHeld) // just released
+    {
+        if (attackButtonHeldTime >= heavyAttackHoldTime && !isHeavying && Time.time > lastHeavyAttackTime + heavyAttackCooldown)
+        {
+            StartCoroutine(HeavyAttackRoutine());
+        }
+
+        // reset
+        heavyAttackButtonHeld = false;
+        attackButtonHeldTime = 0f;
+    }
+}
+
+
     }
 
     void FixedUpdate()
@@ -472,23 +491,39 @@ public class PlayerController : MonoBehaviour
         isAttacking = false;
     }
 
-    private void OnHeavyAttackPerformed(InputAction.CallbackContext ctx)
+private void OnHeavyAttack(InputAction.CallbackContext context)
+{
+    if (!isHeavying && Time.time > lastHeavyAttackTime + heavyAttackCooldown)
     {
-        if (isHealing) return;
-        if (Time.time < lastHeavyAttackTime + heavyAttackCooldown) return;
-        if (isHeavying) return;
         StartCoroutine(HeavyAttackRoutine());
     }
+}
 
-    private IEnumerator HeavyAttackRoutine()
+private IEnumerator HeavyAttackRoutine()
+{
+    isHeavying = true;
+    lastHeavyAttackTime = Time.time;
+
+    if (animator != null)
+        animator.SetTrigger("HeavyAttack");   // animator trigger
+
+    yield return new WaitForSeconds(1.15f);    // anim süresi kadar bekle
+
+    isHeavying = false;
+}
+
+
+    public void HeavyStart()
     {
-        isHeavying = true;
-        animator.SetBool("Heavying", true);
-        // Burada animasyon süresine göre bekleyebilirsin, örn. 0.7f
-        yield return new WaitForSeconds(0.7f);
+        AttackHitboxEnable();
+        lastHeavyAttackTime = Time.time;
+    }
+
+    public void HeavyEnd()
+    {
+        AttackHitboxDisable();
         animator.SetBool("Heavying", false);
         isHeavying = false;
-        lastHeavyAttackTime = Time.time;
     }
 
     void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }

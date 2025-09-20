@@ -278,12 +278,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db491c063657a008096b4a9551b910b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  wallJumpHorizontalForce: 10
+  wallJumpVerticalForce: 12
+  wallCoyoteTime: 0.15
   Move: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   Jump: {fileID: -2099379676528639254, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   Dash: {fileID: -7471211009204490832, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   Attack: {fileID: 1120369429361536294, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   Heal: {fileID: 7476244043514120974, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-  Pause: {fileID: 0}
+  Pause: {fileID: 4265303545122163627, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  HeavyAttack: {fileID: -5473991108360732733, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   moveSpeed: 5
   jumpForce: 11
   variableJumpMultiplier: 0.5
@@ -318,6 +322,16 @@ MonoBehaviour:
   MaxSoul: 100
   Soul: 0
   soulSystem: {fileID: 0}
+  wallRaycastVerticalOffset: 0.3
+  heavyAttackHoldTime: 0.5
+  heavyAttackCooldown: 1
+  limbPrefab: {fileID: 0}
+  limbThrowSpeed: 15
+  limbPullDuration: 0.5
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  Pull: {fileID: 0}
 --- !u!114 &7676088459934626032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,9 +435,6 @@ MonoBehaviour:
   invulnerableTime: 1
   spriteRenderer: {fileID: 4374133188994718376}
   animator: {fileID: 6716727142501694644}
-  audioSource: {fileID: 0}
-  hurtSfx: {fileID: 0}
-  deathSfx: {fileID: 0}
   rb: {fileID: 1163537010999393830}
   heartSystem: {fileID: 0}
 --- !u!82 &1657189960040081162
