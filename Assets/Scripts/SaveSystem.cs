@@ -21,13 +21,13 @@ public class SaveSystem : MonoBehaviour
     public void Save(GameObject player)
     {
         var abilitiesMgr = player.GetComponent<AbilityManager>();
-        var healthSystem = player.GetComponent<HealthSystem>();
+        //var healthSystem = player.GetComponent<HealthSystem>();
 
         PlayerSaveData data = new PlayerSaveData();
 
         // Sağlık verilerini kaydet
-        data.health = healthSystem.currentHealth;
-        data.maxHealth = healthSystem.maxHealth;
+       // data.health = healthSystem.currentHealth;
+       // data.maxHealth = healthSystem.maxHealth;
 
         // Yetenekleri kaydetme
         data.abilities = new List<string>();
@@ -43,7 +43,7 @@ public class SaveSystem : MonoBehaviour
         string json = JsonUtility.ToJson(data, true);
         File.WriteAllText(savePath, json);
 
-        Debug.Log("Player saved with health: " + data.health + " and dashUnlocked: " + data.dashUnlocked);
+       
     }
 
     // Load fonksiyonu - Oyuncu verilerini yükler
@@ -57,15 +57,15 @@ public class SaveSystem : MonoBehaviour
         var healthSystem = player.GetComponent<HealthSystem>();
         if (healthSystem != null)
         {
-            Debug.Log("Loaded health: " + data.health + " maxHealth: " + data.maxHealth);
+            
 
             // Sağlık ve max sağlık değerlerini yükle
-            healthSystem.maxHealth = data.maxHealth;
+            /**healthSystem.maxHealth = data.maxHealth;
             if (data.health ==0)
             {
                 return;
             }
-            else { healthSystem.currentHealth = Mathf.Clamp(data.health, 0, healthSystem.maxHealth); }
+            else { healthSystem.currentHealth = Mathf.Clamp(data.health, 0, healthSystem.maxHealth); }**/
                 
         }
 
@@ -94,8 +94,8 @@ public class SaveSystem : MonoBehaviour
     [System.Serializable]
     public class PlayerSaveData
     {
-        public int health;
-        public int maxHealth;
+       // public int health;
+       // public int maxHealth;
         public List<string> abilities;
         public bool dashUnlocked; // Dash durumu kaydedildi
     }
