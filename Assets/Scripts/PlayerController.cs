@@ -10,13 +10,13 @@ public class PlayerController : MonoBehaviour
     public float wallJumpHorizontalForce = 10f;
     public float wallJumpVerticalForce = 12f;
     private bool isOnWall = false;
-    private int wallDir = 0; // -1: sol duvar, 1: sað duvar
+    private int wallDir = 0; // -1: sol duvar, 1: saï¿½ duvar
 
-    // Wall jump için son geçerli wallDir'i ve coyote süresini sakla
+    // Wall jump iï¿½in son geï¿½erli wallDir'i ve coyote sï¿½resini sakla
     private int lastWallDir = 0;
     private float lastWallCoyoteCounter = 0f;
 
-    // Wall coyote time: duvardan ayrýldýktan sonra kýsa süre wall jump hakký
+    // Wall coyote time: duvardan ayrï¿½ldï¿½ktan sonra kï¿½sa sï¿½re wall jump hakkï¿½
     [Header("Wall Coyote Time")]
     public float wallCoyoteTime = 0.15f;
     private float wallCoyoteCounter = 0f;
@@ -100,8 +100,11 @@ public class PlayerController : MonoBehaviour
     [Header("Soul System")]
     public SoulSystem soulSystem;
 
-    // **SaveSystem** için bir referans ekleyelim
+    // **SaveSystem** iï¿½in bir referans ekleyelim
     private SaveSystem saveSystem;  // Add SaveSystem reference
+
+    // Wall jump input buffer
+    private bool wallJumpRequested = false;
 
     void Awake()
     {
@@ -122,16 +125,16 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        // Game baþladýðýnda kaydedilmiþ veriyi yükle
+        // Game baï¿½ladï¿½ï¿½ï¿½nda kaydedilmiï¿½ veriyi yï¿½kle
         if (saveSystem != null)
-            saveSystem.Load(gameObject);  // Yükleme iþlemi
+            saveSystem.Load(gameObject);  // Yï¿½kleme iï¿½lemi
     }
 
     void OnApplicationQuit()
     {
-        // Oyundan çýkmadan önce kaydet
+        // Oyundan ï¿½ï¿½kmadan ï¿½nce kaydet
         if (saveSystem != null)
-            saveSystem.Save(gameObject);  // Kaydetme iþlemi
+            saveSystem.Save(gameObject);  // Kaydetme iï¿½lemi
     }
 
     void OnEnable()
@@ -206,7 +209,7 @@ public class PlayerController : MonoBehaviour
 
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
         {
-            DoJump();
+            wallJumpRequested = true;
             bufferCounter = 0f;
         }
 
@@ -246,7 +249,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // Wall coyote time ve wallDir buffer güncelle
+        // Wall coyote time ve wallDir buffer gï¿½ncelle
         if (isOnWall)
         {
             wallCoyoteCounter = wallCoyoteTime;
@@ -262,6 +265,15 @@ public class PlayerController : MonoBehaviour
 
         UpdateSoulBar();
         RecalcMaxJumps();
+    }
+
+    void FixedUpdate()
+    {
+        if (wallJumpRequested)
+        {
+            DoJump();
+            wallJumpRequested = false;
+        }
     }
 
     void UpdateSoulBar()
