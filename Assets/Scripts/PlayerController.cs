@@ -61,6 +61,10 @@ public class PlayerController : MonoBehaviour
     public float groundRadius = 0.15f;
     public LayerMask groundLayer;
 
+    [Header("Wall Check")]
+    public float wallCheckDistance = 0.5f;
+    public LayerMask wallLayer;
+
     [Header("References")]
     public Animator animator;
     public AudioSource audioSource;
@@ -167,7 +171,7 @@ public class PlayerController : MonoBehaviour
 
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
         {
-            animator.SetBool("Jump", true); // Zıplama başladığında Jump bool'unu aç
+            //animator.SetBool("Jump", true); // Zıplama başladığında Jump bool'unu aç
             DoJump();
             Debug.Log("Zıpladım ANA");
             
@@ -180,11 +184,23 @@ public class PlayerController : MonoBehaviour
         if (IsGrounded()) {
             coyoteCounter = coyoteTime;
             jumpCount = 0;
-            animator.SetBool("Jump", false); // Yere değdiğinde Jump bool'unu kapat
         }
         else coyoteCounter -= Time.deltaTime;
 
         animator.SetBool("IsGrounded", IsGrounded());
+
+
+        // Wall check logic
+        bool isOnWall = false;
+        if (!IsGrounded()) {
+            RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, wallLayer);
+            RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, wallLayer);
+            if ((hitRight && Mathf.Abs(hitRight.normal.x) > 0.9f) || (hitLeft && Mathf.Abs(hitLeft.normal.x) > 0.9f)) {
+                isOnWall = true;
+            }
+        }
+        animator.SetBool("WallJump", isOnWall);
+
 
         UpdateSoulBar();
         RecalcMaxJumps();
@@ -279,13 +295,13 @@ public class PlayerController : MonoBehaviour
     void DoJump()
     {
     Debug.Log("Zıpladım");
-    animator.SetBool("Jump", true); // Zıplama başladığında Jump bool'unu aç
     rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
     rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     jumpCount++;
     coyoteCounter = 0f;
     
     PlayOne(jumpSound);
+    animator.SetBool("Jump", true); // Zıplama başladığında Jump bool'unu aç
     }
 
     void StartDash()
@@ -341,8 +357,8 @@ public class PlayerController : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        if (groundCheck)
-        {
+        if (groundCheck){
+            animator.SetBool("Jump", false); // Yere değdiğinde Jump bool'unu kapat
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         }
