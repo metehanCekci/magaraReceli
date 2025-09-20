@@ -190,13 +190,17 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("IsGrounded", IsGrounded());
 
 
-        // Wall check logic
+        // Wall check logic (tag ve layer ile)
         bool isOnWall = false;
         if (!IsGrounded()) {
-            RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, wallLayer);
-            RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, wallLayer);
-            if ((hitRight && Mathf.Abs(hitRight.normal.x) > 0.9f) || (hitLeft && Mathf.Abs(hitLeft.normal.x) > 0.9f)) {
-                isOnWall = true;
+            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, wallCheckDistance);
+            foreach (var hit in hits) {
+                if (hit != null && hit.gameObject != this.gameObject) {
+                    if (hit.CompareTag("Wall") && ((1 << hit.gameObject.layer) & wallLayer.value) != 0) {
+                        isOnWall = true;
+                        break;
+                    }
+                }
             }
         }
         animator.SetBool("WallJump", isOnWall);
