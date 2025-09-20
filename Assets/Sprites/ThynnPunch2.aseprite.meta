@@ -51,7 +51,7 @@ ScriptedImporter:
     flipbookColumns: 0
     ignorePngGamma: 0
     cookieMode: 0
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638939049447903589
+  platformSettingsDirtyTick: 638940114341478998
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -129,7 +129,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Frame_0
     originalName: 
-    pivot: {x: 0.3864448, y: 0.43354994}
+    pivot: {x: 0.39, y: 0.45}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -150,7 +150,7 @@ ScriptedImporter:
     uvTransform: {x: 137, y: 374}
   - name: Frame_1
     originalName: 
-    pivot: {x: 0.3287976, y: 0.45374456}
+    pivot: {x: 0.33, y: 0.45}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -171,7 +171,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 250}
   - name: Frame_2
     originalName: 
-    pivot: {x: 0.3120696, y: 0.43180162}
+    pivot: {x: 0.3120696, y: 0.45}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -192,7 +192,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 374}
   - name: Frame_3
     originalName: 
-    pivot: {x: 0.3258231, y: 0.43002272}
+    pivot: {x: 0.3258231, y: 0.45}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -213,7 +213,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: Frame_4
     originalName: 
-    pivot: {x: 0.3258231, y: 0.4466229}
+    pivot: {x: 0.3258231, y: 0.45}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
