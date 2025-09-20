@@ -1151,9 +1151,6 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   invulnerableTime: 0.2
-  knockbackForce: 0
-  knockbackScale: {x: 1, y: 0.5}
-  rb: {fileID: 0}
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
@@ -2075,9 +2072,6 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   invulnerableTime: 0.2
-  knockbackForce: 0
-  knockbackScale: {x: 1, y: 0.5}
-  rb: {fileID: 0}
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
@@ -2464,9 +2458,6 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   invulnerableTime: 0.2
-  knockbackForce: 0
-  knockbackScale: {x: 1, y: 0.5}
-  rb: {fileID: 0}
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
@@ -3652,9 +3643,6 @@ MonoBehaviour:
   maxHealth: 5
   currentHealth: 5
   invulnerableTime: 0.2
-  knockbackForce: 0
-  knockbackScale: {x: 1, y: 0.5}
-  rb: {fileID: 0}
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
@@ -3830,7 +3818,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.06725982, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -3840,7 +3828,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.1345196, y: 1}
   m_EdgeRadius: 0
 --- !u!212 &1411534317
 SpriteRenderer:
@@ -4648,6 +4636,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2598254960983248222, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 59.200012
+      objectReference: {fileID: 0}
     - target: {fileID: 2864750502906358324, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_Camera
       value: 
@@ -4662,11 +4654,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5374987825126223261, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -381
+      value: -510.6
       objectReference: {fileID: 0}
     - target: {fileID: 5374987825126223261, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 111.00001
+      value: 213.6
       objectReference: {fileID: 0}
     - target: {fileID: 7522722575516055093, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_Name
