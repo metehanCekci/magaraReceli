@@ -51,7 +51,7 @@ ScriptedImporter:
     flipbookColumns: 0
     ignorePngGamma: 0
     cookieMode: 0
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -102,7 +102,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 0
+  platformSettingsDirtyTick: 638939992473958860
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -129,7 +129,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Frame_0
     originalName: 
-    pivot: {x: 0.38135594, y: -0.03448276}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -150,7 +150,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: Frame_1
     originalName: 
-    pivot: {x: 0.38135594, y: -0.03448276}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -171,7 +171,7 @@ ScriptedImporter:
     uvTransform: {x: 130, y: 4}
   - name: Frame_2
     originalName: 
-    pivot: {x: 0.44, y: -0.034188036}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -192,7 +192,7 @@ ScriptedImporter:
     uvTransform: {x: 351, y: 128}
   - name: Frame_3
     originalName: 
-    pivot: {x: 0.43434343, y: -0.034188036}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -213,7 +213,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 258}
   - name: Frame_4
     originalName: 
-    pivot: {x: 0.43434343, y: -0.034188036}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -234,7 +234,7 @@ ScriptedImporter:
     uvTransform: {x: 111, y: 258}
   - name: Frame_5
     originalName: 
-    pivot: {x: 0.43434343, y: -0.034188036}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -255,7 +255,7 @@ ScriptedImporter:
     uvTransform: {x: 218, y: 258}
   - name: Frame_6
     originalName: 
-    pivot: {x: 0.43434343, y: -0.034188036}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -276,7 +276,7 @@ ScriptedImporter:
     uvTransform: {x: 325, y: 258}
   - name: Frame_7
     originalName: 
-    pivot: {x: 0.43434343, y: -0.034188036}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -297,7 +297,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 383}
   - name: Frame_8
     originalName: 
-    pivot: {x: 0.43434343, y: -0.034188036}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -318,7 +318,7 @@ ScriptedImporter:
     uvTransform: {x: 111, y: 383}
   - name: Frame_9
     originalName: 
-    pivot: {x: 0.42307693, y: -0.034188036}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -339,7 +339,7 @@ ScriptedImporter:
     uvTransform: {x: 239, y: 128}
   - name: Frame_10
     originalName: 
-    pivot: {x: 0.42342344, y: -0.034188036}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -360,7 +360,7 @@ ScriptedImporter:
     uvTransform: {x: 120, y: 128}
   - name: Frame_11
     originalName: 
-    pivot: {x: 0.4074074, y: -0.032786883}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -381,7 +381,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 128}
   - name: Frame_12
     originalName: 
-    pivot: {x: 0.38135594, y: -0.03448276}
+    pivot: {x: 0.5, y: 0.42}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -537,7 +537,43 @@ ScriptedImporter:
     tileSetIndex: 0
     parentIndex: -1
   tileSets: []
-  platformSettings: []
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Android
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 16384
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
