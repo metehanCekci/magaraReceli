@@ -72,11 +72,8 @@ public class HealthSystem : MonoBehaviour
     public void Heal(int amount)
     {
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-
         if (heartSystem != null)
-            heartSystem.UpdateHealth(currentHealth, maxHealth);
-
-        Debug.Log($"Player healed by {amount}. Current health: {currentHealth}");
+            heartSystem.UpdateHealth(currentHealth, maxHealth);        
     }
 
     IEnumerator InvulnerabilityRoutine()
