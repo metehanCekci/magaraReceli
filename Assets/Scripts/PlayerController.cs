@@ -119,13 +119,6 @@ public class PlayerController : MonoBehaviour
     private bool heavyAttackQueued = false;
     private bool isHeavying = false;
 
-    [Header("Limb Throw (Fırlayan El)")]
-    public GameObject limbPrefab; // Inspector'dan atanacak prefab
-    public float limbThrowSpeed = 15f;
-    public float limbPullDuration = 0.5f;
-    public LayerMask enemyLayer;
-    public InputActionReference Pull; // Input System aksiyonu
-
     void Awake()
     {
         Time.timeScale = 1;
@@ -167,7 +160,6 @@ public class PlayerController : MonoBehaviour
         if (Attack) { Attack.action.Enable(); Attack.action.performed += OnAttackPerformed; }
         if (Heal) { Heal.action.Enable(); Heal.action.performed += OnHealPerformed; }
         if (Pause) { Pause.action.Enable(); Pause.action.performed += OnPausePerformed; }
-    if (Pull) { Pull.action.Enable(); Pull.action.performed += OnPullPerformed; }
         // HeavyAttack kaldırıldı
     }
 
@@ -179,7 +171,6 @@ public class PlayerController : MonoBehaviour
         if (Attack) { Attack.action.performed -= OnAttackPerformed; Attack.action.Disable(); }
         if (Heal) { Heal.action.performed -= OnHealPerformed; Heal.action.Disable(); }
         if (Pause) { Pause.action.performed -= OnPausePerformed; Pause.action.Disable(); }
-    if (Pull) { Pull.action.performed -= OnPullPerformed; Pull.action.Disable(); }
         // HeavyAttack kaldırıldı
     }
 
@@ -533,78 +524,5 @@ public class PlayerController : MonoBehaviour
     {
         if (attackHitbox)
             attackHitbox.gameObject.SetActive(false);
-    }
-
-    // El fırlatma fonksiyonu (animasyon eventinden veya istediğin yerden çağırabilirsin)
-    // Pull input action callback
-    void OnPullPerformed(InputAction.CallbackContext ctx)
-    {
-        Debug.Log("[DEBUG] Pull input tetiklendi, FireLimbAndPullEnemy çağrılıyor.");
-        FireLimbAndPullEnemy();
-    }
-    public void FireLimbAndPullEnemy()
-    {
-    Debug.Log("[DEBUG] FireLimbAndPullEnemy başladı, coroutine başlatılıyor.");
-    StartCoroutine(FireLimbAndPullRoutine());
-    }
-
-    private IEnumerator FireLimbAndPullRoutine()
-    {
-        // 1. El prefabını ileriye fırlat
-        Vector3 spawnPos = transform.position + transform.right * 0.5f; // Karakterin önünde doğsun
-        GameObject limb = Instantiate(limbPrefab, spawnPos, Quaternion.identity);
-        Debug.Log("[DEBUG] Limb prefabı instantiate edildi: " + (limb != null));
-        Rigidbody2D limbRb = limb.GetComponent<Rigidbody2D>();
-        if (limbRb != null)
-        {
-            limbRb.linearVelocity = transform.right * limbThrowSpeed * transform.localScale.x;
-            Debug.Log("[DEBUG] Limb linearVelocity ayarlandı: " + limbRb.linearVelocity);
-        }
-        else
-        {
-            Debug.LogWarning("[DEBUG] Limb prefabında Rigidbody2D yok!");
-        }
-
-        EnemyHealth2D hitEnemy = null;
-        bool hit = false;
-        while (!hit && limb != null)
-        {
-            Collider2D[] hits = Physics2D.OverlapCircleAll(limb.transform.position, 0.3f, enemyLayer);
-            foreach (var col in hits)
-            {
-                hitEnemy = col.GetComponent<EnemyHealth2D>();
-                if (hitEnemy != null)
-                {
-                    hit = true;
-                    Debug.Log("[DEBUG] Düşman bulundu ve çekilecek: " + hitEnemy.name);
-                    break;
-                }
-            }
-            if (hit) break;
-            yield return null;
-        }
-
-        if (hitEnemy != null)
-        {
-            Debug.Log("[DEBUG] Düşman çekme işlemi başlıyor: " + hitEnemy.name);
-            // 2. Düşmanı karaktere doğru çek
-            float t = 0f;
-            Vector3 start = hitEnemy.transform.position;
-            Vector3 target = transform.position;
-            while (t < limbPullDuration)
-            {
-                t += Time.deltaTime;
-                hitEnemy.transform.position = Vector3.Lerp(start, target, t / limbPullDuration);
-                yield return null;
-            }
-            Debug.Log("[DEBUG] Düşman çekme işlemi bitti: " + hitEnemy.name);
-        }
-
-        // 3. El objesini yok et
-        if (limb != null)
-        {
-            Debug.Log("[DEBUG] Limb objesi yok ediliyor.");
-            Destroy(limb);
-        }
     }
 }
