@@ -61,7 +61,12 @@ public class SaveSystem : MonoBehaviour
 
             // Sağlık ve max sağlık değerlerini yükle
             healthSystem.maxHealth = data.maxHealth;
-            healthSystem.currentHealth = Mathf.Clamp(data.health, 0, healthSystem.maxHealth);
+            if (data.health ==0)
+            {
+                return;
+            }
+            else { healthSystem.currentHealth = Mathf.Clamp(data.health, 0, healthSystem.maxHealth); }
+                
         }
 
         // Dash yeteneğini yükle

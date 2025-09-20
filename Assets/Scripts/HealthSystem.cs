@@ -29,7 +29,10 @@ public class HealthSystem : MonoBehaviour
 
     void Awake()
     {
+        currentHealth = 100;
         currentHealth = maxHealth;
+
+
 
         if (!rb) rb = GetComponent<Rigidbody2D>();
         if (!spriteRenderer) spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -103,7 +106,7 @@ public class HealthSystem : MonoBehaviour
     void Die()
     {
         if (heartSystem != null)
-            heartSystem.UpdateHealth(0, maxHealth);
+           // heartSystem.UpdateHealth(0, maxHealth);
 
         SFXPlayer.Instance.PlayHurt();
 
