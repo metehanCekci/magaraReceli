@@ -129,7 +129,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: ThynnWallHold
     originalName: 
-    pivot: {x: 0.61728394, y: -0.094827585}
+    pivot: {x: 0.25983328, y: 0.45922807}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 

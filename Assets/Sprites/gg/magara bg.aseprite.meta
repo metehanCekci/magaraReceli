@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8a59cdb8add48424698ce3eb0d03e4d4
+guid: aeb88563ccb24034aabd0194d22fe64c
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Frame_0
+  - name: magara bg
     originalName: 
-    pivot: {x: 0.48409137, y: 0.41995308}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 80
-      height: 117
-    spriteID: 2a5e9344d51ac9a4189a1f132557b35c
+      width: 640
+      height: 360
+    spriteID: fabec0a615d080e4183ca80c7c3b495d
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -148,120 +148,30 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
-  - name: Frame_1
-    originalName: 
-    pivot: {x: 0.48806897, y: 0.4172335}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 92
-      y: 4
-      width: 80
-      height: 117
-    spriteID: 51026e78233539a4abb46fb35013a846
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 92, y: 4}
-  - name: Frame_2
-    originalName: 
-    pivot: {x: 0.48806858, y: 0.41808754}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 92
-      y: 129
-      width: 80
-      height: 116
-    spriteID: 0e21cdc3ef2b3964a82e7e01fc654eb7
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 92, y: 129}
-  - name: Frame_3
-    originalName: 
-    pivot: {x: 0.49602288, y: 0.42539182}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    customData: 
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 129
-      width: 80
-      height: 117
-    spriteID: eb90c6d478935f746b33344dbcd202bc
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    uvTransform: {x: 4, y: 129}
   spriteSheetImportData: []
   tileSetImportData: []
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 395239160
+      value0: 2284182744
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: ThynnBlitzcranck
+    name: magara bg
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Frame_0
+    - name: magara bg
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 24
-        y: 4
-        width: 80
-        height: 117
-      spriteId: 2a5e9344d51ac9a4189a1f132557b35c
-    - name: Frame_1
-      frameIndex: 1
-      additiveSortOrder: 0
-      cellRect:
-        x: 24
-        y: 4
-        width: 80
-        height: 117
-      spriteId: 51026e78233539a4abb46fb35013a846
-    - name: Frame_2
-      frameIndex: 2
-      additiveSortOrder: 0
-      cellRect:
-        x: 24
-        y: 4
-        width: 80
-        height: 116
-      spriteId: 0e21cdc3ef2b3964a82e7e01fc654eb7
-    - name: Frame_3
-      frameIndex: 3
-      additiveSortOrder: 0
-      cellRect:
-        x: 24
-        y: 4
-        width: 80
-        height: 117
-      spriteId: eb90c6d478935f746b33344dbcd202bc
+        x: 0
+        y: 0
+        width: 640
+        height: 360
+      spriteId: fabec0a615d080e4183ca80c7c3b495d
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -271,5 +181,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 128, y: 128}
-  previousTextureSize: {x: 256, y: 256}
+  canvasSize: {x: 640, y: 360}
+  previousTextureSize: {x: 1024, y: 512}

@@ -167,14 +167,21 @@ public class PlayerController : MonoBehaviour
 
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
         {
+            animator.SetBool("Jump", true); // Zıplama başladığında Jump bool'unu aç
             DoJump();
+            Debug.Log("Zıpladım ANA");
+            
             bufferCounter = 0f;
         }
 
         if (!jumpHeld && rb.linearVelocity.y > 0f)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
 
-        if (IsGrounded()) { coyoteCounter = coyoteTime; jumpCount = 0; }
+        if (IsGrounded()) {
+            coyoteCounter = coyoteTime;
+            jumpCount = 0;
+            animator.SetBool("Jump", false); // Yere değdiğinde Jump bool'unu kapat
+        }
         else coyoteCounter -= Time.deltaTime;
 
         animator.SetBool("IsGrounded", IsGrounded());
@@ -271,11 +278,14 @@ public class PlayerController : MonoBehaviour
 
     void DoJump()
     {
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        jumpCount++; coyoteCounter = 0f;
-        animator?.SetTrigger("Jump");
-        PlayOne(jumpSound);
+    Debug.Log("Zıpladım");
+    animator.SetBool("Jump", true); // Zıplama başladığında Jump bool'unu aç
+    rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
+    rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    jumpCount++;
+    coyoteCounter = 0f;
+    
+    PlayOne(jumpSound);
     }
 
     void StartDash()
