@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
     float lockedFacing = 1f;
 
     [Header("Healing")]
-    public float healTime = 3f;
+    public float healTime = 1.5f;
     public int healAmount = 1;
     bool isHealing;
 
@@ -111,6 +111,14 @@ public class PlayerController : MonoBehaviour
     private float wallJumpBufferTime = 0.15f;
     private float wallJumpBufferCounter = 0f;
 
+    [Header("Heavy Attack")]
+    public float heavyAttackHoldTime = 0.5f; // Kaç saniye basılı tutulursa heavy attack
+    public float heavyAttackCooldown = 1.0f;
+    private float lastHeavyAttackTime = -10f;
+    private float attackButtonHeldTime = 0f;
+    private bool heavyAttackQueued = false;
+    private bool isHeavying = false;
+
     void Awake()
     {
         Time.timeScale = 1;
@@ -152,6 +160,7 @@ public class PlayerController : MonoBehaviour
         if (Attack) { Attack.action.Enable(); Attack.action.performed += OnAttackPerformed; }
         if (Heal) { Heal.action.Enable(); Heal.action.performed += OnHealPerformed; }
         if (Pause) { Pause.action.Enable(); Pause.action.performed += OnPausePerformed; }
+        // HeavyAttack kaldırıldı
     }
 
     void OnDisable()
@@ -162,6 +171,7 @@ public class PlayerController : MonoBehaviour
         if (Attack) { Attack.action.performed -= OnAttackPerformed; Attack.action.Disable(); }
         if (Heal) { Heal.action.performed -= OnHealPerformed; Heal.action.Disable(); }
         if (Pause) { Pause.action.performed -= OnPausePerformed; Pause.action.Disable(); }
+        // HeavyAttack kaldırıldı
     }
 
     void RecalcMaxJumps()
@@ -284,6 +294,24 @@ public class PlayerController : MonoBehaviour
 
         UpdateSoulBar();
         RecalcMaxJumps();
+
+        // Mouse attack tuşu basılı tutulma kontrolü (Heavy Attack)
+        if (Attack != null && Attack.action != null)
+        {
+            if (Attack.action.IsPressed())
+            {
+                attackButtonHeldTime += Time.deltaTime;
+                if (attackButtonHeldTime >= heavyAttackHoldTime && !isHeavying && Time.time > lastHeavyAttackTime + heavyAttackCooldown)
+                {
+                    StartCoroutine(HeavyAttackRoutine());
+                    attackButtonHeldTime = 0f;
+                }
+            }
+            else
+            {
+                attackButtonHeldTime = 0f;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -329,7 +357,10 @@ public class PlayerController : MonoBehaviour
     public void IncreaseSoul(int amount)
     {
         Soul += amount;
-        Debug.Log($"Soul increased by {amount}. Total soul: {Soul}");
+        if (Soul >= MaxSoul)
+        {
+            Soul = MaxSoul;
+        }
     }
 
     void OnHealPerformed(InputAction.CallbackContext ctx)
@@ -433,6 +464,25 @@ public class PlayerController : MonoBehaviour
             attackHitbox.gameObject.SetActive(false);
 
         isAttacking = false;
+    }
+
+    private void OnHeavyAttackPerformed(InputAction.CallbackContext ctx)
+    {
+        if (isHealing) return;
+        if (Time.time < lastHeavyAttackTime + heavyAttackCooldown) return;
+        if (isHeavying) return;
+        StartCoroutine(HeavyAttackRoutine());
+    }
+
+    private IEnumerator HeavyAttackRoutine()
+    {
+        isHeavying = true;
+        animator.SetBool("Heavying", true);
+        // Burada animasyon süresine göre bekleyebilirsin, örn. 0.7f
+        yield return new WaitForSeconds(0.7f);
+        animator.SetBool("Heavying", false);
+        isHeavying = false;
+        lastHeavyAttackTime = Time.time;
     }
 
     void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }

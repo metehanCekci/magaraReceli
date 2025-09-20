@@ -223,7 +223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2fbb9d6ad623ef89737243a90482c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SavePoint
-  saveSystem: {fileID: 1853696301}
 --- !u!61 &286790731
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -463,7 +462,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2fbb9d6ad623ef89737243a90482c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SavePoint
-  saveSystem: {fileID: 1853696301}
 --- !u!61 &718992513
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -642,7 +640,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2fbb9d6ad623ef89737243a90482c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SavePoint
-  saveSystem: {fileID: 1853696301}
 --- !u!4 &1739141337
 Transform:
   m_ObjectHideFlags: 0
