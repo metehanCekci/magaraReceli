@@ -13,6 +13,15 @@ public class PlayerController : MonoBehaviour
     public float wallJumpVerticalForce = 12f;
     private bool isOnWall = false;
     private int wallDir = 0; // -1: sol duvar, 1: sağ duvar
+
+    // Wall jump için son geçerli wallDir'i ve coyote süresini sakla
+    private int lastWallDir = 0;
+    private float lastWallCoyoteCounter = 0f;
+
+    // Wall coyote time: duvardan ayrıldıktan sonra kısa süre wall jump hakkı
+    [Header("Wall Coyote Time")]
+    public float wallCoyoteTime = 0.15f;
+    private float wallCoyoteCounter = 0f;
     [Header("Input (New Input System)")]
     public InputActionReference Move;
     public InputActionReference Jump;
@@ -200,28 +209,40 @@ public class PlayerController : MonoBehaviour
 
 
         // Wall check logic (tag ve layer ile)
+        bool wasOnWall = isOnWall;
         isOnWall = false;
         wallDir = 0;
         if (!IsGrounded())
         {
-            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, wallCheckDistance);
-            foreach (var hit in hits)
+            // Raycast ile sağ ve sol duvar kontrolü
+            RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, wallLayer);
+            RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, wallLayer);
+            if (hitRight.collider != null)
             {
-                if (hit != null && hit.gameObject != this.gameObject)
-                {
-                    if (hit.CompareTag("Wall") && ((1 << hit.gameObject.layer) & wallLayer.value) != 0)
-                    {
-                        // Duvarın hangi tarafta olduğunu bul
-                        float dir = hit.transform.position.x - transform.position.x;
-                        if (dir > 0.01f) wallDir = 1; // Sağ duvar
-                        else if (dir < -0.01f) wallDir = -1; // Sol duvar
-                        isOnWall = true;
-                        coyoteCounter = coyoteTime;
-                        jumpCount = 0;
-                        break;
-                    }
-                }
+                wallDir = 1;
+                isOnWall = true;
+                coyoteCounter = coyoteTime;
+                jumpCount = 0;
             }
+            else if (hitLeft.collider != null)
+            {
+                wallDir = -1;
+                isOnWall = true;
+                coyoteCounter = coyoteTime;
+                jumpCount = 0;
+            }
+        }
+        // Wall coyote time ve wallDir buffer güncelle
+        if (isOnWall)
+        {
+            wallCoyoteCounter = wallCoyoteTime;
+            lastWallDir = wallDir != 0 ? wallDir : lastWallDir;
+            lastWallCoyoteCounter = wallCoyoteTime;
+        }
+        else
+        {
+            wallCoyoteCounter -= Time.deltaTime;
+            lastWallCoyoteCounter -= Time.deltaTime;
         }
         animator.SetBool("WallJump", isOnWall);
 
@@ -319,10 +340,16 @@ public class PlayerController : MonoBehaviour
     void DoJump()
     {
         Debug.Log("Zıpladım");
-        if (isOnWall && wallDir != 0 && !IsGrounded())
+        // Wall jump: duvardan ayrıldıktan sonra kısa süre daha izin ver
+        // Wall jump: son geçerli wallDir ve coyote buffer ile
+        if (((isOnWall || wallCoyoteCounter > 0f || lastWallCoyoteCounter > 0f)) && !IsGrounded())
         {
-            // Wall jump: duvardan dışarı ve hafif yukarı
-            rb.linearVelocity = new Vector2(wallJumpHorizontalForce * -wallDir, wallJumpVerticalForce);
+            int jumpWallDir = wallDir;
+            if (jumpWallDir == 0) jumpWallDir = lastWallDir;
+            if (jumpWallDir == 0) jumpWallDir = (int)Mathf.Sign(transform.localScale.x); // Yine de 0 ise bakış yönü
+            rb.linearVelocity = new Vector2(wallJumpHorizontalForce * -jumpWallDir, wallJumpVerticalForce);
+            wallCoyoteCounter = 0f;
+            lastWallCoyoteCounter = 0f;
         }
         else
         {
