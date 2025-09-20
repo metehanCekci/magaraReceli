@@ -87,6 +87,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        Time.timeScale = 1;
         rb = GetComponent<Rigidbody2D>();
         abilityManager = GetComponent<AbilityManager>();
         if (!animator) animator = GetComponent<Animator>();

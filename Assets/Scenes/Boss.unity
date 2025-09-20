@@ -155,7 +155,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5189792292154948278, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
   m_PrefabInstance: {fileID: 517298320713238044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1278468294}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0040b66dbd6b7709a95715a3666ce566, type: 3}
@@ -4237,6 +4237,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1786439171 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7476808961628288449, guid: 19a7ac2c2f5b1eb43b7eb7094a8727f1, type: 3}
+  m_PrefabInstance: {fileID: 7547713996301656764}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b0127de2c92dc4a95e6f56bfbc4556, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &1801524344 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2517637730954126968, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
@@ -4660,10 +4671,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3937316994605265990, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1278468298}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
 --- !u!1001 &795626485508968782
 PrefabInstance:
@@ -5199,7 +5207,7 @@ PrefabInstance:
     - target: {fileID: 933712687077480539, guid: 19a7ac2c2f5b1eb43b7eb7094a8727f1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 879462996}
+      objectReference: {fileID: 1786439171}
     - target: {fileID: 6349900581775353231, guid: 19a7ac2c2f5b1eb43b7eb7094a8727f1, type: 3}
       propertyPath: m_Name
       value: DeathMenu
@@ -5211,10 +5219,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3341558456948429615, guid: 19a7ac2c2f5b1eb43b7eb7094a8727f1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 879463000}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19a7ac2c2f5b1eb43b7eb7094a8727f1, type: 3}
 --- !u!1001 &8296491021867501524
 PrefabInstance:
