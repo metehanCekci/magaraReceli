@@ -25,6 +25,7 @@ public class PatrolEnemy : MonoBehaviour
 
         // Freeze all movement during patrol
         rb.constraints = RigidbodyConstraints2D.FreezeAll;
+
     }
 
     void Update()
@@ -67,15 +68,8 @@ public class PatrolEnemy : MonoBehaviour
 
     void DetectPlayer()
     {
-        // Eðer oyuncu tespit edilirse ve düþman kovalamýyorsa, kovalamaya baþla
-        if (!isChasingPlayer)
-        {
-            Collider2D playerCollider = Physics2D.OverlapCircle(transform.position, detectionRadius, playerLayer);
-            if (playerCollider != null)
-            {
-                isChasingPlayer = true; // Bir kez oyuncu tespit edildikten sonra kovalamaya baþla
-            }
-        }
+        Collider2D playerCollider = Physics2D.OverlapCircle(transform.position, detectionRadius, playerLayer);
+        isChasingPlayer = playerCollider != null;
     }
 
     void ChasePlayer()
