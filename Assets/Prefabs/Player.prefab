@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db491c063657a008096b4a9551b910b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  wallJumpHorizontalForce: 10
+  wallJumpHorizontalForce: 40
   wallJumpVerticalForce: 12
   wallCoyoteTime: 0.15
   Move: {fileID: -1680190386980627800, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
