@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-// Tek class ve attribute tanýmý býrakýldý
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
@@ -13,7 +12,15 @@ public class PlayerController : MonoBehaviour
     private bool isOnWall = false;
     private int wallDir = 0; // -1: sol duvar, 1: sað duvar
 
-    // Diðer inputlar
+    // Wall jump için son geçerli wallDir'i ve coyote süresini sakla
+    private int lastWallDir = 0;
+    private float lastWallCoyoteCounter = 0f;
+
+    // Wall coyote time: duvardan ayrýldýktan sonra kýsa süre wall jump hakký
+    [Header("Wall Coyote Time")]
+    public float wallCoyoteTime = 0.15f;
+    private float wallCoyoteCounter = 0f;
+
     [Header("Input (New Input System)")]
     public InputActionReference Move;
     public InputActionReference Jump;
@@ -22,7 +29,6 @@ public class PlayerController : MonoBehaviour
     public InputActionReference Heal;
     public InputActionReference Pause;
 
-    // Diðer parametreler
     [Header("Movement")]
     public float moveSpeed = 8f;
 
@@ -200,10 +206,7 @@ public class PlayerController : MonoBehaviour
 
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
         {
-            //animator.SetBool("Jump", true); // Zýplama baþladýðýnda Jump bool'unu aç
             DoJump();
-            Debug.Log("Zýpladým ANA");
-
             bufferCounter = 0f;
         }
 
@@ -219,33 +222,43 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("IsGrounded", IsGrounded());
 
-
-        // Wall check logic (tag ve layer ile)
+        // Wall check logic (raycast ile)
+        bool wasOnWall = isOnWall;
         isOnWall = false;
         wallDir = 0;
         if (!IsGrounded())
         {
-            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, wallCheckDistance);
-            foreach (var hit in hits)
+            RaycastHit2D hitRight = Physics2D.Raycast(transform.position, Vector2.right, wallCheckDistance, wallLayer);
+            RaycastHit2D hitLeft = Physics2D.Raycast(transform.position, Vector2.left, wallCheckDistance, wallLayer);
+            if (hitRight.collider != null)
             {
-                if (hit != null && hit.gameObject != this.gameObject)
-                {
-                    if (hit.CompareTag("Wall") && ((1 << hit.gameObject.layer) & wallLayer.value) != 0)
-                    {
-                        // Duvarýn hangi tarafta olduðunu bul
-                        float dir = hit.transform.position.x - transform.position.x;
-                        if (dir > 0.01f) wallDir = 1; // Sað duvar
-                        else if (dir < -0.01f) wallDir = -1; // Sol duvar
-                        isOnWall = true;
-                        coyoteCounter = coyoteTime;
-                        jumpCount = 0;
-                        break;
-                    }
-                }
+                wallDir = 1;
+                isOnWall = true;
+                coyoteCounter = coyoteTime;
+                jumpCount = 0;
+            }
+            else if (hitLeft.collider != null)
+            {
+                wallDir = -1;
+                isOnWall = true;
+                coyoteCounter = coyoteTime;
+                jumpCount = 0;
             }
         }
-        animator.SetBool("WallJump", isOnWall);
 
+        // Wall coyote time ve wallDir buffer güncelle
+        if (isOnWall)
+        {
+            wallCoyoteCounter = wallCoyoteTime;
+            lastWallDir = wallDir != 0 ? wallDir : lastWallDir;
+            lastWallCoyoteCounter = wallCoyoteTime;
+        }
+        else
+        {
+            wallCoyoteCounter -= Time.deltaTime;
+            lastWallCoyoteCounter -= Time.deltaTime;
+        }
+        animator.SetBool("WallJump", isOnWall);
 
         UpdateSoulBar();
         RecalcMaxJumps();
@@ -265,10 +278,7 @@ public class PlayerController : MonoBehaviour
 
     void OnDashPerformed(InputAction.CallbackContext ctx)
     {
-        if (abilityManager.CanDash() && Time.time > lastDashTime + dashCooldown)
-        {
-            StartDash();
-        }
+        StartDash();
     }
 
     void OnAttackPerformed(InputAction.CallbackContext ctx)
@@ -342,11 +352,14 @@ public class PlayerController : MonoBehaviour
 
     void DoJump()
     {
-        Debug.Log("Zýpladým");
-        if (isOnWall && wallDir != 0 && !IsGrounded())
+        if (((isOnWall || wallCoyoteCounter > 0f || lastWallCoyoteCounter > 0f)) && !IsGrounded())
         {
-            // Wall jump: duvardan dýþarý ve hafif yukarý
-            rb.linearVelocity = new Vector2(wallJumpHorizontalForce * -wallDir, wallJumpVerticalForce);
+            int jumpWallDir = wallDir;
+            if (jumpWallDir == 0) jumpWallDir = lastWallDir;
+            if (jumpWallDir == 0) jumpWallDir = (int)Mathf.Sign(transform.localScale.x);
+            rb.linearVelocity = new Vector2(wallJumpHorizontalForce * -jumpWallDir, wallJumpVerticalForce);
+            wallCoyoteCounter = 0f;
+            lastWallCoyoteCounter = 0f;
         }
         else
         {
