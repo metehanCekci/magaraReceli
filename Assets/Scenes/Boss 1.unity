@@ -705,7 +705,8 @@ MonoBehaviour:
   missilePrefab: {fileID: 1682855788}
   arenaLeft: {fileID: 688942868}
   arenaRight: {fileID: 1937742220}
-  timeBetweenAttacks: 2.5
+  handAttackInterval: 4
+  headAttackInterval: 6
   hoverHeight: 1
   moveSpeed: 8
   hoverDuration: 0.8
@@ -2019,8 +2020,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   target: {fileID: 966785222}
-  speed: 1.2
-  lifetime: 4
+  speed: 1
+  lifetime: 5
 --- !u!1 &1689352160
 GameObject:
   m_ObjectHideFlags: 0
