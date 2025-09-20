@@ -1,10 +1,9 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-// Tek class ve attribute tanÄ±mÄ± bÄ±rakÄ±ldÄ±
+// Tek class ve attribute tanýmý býrakýldý
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
@@ -12,7 +11,9 @@ public class PlayerController : MonoBehaviour
     public float wallJumpHorizontalForce = 10f;
     public float wallJumpVerticalForce = 12f;
     private bool isOnWall = false;
-    private int wallDir = 0; // -1: sol duvar, 1: saÄŸ duvar
+    private int wallDir = 0; // -1: sol duvar, 1: sað duvar
+
+    // Diðer inputlar
     [Header("Input (New Input System)")]
     public InputActionReference Move;
     public InputActionReference Jump;
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public InputActionReference Heal;
     public InputActionReference Pause;
 
+    // Diðer parametreler
     [Header("Movement")]
     public float moveSpeed = 8f;
 
@@ -92,11 +94,16 @@ public class PlayerController : MonoBehaviour
     [Header("Soul System")]
     public SoulSystem soulSystem;
 
+    // **SaveSystem** için bir referans ekleyelim
+    private SaveSystem saveSystem;  // Add SaveSystem reference
+
     void Awake()
     {
         Time.timeScale = 1;
         rb = GetComponent<Rigidbody2D>();
         abilityManager = GetComponent<AbilityManager>();
+        saveSystem = GetComponent<SaveSystem>();  // Initialize SaveSystem
+
         if (!animator) animator = GetComponent<Animator>();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
         if (attackHitbox) attackHitbox.gameObject.SetActive(false);
@@ -105,6 +112,20 @@ public class PlayerController : MonoBehaviour
 
         // Ensure default scale is 2,2,1
         transform.localScale = new Vector3(1f, 1f, 1f);
+    }
+
+    void Start()
+    {
+        // Game baþladýðýnda kaydedilmiþ veriyi yükle
+        if (saveSystem != null)
+            saveSystem.Load(gameObject);  // Yükleme iþlemi
+    }
+
+    void OnApplicationQuit()
+    {
+        // Oyundan çýkmadan önce kaydet
+        if (saveSystem != null)
+            saveSystem.Save(gameObject);  // Kaydetme iþlemi
     }
 
     void OnEnable()
@@ -179,9 +200,9 @@ public class PlayerController : MonoBehaviour
 
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
         {
-            //animator.SetBool("Jump", true); // ZÄ±plama baÅŸladÄ±ÄŸÄ±nda Jump bool'unu aÃ§
+            //animator.SetBool("Jump", true); // Zýplama baþladýðýnda Jump bool'unu aç
             DoJump();
-            Debug.Log("ZÄ±pladÄ±m ANA");
+            Debug.Log("Zýpladým ANA");
 
             bufferCounter = 0f;
         }
@@ -211,9 +232,9 @@ public class PlayerController : MonoBehaviour
                 {
                     if (hit.CompareTag("Wall") && ((1 << hit.gameObject.layer) & wallLayer.value) != 0)
                     {
-                        // DuvarÄ±n hangi tarafta olduÄŸunu bul
+                        // Duvarýn hangi tarafta olduðunu bul
                         float dir = hit.transform.position.x - transform.position.x;
-                        if (dir > 0.01f) wallDir = 1; // SaÄŸ duvar
+                        if (dir > 0.01f) wallDir = 1; // Sað duvar
                         else if (dir < -0.01f) wallDir = -1; // Sol duvar
                         isOnWall = true;
                         coyoteCounter = coyoteTime;
@@ -244,7 +265,10 @@ public class PlayerController : MonoBehaviour
 
     void OnDashPerformed(InputAction.CallbackContext ctx)
     {
-        StartDash();
+        if (abilityManager.CanDash() && Time.time > lastDashTime + dashCooldown)
+        {
+            StartDash();
+        }
     }
 
     void OnAttackPerformed(InputAction.CallbackContext ctx)
@@ -318,10 +342,10 @@ public class PlayerController : MonoBehaviour
 
     void DoJump()
     {
-        Debug.Log("ZÄ±pladÄ±m");
+        Debug.Log("Zýpladým");
         if (isOnWall && wallDir != 0 && !IsGrounded())
         {
-            // Wall jump: duvardan dÄ±ÅŸarÄ± ve hafif yukarÄ±
+            // Wall jump: duvardan dýþarý ve hafif yukarý
             rb.linearVelocity = new Vector2(wallJumpHorizontalForce * -wallDir, wallJumpVerticalForce);
         }
         else
