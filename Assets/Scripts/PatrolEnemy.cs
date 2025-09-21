@@ -1,17 +1,19 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))] // Rigidbody2D bileşenini zorunlu hale getir
+[RequireComponent(typeof(Rigidbody2D))]
 public class PatrolEnemy : MonoBehaviour
 {
+    [Header("Movement Settings")]
     public float patrolSpeed = 2f;
     public float chaseSpeed = 4f;
     public float detectionRadius = 5f;
     public float chaseStopDistance = 10f;
+
+    [Header("References")]
     public Transform[] waypoints;
-    public SpriteRenderer graphics;
     public Transform player;
 
-    private Rigidbody2D rb; // Rigidbody2D referansı
+    private Rigidbody2D rb;
     private Transform target;
     private int destPoint = 0;
     private EnemyHealth2D enemyHealth;
@@ -21,22 +23,21 @@ public class PatrolEnemy : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>(); // Rigidbody2D bileşenini al
+        rb = GetComponent<Rigidbody2D>();
         enemyHealth = GetComponent<EnemyHealth2D>();
         currentState = State.PATROL;
 
         if (waypoints.Length > 0)
         {
             target = waypoints[0];
+            FaceTowards(target.position);
         }
 
         if (player == null)
         {
             GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
             if (playerObject != null)
-            {
                 player = playerObject.transform;
-            }
         }
     }
 
@@ -44,14 +45,11 @@ public class PatrolEnemy : MonoBehaviour
     {
         if (enemyHealth != null && enemyHealth.IsKnockedBack())
         {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // Knockback sırasında X hızını durdur
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             return;
         }
 
-        if (player == null || waypoints.Length == 0)
-        {
-            return;
-        }
+        if (player == null || waypoints.Length == 0) return;
 
         switch (currentState)
         {
@@ -59,78 +57,57 @@ public class PatrolEnemy : MonoBehaviour
                 CheckForPlayer();
                 break;
             case State.CHASE:
-                // Chase(); // Fizik güncellemeleri için Update yerine FixedUpdate kullanacağız
-                break;
+                break; // Use FixedUpdate for movement
         }
     }
 
-    // Fizik işlemleri için FixedUpdate kullanmak daha doğrudur.
     void FixedUpdate()
     {
-        if (enemyHealth != null && enemyHealth.IsKnockedBack())
-        {
-            return; // Knockback sırasında hareket etme
-        }
+        if (enemyHealth != null && enemyHealth.IsKnockedBack()) return;
 
         if (currentState == State.PATROL)
-        {
             Patrol();
-        }
         else if (currentState == State.CHASE)
-        {
             Chase();
-        }
     }
-
 
     void Patrol()
     {
-        float directionX = target.position.x - transform.position.x;
-        rb.linearVelocity = new Vector2(Mathf.Sign(directionX) * patrolSpeed, rb.linearVelocity.y);
+        Vector2 direction = (target.position - transform.position).normalized;
+        rb.linearVelocity = new Vector2(direction.x * patrolSpeed, rb.linearVelocity.y);
 
-        if (Mathf.Abs(directionX) < 0.3f)
+        FaceTowards(target.position);
+
+        if (Vector2.Distance(transform.position, target.position) < 0.3f)
         {
             destPoint = (destPoint + 1) % waypoints.Length;
             target = waypoints[destPoint];
         }
-
-        //FlipSprite(rb.linearVelocity.x);
     }
 
     void Chase()
     {
-        float directionX = player.position.x - transform.position.x;
-        rb.linearVelocity = new Vector2(Mathf.Sign(directionX) * chaseSpeed, rb.linearVelocity.y);
+        Vector2 direction = (player.position - transform.position).normalized;
+        rb.linearVelocity = new Vector2(direction.x * chaseSpeed, rb.linearVelocity.y);
 
-        //FlipSprite(rb.linearVelocity.x);
+        FaceTowards(player.position);
 
-        // İsteğe bağlı: Oyuncu menzilden çıkarsa devriyeye geri dön
         if (Vector2.Distance(transform.position, player.position) > chaseStopDistance)
-        {
             currentState = State.PATROL;
-        }
     }
 
     void CheckForPlayer()
     {
         if (Vector2.Distance(transform.position, player.position) < detectionRadius)
-        {
             currentState = State.CHASE;
-        }
     }
 
-    // Sprite'ın yönünü çevirmek için bu fonksiyonu tekrar aktif edelim
-    /**void FlipSprite(float direction)
+    void FaceTowards(Vector3 targetPos)
     {
-        if (direction > 0.1f)
-        {
-            graphics.flipX = false;
-        }
-        else if (direction < -0.1f)
-        {
-            graphics.flipX = true;
-        }
-    }**/
+        Vector3 scale = transform.localScale;
+        scale.x = (targetPos.x > transform.position.x) ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
+        transform.localScale = scale;
+    }
 
     void OnDrawGizmosSelected()
     {

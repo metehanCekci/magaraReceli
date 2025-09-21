@@ -4,20 +4,18 @@ using UnityEngine;
 public class FlyingEnemy : MonoBehaviour
 {
     [Header("Target")]
-    public Transform player;          // Player'ın transformu
+    public Transform player;
 
     [Header("Movement Settings")]
-    public float moveSpeed = 3f;      // Hız
-    public float stopDistance = 1.5f; // Çok yaklaştığında durma mesafesi
-    public float smoothFollow = 5f;   // Hareket yumuşatma
+    public float moveSpeed = 3f;
+    public float stopDistance = 1.5f;
+    public float smoothFollow = 5f;
 
     private Rigidbody2D rb;
-    private SpriteRenderer sr;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
 
         if (player == null)
         {
@@ -30,25 +28,29 @@ public class FlyingEnemy : MonoBehaviour
     {
         if (player == null) return;
 
+        Vector2 direction = (player.position - transform.position).normalized;
         float distance = Vector2.Distance(transform.position, player.position);
 
         if (distance > stopDistance)
         {
-            Vector2 direction = (player.position - transform.position).normalized;
-
-            // Move with Rigidbody
+            // Move towards player
             Vector2 targetVelocity = direction * moveSpeed;
             rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, targetVelocity, Time.fixedDeltaTime * smoothFollow);
 
-            // 🔥 Flip sprite depending on horizontal direction
-            if (direction.x > 0.1f)
-                sr.flipX = false; // Facing right
-            else if (direction.x < -0.1f)
-                sr.flipX = true;  // Facing left
+            // Flip transform to face horizontal direction only
+            FaceDirection(direction.x);
         }
         else
         {
             rb.linearVelocity = Vector2.zero;
         }
+    }
+
+    private void FaceDirection(float horizontal)
+    {
+        Vector3 scale = transform.localScale;
+        if (horizontal > 0.1f) scale.x = Mathf.Abs(scale.x);      // Facing right
+        else if (horizontal < -0.1f) scale.x = -Mathf.Abs(scale.x); // Facing left
+        transform.localScale = scale;
     }
 }
