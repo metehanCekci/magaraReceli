@@ -15,14 +15,17 @@ EditorBuildSettings:
     path: Assets/Scenes/IntroComic.unity
     guid: 323acb03b89d748428a518627c830188
   - enabled: 1
+    path: Assets/Scenes/First Tutorial.unity
+    guid: e097d222b9b0a8d4cb7308b623a3718d
+  - enabled: 1
+    path: Assets/Scenes/Second Tutorial.unity
+    guid: 2124c223419000b4f8c740ce01fd7906
+  - enabled: 1
     path: Assets/Scenes/Map 1.unity
     guid: 7482c443b82f5e846a655195bad1af3d
   - enabled: 1
     path: "Assets/Scenes/\u0130lk Boss.unity"
     guid: cad4c9a82e41f4745973820c7eb7fc08
-  - enabled: 1
-    path: Assets/Scenes/First Tutorial.unity
-    guid: e097d222b9b0a8d4cb7308b623a3718d
   - enabled: 1
     path: Assets/Scenes/2. Boss.unity
     guid: c5ddd403b1954054b88c3ae6ec2ccc3c
