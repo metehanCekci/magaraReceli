@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5c74f9938beb7d74aaf5f5ae59f54a3b
+guid: e18a574bce74d8f47b5f52d473e0a714
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,7 +127,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Sogan
+  - name: patatolauncher
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 30
-      height: 30
-    spriteID: 304d2eabb18c37a4eb13b1090e52e479
+      width: 18
+      height: 18
+    spriteID: 5c7dc3a5bc8affc419f23a34682d5e53
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,25 +153,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 3927448790
+      value0: 1372601125
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: Sogan
+    name: patatolauncher
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Sogan
+    - name: patatolauncher
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 10
-        y: 33
-        width: 30
-        height: 30
-      spriteId: 304d2eabb18c37a4eb13b1090e52e479
+        x: 29
+        y: 18
+        width: 18
+        height: 18
+      spriteId: 5c7dc3a5bc8affc419f23a34682d5e53
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -182,4 +182,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 64, y: 64}
-  previousTextureSize: {x: 64, y: 64}
+  previousTextureSize: {x: 32, y: 32}

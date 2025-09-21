@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5c74f9938beb7d74aaf5f5ae59f54a3b
+guid: c806c8c0f4e42214aa7af7b606824f8c
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,19 +127,19 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Sogan
+  - name: patates
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 30
-      height: 30
-    spriteID: 304d2eabb18c37a4eb13b1090e52e479
+      width: 10
+      height: 3
+    spriteID: 65852a3eb782b3244b0c6b5326f16539
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,25 +153,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 3927448790
+      value0: 4165555110
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: Sogan
+    name: patates
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Sogan
+    - name: patates
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 10
-        y: 33
-        width: 30
-        height: 30
-      spriteId: 304d2eabb18c37a4eb13b1090e52e479
+        x: 0
+        y: 0
+        width: 10
+        height: 3
+      spriteId: 65852a3eb782b3244b0c6b5326f16539
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -181,5 +181,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 64, y: 64}
-  previousTextureSize: {x: 64, y: 64}
+  canvasSize: {x: 10, y: 3}
+  previousTextureSize: {x: 32, y: 16}
