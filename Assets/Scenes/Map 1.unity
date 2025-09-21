@@ -877,7 +877,7 @@ MonoBehaviour:
   damage: 20
   playerLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
 --- !u!61 &336508080
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3337,7 +3337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6182527618514598358, guid: bd9d60d2f240e5644aa8aae5d8458107, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7934534064844674902, guid: bd9d60d2f240e5644aa8aae5d8458107, type: 3}
       propertyPath: m_LocalPosition.x
@@ -202380,8 +202380,8 @@ Tilemap:
   - first: {x: 66, y: 80, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 10
-      m_TileSpriteIndex: 10
+      m_TileIndex: 7
+      m_TileSpriteIndex: 19
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -254903,13 +254903,13 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: aef3a21547d36b14180c3c97c36df0f1, type: 2}
   - m_RefCount: 146
     m_Data: {fileID: 11400000, guid: a1f662cd3a5be4c45976627b37c4036a, type: 2}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 64a16f28d387ed648a4cb32c28dd41c8, type: 2}
   - m_RefCount: 102
     m_Data: {fileID: 11400000, guid: 49b812de4ff52a745843d68fc9eda998, type: 2}
   - m_RefCount: 23665
     m_Data: {fileID: 11400000, guid: ad638a34204cd3942a18a9c2bc70f219, type: 2}
-  - m_RefCount: 68
+  - m_RefCount: 67
     m_Data: {fileID: 11400000, guid: a29b6c607063dc747a46327c643bb004, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 5d65696739d65114d9c5f914966c33db, type: 2}
@@ -254954,7 +254954,7 @@ Tilemap:
     m_Data: {fileID: 1670244059044316111, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
   - m_RefCount: 296
     m_Data: {fileID: 1978614741331581544, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
-  - m_RefCount: 68
+  - m_RefCount: 67
     m_Data: {fileID: 7728324014427897698, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: 3305053584214553356, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
@@ -254972,6 +254972,8 @@ Tilemap:
     m_Data: {fileID: -6568329631801417572, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: -4992781812326633318, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
+  - m_RefCount: 1
+    m_Data: {fileID: -5124932817193746692, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 24934
     m_Data:
