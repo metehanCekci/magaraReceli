@@ -3451,6 +3451,10 @@ PrefabInstance:
       propertyPath: healthBarScript
       value: 
       objectReference: {fileID: 1841074099}
+    - target: {fileID: 1657189960040081162, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: MinDistance
+      value: 0.99470377
+      objectReference: {fileID: 0}
     - target: {fileID: 3207285710856896108, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: orthographic size
       value: 5
