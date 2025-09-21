@@ -4031,7 +4031,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press "Space" to jump and double jump
+  m_text: Press "Space" to jump
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4861,8 +4861,8 @@ MonoBehaviour:
   - {fileID: 855205599}
   - {fileID: 1817889638}
   - {fileID: 530783515}
-  fullHeart: {fileID: -5061949314952590936, guid: 512424d8c26148d46ab236b413b75b02, type: 3}
-  emptyHeart: {fileID: 3942213493699689672, guid: dd4266a5c1002dd4390171887afb4eef, type: 3}
+  fullHeart: {fileID: -3295296082918671814, guid: 8512b3ea0361e8242b670918fd36125d, type: 3}
+  emptyHeart: {fileID: 5095023339358920350, guid: 6638314e9923d364c84ac36e66991580, type: 3}
 --- !u!4 &1904160363 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}

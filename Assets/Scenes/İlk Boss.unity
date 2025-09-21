@@ -47366,7 +47366,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -49344,12 +49343,20 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5374987825126223261, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 7714.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5374987825126223261, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 7895.832
+      objectReference: {fileID: 0}
+    - target: {fileID: 5374987825126223261, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.000015259
       objectReference: {fileID: 0}
     - target: {fileID: 5374987825126223261, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.00000095367
       objectReference: {fileID: 0}
     - target: {fileID: 7522722575516055093, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_Name
@@ -49357,11 +49364,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8862310132844823718, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -528.2695
+      value: -518
       objectReference: {fileID: 0}
     - target: {fileID: 8862310132844823718, guid: 503371f1ea750bd44bb4a768eb982271, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 149.92157
+      value: 218
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -49503,7 +49510,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6182527618514598358, guid: bd9d60d2f240e5644aa8aae5d8458107, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7925629510752810170, guid: bd9d60d2f240e5644aa8aae5d8458107, type: 3}
       propertyPath: m_SortingOrder
