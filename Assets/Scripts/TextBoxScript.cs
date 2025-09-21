@@ -1,98 +1,80 @@
-using System.Collections;
+// metehancekci/magarareceli/magaraReceli-c354ca461671bdc0711870d4b7d693c7cf44512b/Assets/Scripts/TextBoxScript.cs
+
 using UnityEngine;
 using TMPro;
+using System.Collections; // Coroutine için bu satýr gerekli
 
-public class NpcTextBox : MonoBehaviour
+public class TextBoxScript : MonoBehaviour
 {
-    [Header("Settings")]
-    [TextArea] public string message;        // Message to display
-    public float fadeDuration = 0.5f;        // Time to fade in/out
-    public float typingSpeed = 0.05f;        // Delay between letters
+    [Header("Diyalog Ayarlarý")]
+    public GameObject textBox;
+    public TextMeshProUGUI textDisplay;
+    [TextArea(3, 10)]
+    public string dialogueString;
+    public float typingSpeed = 0.04f; // Yazýnýn yazýlma hýzý
 
-    private CanvasGroup canvasGroup;
-    private TMP_Text textDisplay;
-    private GameObject canvasObj;
-    private Coroutine typingCoroutine;
-    private Coroutine fadeCoroutine;
-    private bool isShowing = false;
+    [Header("Tetiklenecek Olay")]
+    public GameObject objectToReveal;
 
-    private void Awake()
+    private bool hasDialogueFinished = false;
+    private Coroutine typingCoroutine; // Yazma iþlemini kontrol etmek için
+
+    void Start()
     {
-        // Find Canvas inside NPC
-        canvasObj = transform.Find("Canvas").gameObject;
-        if (canvasObj == null)
+        if (objectToReveal != null)
         {
-            Debug.LogError("Canvas not found under NPC!");
-            return;
+            objectToReveal.SetActive(false);
         }
-
-        // Ensure CanvasGroup
-        canvasGroup = canvasObj.GetComponent<CanvasGroup>();
-        if (canvasGroup == null) canvasGroup = canvasObj.AddComponent<CanvasGroup>();
-
-        // Find "Text (TMP)" inside Canvas
-        textDisplay = canvasObj.transform.Find("Text (TMP)").GetComponent<TMP_Text>();
-        if (textDisplay == null)
-            Debug.LogError("TMP_Text not found inside Canvas!");
-
-        // Hide at start
-        canvasGroup.alpha = 0;
-        canvasObj.SetActive(false);
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player") && !isShowing)
+        // Baþlangýçta diyalog kutusunun kapalý olduðundan emin ol
+        if (textBox != null)
         {
-            isShowing = true;
-            canvasObj.SetActive(true);
-
-            if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
-            fadeCoroutine = StartCoroutine(FadeCanvas(1));
-
-            if (typingCoroutine != null) StopCoroutine(typingCoroutine);
-            typingCoroutine = StartCoroutine(TypeText(message));
+            textBox.SetActive(false);
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && isShowing)
+        if (other.CompareTag("Player") && !hasDialogueFinished)
         {
-            isShowing = false;
-
-            if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
-            fadeCoroutine = StartCoroutine(FadeOutAndDisable());
+            textBox.SetActive(true);
+            // Direkt yazýyý göstermek yerine, yavaþ yavaþ yazma efektini baþlat
+            typingCoroutine = StartCoroutine(TypeText(dialogueString));
         }
     }
 
-    private IEnumerator TypeText(string textToType)
+    // Yazýyý harf harf yazdýran fonksiyon (Coroutine)
+    IEnumerator TypeText(string text)
     {
-        textDisplay.text = "";
-        foreach (char c in textToType)
+        textDisplay.text = ""; // Baþlamadan önce metin kutusunu temizle
+        foreach (char letter in text.ToCharArray())
         {
-            textDisplay.text += c;
+            textDisplay.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
     }
 
-    private IEnumerator FadeCanvas(float targetAlpha)
+    void OnTriggerExit2D(Collider2D other)
     {
-        float startAlpha = canvasGroup.alpha;
-        float time = 0f;
-
-        while (time < fadeDuration)
+        if (other.CompareTag("Player"))
         {
-            time += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, time / fadeDuration);
-            yield return null;
-        }
-        canvasGroup.alpha = targetAlpha;
-    }
+            // Eðer hala devam eden bir yazma iþlemi varsa durdur
+            if (typingCoroutine != null)
+            {
+                StopCoroutine(typingCoroutine);
+            }
 
-    private IEnumerator FadeOutAndDisable()
-    {
-        yield return FadeCanvas(0);
-        canvasObj.SetActive(false);
+            // SORUN 1 ÇÖZÜMÜ: Diyalog kutusunu kapatmadan önce içindeki yazýyý temizle
+            textDisplay.text = "";
+            textBox.SetActive(false);
+
+            if (!hasDialogueFinished)
+            {
+                if (objectToReveal != null)
+                {
+                    objectToReveal.SetActive(true);
+                }
+                hasDialogueFinished = true;
+            }
+        }
     }
 }

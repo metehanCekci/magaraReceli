@@ -360,6 +360,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: -8435245712485981826, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
+--- !u!114 &100619341 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 415156464054612433, guid: 567c60e87b93b65449e74b38d87ed79a, type: 3}
+  m_PrefabInstance: {fileID: 1739275699}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!4 &120342774 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 285497726727035353, guid: 1b53c76b7e0c834d8b0dd4aaaba7ac4c, type: 3}
@@ -1534,7 +1545,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -57.94681, y: 11.976717}
+  m_Offset: {x: -57.756737, y: 11.976717}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1544,7 +1555,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 6.047737, y: 0.1207695}
+  m_Size: {x: 5.6675873, y: 0.1207695}
   m_EdgeRadius: 0
 --- !u!61 &436749800
 BoxCollider2D:
@@ -3607,6 +3618,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5612224751325447838, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
+      propertyPath: edgeCheck
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612224751325447838, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -3615,8 +3630,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5612224751325447838, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
+      propertyPath: wallCheck
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612224751325447838, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
       propertyPath: chaseSpeed
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612224751325447838, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
+      propertyPath: checkRadius
+      value: 0.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612224751325447838, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
+      propertyPath: groundCheck
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5612224751325447838, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
       propertyPath: patrolSpeed
@@ -3626,6 +3653,18 @@ PrefabInstance:
       propertyPath: exclamationMark
       value: 
       objectReference: {fileID: 996927197}
+    - target: {fileID: 5612224751325447838, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
+      propertyPath: wallLayer.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612224751325447838, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612224751325447838, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
+      propertyPath: whatIsGround.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 5612224751325447838, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
       propertyPath: 'patrolPoints.Array.data[0]'
       value: 
@@ -4526,6 +4565,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: 2f8bf82835a2c014baacc9973baa894c, type: 3}
   m_PrefabInstance: {fileID: 1178642021}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1179451342 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6566335118237086433, guid: 567c60e87b93b65449e74b38d87ed79a, type: 3}
+  m_PrefabInstance: {fileID: 1739275699}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1267324566
 GameObject:
   m_ObjectHideFlags: 0
@@ -4539,7 +4583,7 @@ GameObject:
   - component: {fileID: 1267324568}
   - component: {fileID: 1267324567}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Dash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4670,7 +4714,7 @@ Transform:
   m_GameObject: {fileID: 1267324566}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 34.41, y: 33.08, z: 0}
+  m_LocalPosition: {x: 39.18, y: 33.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5265,6 +5309,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3393136418310902778, guid: 567c60e87b93b65449e74b38d87ed79a, type: 3}
+      propertyPath: textBox
+      value: 
+      objectReference: {fileID: 1179451342}
+    - target: {fileID: 3393136418310902778, guid: 567c60e87b93b65449e74b38d87ed79a, type: 3}
+      propertyPath: textDisplay
+      value: 
+      objectReference: {fileID: 100619341}
+    - target: {fileID: 3393136418310902778, guid: 567c60e87b93b65449e74b38d87ed79a, type: 3}
+      propertyPath: dialogueString
+      value: asdasdasdasd
+      objectReference: {fileID: 0}
+    - target: {fileID: 3393136418310902778, guid: 567c60e87b93b65449e74b38d87ed79a, type: 3}
+      propertyPath: objectToReveal
+      value: 
+      objectReference: {fileID: 1267324566}
     - target: {fileID: 4774903456373063849, guid: 567c60e87b93b65449e74b38d87ed79a, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6834
@@ -187367,21 +187427,11 @@ Tilemap:
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
-  - first: {x: 11, y: 67, z: 0}
+  - first: {x: 12, y: 67, z: 0}
     second:
       serializedVersion: 2
       m_TileIndex: 16
       m_TileSpriteIndex: 6
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
-  - first: {x: 12, y: 67, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 15
-      m_TileSpriteIndex: 7
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -254919,7 +254969,7 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 0c65c9a6c6116f146adb92092e72d45e, type: 2}
   - m_RefCount: 13
     m_Data: {fileID: 11400000, guid: 6b832173910342f46815e7e3f62c398c, type: 2}
-  - m_RefCount: 67
+  - m_RefCount: 66
     m_Data: {fileID: 11400000, guid: d4ae9b4d2113b5a44a42caf9e0c4446e, type: 2}
   - m_RefCount: 12
     m_Data: {fileID: 11400000, guid: 25146b9f1a96aa245974531485cdbeb3, type: 2}
@@ -254948,7 +254998,7 @@ Tilemap:
     m_Data: {fileID: -2546509018469463177, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
   - m_RefCount: 12
     m_Data: {fileID: 8398439127031733407, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
-  - m_RefCount: 67
+  - m_RefCount: 66
     m_Data: {fileID: -185068086949682015, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
   - m_RefCount: 13
     m_Data: {fileID: 1670244059044316111, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
@@ -254975,7 +255025,7 @@ Tilemap:
   - m_RefCount: 1
     m_Data: {fileID: -5124932817193746692, guid: 9916d3731d78c524b9d75d33bc249acb, type: 3}
   m_TileMatrixArray:
-  - m_RefCount: 24934
+  - m_RefCount: 24933
     m_Data:
       e00: 1
       e01: 0
@@ -255012,7 +255062,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 24939
+  - m_RefCount: 24938
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -255233,6 +255283,10 @@ PrefabInstance:
     - target: {fileID: 1477707327367700591, guid: 1b53c76b7e0c834d8b0dd4aaaba7ac4c, type: 3}
       propertyPath: m_Name
       value: PatrolEnemyWaypoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 1477707327367700591, guid: 1b53c76b7e0c834d8b0dd4aaaba7ac4c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7021954711747663662, guid: 1b53c76b7e0c834d8b0dd4aaaba7ac4c, type: 3}
       propertyPath: m_LocalPosition.x

@@ -40,10 +40,15 @@ public class BossAi : MonoBehaviour
     [Range(0, 100)] public int chargeChance = 10;
 
     [Header("Visuals")]
-    public GameObject exclamationMark; // exclamation mark above boss
+    public GameObject exclamationMark;
+
+    // Animator reference
+    private Animator animator;
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
+
         StartCoroutine(MovementLoop());
         StartCoroutine(AttackCycle());
     }
@@ -54,59 +59,72 @@ public class BossAi : MonoBehaviour
         {
             if (canMove)
             {
+                animator.SetBool("isWalking", true);
+
                 Vector3 targetPos = movingRight ? rightTrigger.position : leftTrigger.position;
                 transform.position = Vector2.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+
+                // Flip to face movement direction
+                FaceDirection(movingRight);
 
                 if (Vector2.Distance(transform.position, targetPos) <= wallOffset)
                     movingRight = !movingRight;
             }
+            else
+            {
+                animator.SetBool("isWalking", false);
+            }
+
             yield return null;
         }
     }
 
-IEnumerator AttackCycle()
-{
-    while (true)
+    IEnumerator AttackCycle()
     {
-        yield return new WaitForSeconds(timeBetweenAttacks);
+        while (true)
+        {
+            yield return new WaitForSeconds(timeBetweenAttacks);
 
-        int roll = Random.Range(0, 100);
-        int cumulative = 0;
+            int roll = Random.Range(0, 100);
+            int cumulative = 0;
 
-        if (roll < (cumulative += spikeChance))
-        {
-            // Spike attack doesn't stop movement
-            yield return StartCoroutine(SpikeAttack());
-        }
-        else if (roll < (cumulative += boulderChance))
-        {
-            // Boulder attack doesn't stop movement
-            yield return StartCoroutine(BoulderAttack());
-        }
-        else if (roll < (cumulative += lazerChance))
-        {
-            if (FindObjectOfType<LazerLauncher>() == null)
+            if (roll < (cumulative += spikeChance))
             {
-                // Stop movement only for Lazer
+                animator.SetBool("isWalking", false);
+                yield return StartCoroutine(SpikeAttack());
+            }
+            else if (roll < (cumulative += boulderChance))
+            {
+                animator.SetBool("isWalking", false);
+                yield return StartCoroutine(BoulderAttack());
+            }
+            else if (roll < (cumulative += lazerChance))
+            {
+                if (FindObjectOfType<LazerLauncher>() == null)
+                {
+                    canMove = false;
+                    animator.SetBool("isWalking", false);
+
+                    yield return new WaitForSeconds(0.5f);
+                    yield return StartCoroutine(LazerLauncherAttack());
+                    yield return new WaitForSeconds(0.5f);
+
+                    canMove = true;
+                }
+            }
+            else if (roll < (cumulative += chargeChance))
+            {
                 canMove = false;
+                animator.SetBool("isWalking", false);
+
                 yield return new WaitForSeconds(0.5f);
-                yield return StartCoroutine(LazerLauncherAttack());
+                yield return StartCoroutine(ChargeAttack());
                 yield return new WaitForSeconds(0.5f);
+
                 canMove = true;
             }
         }
-        else if (roll < (cumulative += chargeChance))
-        {
-            // Stop movement only for Charge
-            canMove = false;
-            yield return new WaitForSeconds(0.5f);
-            yield return StartCoroutine(ChargeAttack());
-            yield return new WaitForSeconds(0.5f);
-            canMove = true;
-        }
     }
-}
-
 
     #region Attacks
 
@@ -189,24 +207,23 @@ IEnumerator AttackCycle()
 
     IEnumerator ChargeAttack()
     {
-        // Show exclamation mark before charging
         if (exclamationMark)
             exclamationMark.SetActive(true);
 
-        // Wait so player can react
         yield return new WaitForSeconds(1f);
-
-        // Hide exclamation mark as the charge starts
-        
 
         Debug.Log("Boss started charging!");
 
         float timer = 0f;
+        animator.SetBool("isWalking", true);
 
         while (timer < chargeDuration)
         {
             Vector3 targetPos = movingRight ? rightTrigger.position : leftTrigger.position;
             transform.position = Vector2.MoveTowards(transform.position, targetPos, chargeSpeed * Time.deltaTime);
+
+            // Flip to face charge direction
+            FaceDirection(movingRight);
 
             if (Vector2.Distance(transform.position, targetPos) <= wallOffset)
                 movingRight = !movingRight;
@@ -217,7 +234,20 @@ IEnumerator AttackCycle()
 
         if (exclamationMark)
             exclamationMark.SetActive(false);
+
+        animator.SetBool("isWalking", false);
         Debug.Log("Boss finished charging!");
+    }
+
+    #endregion
+
+    #region Helpers
+
+    private void FaceDirection(bool faceRight)
+    {
+        Vector3 scale = transform.localScale;
+        scale.x = faceRight ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
+        transform.localScale = scale;
     }
 
     #endregion
