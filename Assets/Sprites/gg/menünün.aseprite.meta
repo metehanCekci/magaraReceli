@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f9e7b5e4cd9747646af0fb1081def8b2
+guid: cb44ec33137be45469e7ee3529ef0968
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: STORY
+  - name: "men\xFCn\xFCn"
     originalName: 
-    pivot: {x: 0.5, y: 0}
+    pivot: {x: 0.50078, y: 0.051799826}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 500
-      height: 250
-    spriteID: 2101ae081dbef1d4a973f14446bf4263
+      width: 1923
+      height: 1139
+    spriteID: 556c5f58d2c11f9468563af09654e21f
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,25 +153,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 251351983
+      value0: 2528731558
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: STORY
+    name: "men\xFCn\xFCn"
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: STORY
+    - name: "men\xFCn\xFCn"
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 0
-        y: 0
-        width: 500
-        height: 250
-      spriteId: 2101ae081dbef1d4a973f14446bf4263
+        x: -3
+        y: -59
+        width: 1923
+        height: 1139
+      spriteId: 556c5f58d2c11f9468563af09654e21f
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -181,5 +181,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 500, y: 250}
-  previousTextureSize: {x: 512, y: 512}
+  canvasSize: {x: 1920, y: 1080}
+  previousTextureSize: {x: 2048, y: 2048}
