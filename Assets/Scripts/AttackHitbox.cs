@@ -1,11 +1,10 @@
-// AttackHitbox2D içinde
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackHitbox2D : MonoBehaviour
+public class AttackHitbox : MonoBehaviour
 {
     public int damage = 1;
-    public int soulGainOnHit = 10; // Her vuruşta kazandırılacak soul miktarı
+    public int soulGainOnHit = 10;
     PlayerController owner;
     Dictionary<EnemyHealth2D, int> lastHitSwing = new Dictionary<EnemyHealth2D, int>();
 
@@ -28,17 +27,18 @@ public class AttackHitbox2D : MonoBehaviour
         int currentSwing = owner.CurrentSwingId;
 
         if (lastHitSwing.TryGetValue(enemy, out int last) && last == currentSwing)
-            return; // aynı swing'de tekrar vurma
+            return;
 
         enemy.TakeDamage(damage);
         lastHitSwing[enemy] = currentSwing;
 
-        // Soul kazanımı ekleme
-        owner.IncreaseSoul(soulGainOnHit); // oyuncuya soul ekleniyor
+        Vector2 knockbackDirection = (other.transform.position - owner.transform.position).normalized;
+        enemy.ApplyKnockback(knockbackDirection);
+
+        owner.IncreaseSoul(soulGainOnHit);
 
         Debug.Log($"Hit {enemy.name} on swing {currentSwing}. Soul gained.");
-        CameraShake.Instance.Shake(0.1f, 0.1f); // kamera sarsılması
+        CameraShake.Instance.Shake(0.1f, 0.1f);
         gameObject.SetActive(false);
-
     }
 }
