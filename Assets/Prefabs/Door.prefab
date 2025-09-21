@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4752303523977539676}
   - component: {fileID: 7257427538504657948}
   - component: {fileID: 5948370654351624133}
-  - component: {fileID: 8965800549670713925}
+  - component: {fileID: 6816328327036300381}
   m_Layer: 9
   m_Name: Door
   m_TagString: Wall
@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 6.18, y: -2.132, z: 0}
-  m_LocalScale: {x: 1.7, y: 0.4, z: 1}
+  m_LocalScale: {x: 1, y: 1.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -81,7 +81,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 7849965096804125938, guid: 3f42ccb7a8979e747966da85fbd6c26f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -126,19 +126,19 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.03639126, y: 1.2600502}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    pivot: {x: 0.61111104, y: -0.04324324}
+    oldSize: {x: 0.54, y: 1.85}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5087166, y: 1.6277502}
   m_EdgeRadius: 0
---- !u!114 &8965800549670713925
+--- !u!114 &6816328327036300381
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,8 +147,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5480724032533339705}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3829f45a72bfa404e8438ceeccf75400, type: 3}
+  m_Script: {fileID: 11500000, guid: 084d71858791ac64a884f78c2baa2ea1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SquareShootng
-  speed: 1
-  isRight: 1
+  m_EditorClassIdentifier: Assembly-CSharp::DoorScript
+  speed: 2
