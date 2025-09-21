@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4767911975815459275}
   - component: {fileID: 3775359764227798775}
   - component: {fileID: 8367059104309933389}
+  - component: {fileID: 9059618191909635264}
   m_Layer: 0
   m_Name: BreakableWall
   m_TagString: Untagged
@@ -153,6 +154,38 @@ MonoBehaviour:
   maxHealth: 15
   currentHealth: 15
   invulnerableTime: 0.2
+  canBeKnockedBack: 1
+  knockbackForce: 5
+  knockbackTime: 0.2
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
+  doorScript: {fileID: 0}
+  isBoss: 0
+--- !u!50 &9059618191909635264
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6429772914415392527}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
