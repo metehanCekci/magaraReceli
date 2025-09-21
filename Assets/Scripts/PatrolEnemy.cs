@@ -91,7 +91,7 @@ public class PatrolEnemy : MonoBehaviour
             return;
         }
 
-        animator.SetBool("isWalking", true);
+        //animator.SetBool("isWalking", true);
 
         Transform targetPoint = patrolPoints[currentPatrolIndex];
 
@@ -133,7 +133,7 @@ public class PatrolEnemy : MonoBehaviour
         else
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            animator.SetBool("isWalking", false);
+            //animator.SetBool("isWalking", false);
 
             if (Time.time >= lastAttackTime + attackCooldown)
             {
