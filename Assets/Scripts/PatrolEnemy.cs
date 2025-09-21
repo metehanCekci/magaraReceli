@@ -13,13 +13,14 @@ public class PatrolEnemy : MonoBehaviour
     public float detectionRange = 10f;
     public float attackRange = 1.5f;
     public float attackCooldown = 2f;
-    public float jumpForce = 12f; // Düşmanın zıplama gücü
+    public float jumpForce = 12f;
 
     [Header("Checks")]
     public Transform groundCheck;
     public Transform wallCheck;
+    public Transform edgeCheck; // YENİ: Kenar kontrol noktası
     public float checkRadius = 0.2f;
-    public LayerMask whatIsGround; // Zemin ve duvar olarak kabul edilecek layer
+    public LayerMask whatIsGround;
 
     private int currentPatrolIndex = 0;
     private Transform player;
@@ -51,7 +52,6 @@ public class PatrolEnemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Yerde olup olmadığını sürekli kontrol et
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
     }
 
@@ -60,7 +60,7 @@ public class PatrolEnemy : MonoBehaviour
         if (player == null || (playerHealth != null && playerHealth.currentHealth <= 0) || (enemyHealth != null && enemyHealth.currentHealth <= 0))
         {
             isChasing = false;
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // X eksenindeki hızı sıfırla
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             animator.SetBool("isWalking", false);
             return;
         }
@@ -84,25 +84,35 @@ public class PatrolEnemy : MonoBehaviour
 
     void Patrol()
     {
-        if (patrolPoints.Length == 0)
+        if (patrolPoints == null || patrolPoints.Length == 0)
         {
             animator.SetBool("isWalking", false);
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             return;
         }
 
-        animator.SetBool("isWalking", true);
+        // YENİ: Kenar kontrolü. Eğer önü boşluksa ve yerdeyse geri dön.
+        bool atEdge = !Physics2D.OverlapCircle(edgeCheck.position, checkRadius, whatIsGround);
+        if (atEdge && isGrounded)
+        {
+            // Yönünü tersine çevirip diğer patrol noktasına gitmesini sağla
+            Flip(-transform.localScale.x);
+            // Index'i de güncelleyerek takılmasını önle
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+        }
 
+        animator.SetBool("isWalking", true);
         Transform targetPoint = patrolPoints[currentPatrolIndex];
+
+        if (Vector2.Distance(transform.position, targetPoint.position) < 1f)
+        {
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+        }
 
         float direction = Mathf.Sign(targetPoint.position.x - transform.position.x);
         rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
 
         Flip(direction);
-
-        if (Mathf.Abs(transform.position.x - targetPoint.position.x) < 0.5f)
-        {
-            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
-        }
     }
 
     void ChasePlayer()
@@ -110,30 +120,30 @@ public class PatrolEnemy : MonoBehaviour
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
         float direction = Mathf.Sign(player.position.x - transform.position.x);
 
-        // Yüzünü her zaman oyuncuya dönük tut
         Flip(direction);
 
         if (distanceToPlayer > attackRange)
         {
-            // Saldırı menzili dışındaysa oyuncuyu takip et
             rb.linearVelocity = new Vector2(direction * chaseSpeed, rb.linearVelocity.y);
             animator.SetBool("isWalking", true);
 
-            // Zeki Hareket: Duvar kontrolü ve zıplama
             bool isHittingWall = Physics2D.OverlapCircle(wallCheck.position, checkRadius, whatIsGround);
-            if (isHittingWall && isGrounded)
+            bool atEdge = !Physics2D.OverlapCircle(edgeCheck.position, checkRadius, whatIsGround);
+
+            // Zıplama Mantığı
+            if (isHittingWall && isGrounded && player.position.y > transform.position.y + 1f)
             {
-                // Eğer bir duvara çarpıyorsa ve yerdeyse zıplamayı dene
-                // Oyuncunun daha yukarıda olduğundan emin ol
-                if (player.position.y > transform.position.y + 1f)
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-                }
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            }
+            // YENİ: Aşağı Atlama Mantığı
+            else if (atEdge && isGrounded && player.position.y < transform.position.y - 1.5f)
+            {
+                // Kenardaysa, yerdeyse ve oyuncu yeterince aşağıdaysa, takip etmeye devam et (atlamasını sağla)
+                // Hızını kesmediğimiz için platformdan düşecektir.
             }
         }
         else
         {
-            // Saldırı menzilindeyse dur ve saldır
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             animator.SetBool("isWalking", false);
 
@@ -153,22 +163,21 @@ public class PatrolEnemy : MonoBehaviour
     void Flip(float direction)
     {
         if (direction > 0.01f)
-        {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        }
         else if (direction < -0.01f)
-        {
             transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        }
     }
 
-    // Editörde kontrol noktalarını görebilmek için
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.blue;
-        if (groundCheck != null)
-            Gizmos.DrawWireSphere(groundCheck.position, checkRadius);
-        if (wallCheck != null)
-            Gizmos.DrawWireSphere(wallCheck.position, checkRadius);
+        Gizmos.color = Color.green;
+        if (groundCheck != null) Gizmos.DrawWireSphere(groundCheck.position, checkRadius);
+
+        Gizmos.color = Color.red;
+        if (wallCheck != null) Gizmos.DrawWireSphere(wallCheck.position, checkRadius);
+
+        // YENİ: EdgeCheck Gizmo'su
+        Gizmos.color = Color.yellow;
+        if (edgeCheck != null) Gizmos.DrawWireSphere(edgeCheck.position, checkRadius);
     }
 }
