@@ -2,103 +2,126 @@ using UnityEngine;
 
 public class PatrolEnemy : MonoBehaviour
 {
-    [Header("Patrol")]
-    public Transform[] patrolPoints;
-    public float moveSpeed = 2f;
-
-    [Header("Combat")]
+    public float patrolSpeed = 2f;
     public float chaseSpeed = 4f;
-    public float detectionRange = 10f;
+    public float detectionRadius = 5f;
+    public float chaseStopDistance = 10f;
+    public Transform[] waypoints;
+    public SpriteRenderer graphics;
+    public LayerMask playerLayer;
+    public Transform player;
 
-    private int currentPatrolIndex = 0;
-    private Transform player;
-    private HealthSystem playerHealth;
-    private bool isChasing = false;
-
-    // private Animator animator; // Yorum satırı yapıldı
-    private Rigidbody2D rb;
+    private Transform target;
+    private int destPoint = 0;
     private EnemyHealth2D enemyHealth;
 
-    private void Awake()
-    {
-        // animator = GetComponent<Animator>(); // Yorum satırı yapıldı
-        rb = GetComponent<Rigidbody2D>();
-        enemyHealth = GetComponent<EnemyHealth2D>();
-    }
+    private enum State { PATROL, CHASE }
+    private State currentState;
 
     void Start()
     {
-        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
-        if (playerObject != null)
+        enemyHealth = GetComponent<EnemyHealth2D>();
+        currentState = State.PATROL;
+
+        if (waypoints.Length > 0)
         {
-            player = playerObject.transform;
-            playerHealth = playerObject.GetComponent<HealthSystem>();
+            target = waypoints[0];
+        }
+
+        if (player == null)
+        {
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+            if (playerObject != null)
+            {
+                player = playerObject.transform;
+            }
         }
     }
 
     void Update()
     {
-        // Oyuncu veya düşman öldüyse hareket etmeyi bırak
-        if (player == null || (playerHealth != null && playerHealth.currentHealth <= 0) || (enemyHealth != null && enemyHealth.currentHealth <= 0))
+        if (enemyHealth != null && enemyHealth.IsKnockedBack())
         {
-            isChasing = false;
-            rb.linearVelocity = Vector2.zero;
-            // animator.SetBool("isWalking", false); // Yorum satırı yapıldı
             return;
         }
 
-        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
-        // Takip etmiyorsa ve oyuncu menzile girdiyse takibe başla
-        if (!isChasing && distanceToPlayer <= detectionRange)
+        if (player == null || waypoints.Length == 0)
         {
-            isChasing = true;
+            return;
         }
 
-        if (isChasing)
+        switch (currentState)
         {
-            ChasePlayer();
+            case State.PATROL:
+                Patrol();
+                CheckForPlayer();
+                break;
+            case State.CHASE:
+                Chase();
+                break;
         }
-        else
-        {
-            Patrol();
-        }
-
-        // Animasyonu hıza göre ayarla
-        // animator.SetBool("isWalking", rb.velocity.x != 0); // Yorum satırı yapıldı
     }
 
     void Patrol()
     {
-        if (patrolPoints == null || patrolPoints.Length == 0) return;
+        Vector3 dir = target.position - transform.position;
+        transform.Translate(dir.normalized * patrolSpeed * Time.deltaTime, Space.World);
 
-        Transform targetPoint = patrolPoints[currentPatrolIndex];
-
-        // Hedefe ulaşıldıysa bir sonrakine geç
-        if (Vector2.Distance(transform.position, targetPoint.position) < 1f)
+        if (Vector3.Distance(transform.position, target.position) < 0.3f)
         {
-            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+            destPoint = (destPoint + 1) % waypoints.Length;
+            target = waypoints[destPoint];
         }
 
-        // Hedefe doğru hareket et
-        float direction = Mathf.Sign(targetPoint.position.x - transform.position.x);
-        rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
-        Flip(direction);
+        //FlipSprite(dir.x);
     }
 
-    void ChasePlayer()
+    void Chase()
     {
-        // Dümdüz oyuncuya doğru koş
-        float direction = Mathf.Sign(player.position.x - transform.position.x);
-        rb.linearVelocity = new Vector2(direction * chaseSpeed, rb.linearVelocity.y);
-        Flip(direction);
+        // Hedef pozisyonu oyuncunun x'i ve düşmanın kendi y'si olarak ayarla
+        Vector3 targetPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
+
+        // Sadece X ekseninde hareket et
+        Vector3 dir = targetPosition - transform.position;
+        transform.Translate(dir.normalized * chaseSpeed * Time.deltaTime, Space.World);
+
+       // FlipSprite(dir.x);
+
+        // İsteğe bağlı: Oyuncu menzilden çıkarsa devriyeye geri dön
+        /*
+        if (Vector2.Distance(transform.position, player.position) > chaseStopDistance)
+        {
+            currentState = State.PATROL;
+            target = waypoints[destPoint];
+        }
+        */
     }
 
-    void Flip(float direction)
+    void CheckForPlayer()
     {
-        if (direction > 0)
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        else if (direction < 0)
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        if (Vector2.Distance(transform.position, player.position) < detectionRadius)
+        {
+            currentState = State.CHASE;
+        }
+    }
+
+    /**void FlipSprite(float direction)
+    {
+        if (direction > 0.1f)
+        {
+            graphics.flipX = false;
+        }
+        else if (direction < -0.1f)
+        {
+            graphics.flipX = true;
+        }
+    }**/
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, chaseStopDistance);
     }
 }
