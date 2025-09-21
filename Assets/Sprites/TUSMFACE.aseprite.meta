@@ -129,7 +129,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: TUSMFACE
     originalName: 
-    pivot: {x: 0.6606607, y: -0.352}
+    pivot: {x: 0.6064714, y: 0.4926263}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -150,7 +150,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 1153}
   - name: Frame_1
     originalName: 
-    pivot: {x: 0.6606607, y: -0.352}
+    pivot: {x: 0.6069906, y: 0.49327084}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -171,7 +171,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 1536}
   - name: Frame_2
     originalName: 
-    pivot: {x: 0.64387465, y: -0.352}
+    pivot: {x: 0.59179664, y: 0.49329022}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -192,7 +192,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 770}
   - name: Frame_3
     originalName: 
-    pivot: {x: 0.6422535, y: -0.352}
+    pivot: {x: 0.5912339, y: 0.49397576}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -213,7 +213,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: Frame_4
     originalName: 
-    pivot: {x: 0.6422535, y: -0.352}
+    pivot: {x: 0.5917214, y: 0.49341342}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
