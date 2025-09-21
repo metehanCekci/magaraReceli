@@ -17,8 +17,8 @@ public class TriggerCutscene : MonoBehaviour
     
     void OnTriggerEnter2D(Collider2D other)
     {
-        other.gameObject.transform.GetChild(2).SetParent(anim.transform);
-        Destroy(other.gameObject);
+        other.gameObject.transform.GetChild(3).SetParent(anim.transform);
+        //Destroy(other.gameObject);
         anim.SetTrigger("HoleCutscene");
     }
 }
