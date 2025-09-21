@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b8a0f7805bf524d4983673e2c6da308f
+guid: 5d377cabee33aa24ca6bdb5c5ffbb55c
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -129,8 +129,8 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Bicak
     originalName: 
-    pivot: {x: -0.10638288, y: -18}
-    alignment: 9
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
@@ -139,7 +139,7 @@ ScriptedImporter:
       y: 4
       width: 47
       height: 8
-    spriteID: 132fdb778475494468ab6a9807d2ace6
+    spriteID: 69d5e35c97437d148be3e0dd11c360ad
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -171,7 +171,7 @@ ScriptedImporter:
         y: 144
         width: 47
         height: 8
-      spriteId: 132fdb778475494468ab6a9807d2ace6
+      spriteId: 69d5e35c97437d148be3e0dd11c360ad
     linkedCells: []
     tileCells: []
     tileSetIndex: 0

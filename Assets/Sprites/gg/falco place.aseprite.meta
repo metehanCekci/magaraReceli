@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e3e0cb282efccb04cb3326bdf7263842
+guid: 7d32c1c14294c2543b687c612aa34185
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,7 +127,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: TUSMBG
+  - name: falco place
     originalName: 
     pivot: {x: 0.5, y: 0}
     alignment: 9
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 640
-      height: 360
-    spriteID: 092791244f394d94686111dd88c56f30
+      width: 320
+      height: 197
+    spriteID: eb7d575d376aa4a459d72d64bf54a5cd
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,25 +153,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 2814303234
+      value0: 59941724
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: TUSMBG
+    name: falco place
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: TUSMBG
+    - name: falco place
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
         x: 0
         y: 0
-        width: 640
-        height: 360
-      spriteId: 092791244f394d94686111dd88c56f30
+        width: 320
+        height: 197
+      spriteId: eb7d575d376aa4a459d72d64bf54a5cd
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -181,5 +181,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 640, y: 360}
-  previousTextureSize: {x: 1024, y: 512}
+  canvasSize: {x: 320, y: 180}
+  previousTextureSize: {x: 512, y: 256}

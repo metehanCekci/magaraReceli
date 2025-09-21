@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7c6128cbae4df7445bc0412206a165c9
+guid: e18a574bce74d8f47b5f52d473e0a714
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -129,8 +129,8 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: patatolauncher
     originalName: 
-    pivot: {x: 0.16666667, y: -1}
-    alignment: 9
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
@@ -139,7 +139,7 @@ ScriptedImporter:
       y: 4
       width: 18
       height: 18
-    spriteID: 234f9b355bbe90444907716b99c26ea4
+    spriteID: 5c7dc3a5bc8affc419f23a34682d5e53
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -171,7 +171,7 @@ ScriptedImporter:
         y: 18
         width: 18
         height: 18
-      spriteId: 234f9b355bbe90444907716b99c26ea4
+      spriteId: 5c7dc3a5bc8affc419f23a34682d5e53
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
