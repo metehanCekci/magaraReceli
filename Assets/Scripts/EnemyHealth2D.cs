@@ -22,10 +22,11 @@ public class EnemyHealth2D : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public AudioSource audioSource;
 
-    public SquareShootng doorScript;
+    public DoorScript doorScript;
 
     [Header("Boss Settings")]
     public bool isBoss = false;
+    public bool isLastBoss = false;
 
     private bool invulnerable;
     private Rigidbody2D rb;
@@ -118,6 +119,11 @@ public class EnemyHealth2D : MonoBehaviour
             {
                 doorScript.enabled = true;
             }
+        }
+        
+        else if(isLastBoss)
+        {
+            this.GetComponent<LastBossDeathHandler>().LastHandler();
         }
 
         Destroy(gameObject);

@@ -23,8 +23,6 @@ public class BossAi : MonoBehaviour
     [Header("Lazer Launcher Attack")]
     public GameObject lazerLauncherPrefab;
     public GameObject lazerLauncherPrefab2;
-    public GameObject lazerLauncherPrefab3;
-    public GameObject lazerLauncherPrefab4;
 
     [Header("Charge Attack")]
     public float chargeSpeed = 6f;
@@ -131,12 +129,12 @@ public class BossAi : MonoBehaviour
 
     IEnumerator SpikeAttack()
     {
-        GameObject spike1 = Instantiate(spikePrefab1, spikePrefab1.transform.position, Quaternion.identity);
+        GameObject spike1 = Instantiate(spikePrefab1, spikePrefab1.transform.position, spikePrefab1.transform.rotation);
         spike1.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
-        GameObject spike2 = Instantiate(spikePrefab2, spikePrefab2.transform.position, Quaternion.identity);
+        GameObject spike2 = Instantiate(spikePrefab2, spikePrefab2.transform.position, spikePrefab2.transform.rotation);
         spike2.SetActive(true);
 
         yield return null;
@@ -149,7 +147,7 @@ public class BossAi : MonoBehaviour
 
         for (int i = 0; i < boulderCount; i++)
         {
-            GameObject boulder = Instantiate(boulderPrefab, boulderSpawnPoint.position, Quaternion.identity);
+            GameObject boulder = Instantiate(boulderPrefab, boulderSpawnPoint.position, boulderSpawnPoint.rotation);
             boulder.GetComponent<BoulderBehaviour>().Initialize(player.position.x);
             yield return new WaitForSeconds(delayBetween);
         }
@@ -158,11 +156,7 @@ public class BossAi : MonoBehaviour
     IEnumerator LazerLauncherAttack()
     {
         GameObject[] topCannons = { lazerLauncherPrefab, lazerLauncherPrefab2 };
-        GameObject[] bottomCannons = { lazerLauncherPrefab3, lazerLauncherPrefab4 };
-
         yield return StartCoroutine(ActivateCannons(topCannons));
-        yield return new WaitForSeconds(1f);
-        yield return StartCoroutine(ActivateCannons(bottomCannons));
     }
 
     IEnumerator ActivateCannons(GameObject[] cannons)
@@ -171,7 +165,8 @@ public class BossAi : MonoBehaviour
 
         foreach (GameObject cannonPrefab in cannons)
         {
-            GameObject cannon = Instantiate(cannonPrefab, cannonPrefab.transform.position, Quaternion.identity);
+            // Use prefab's rotation instead of Quaternion.identity
+            GameObject cannon = Instantiate(cannonPrefab, cannonPrefab.transform.position, cannonPrefab.transform.rotation);
             cannon.SetActive(true);
 
             SpriteRenderer sr = cannon.GetComponent<SpriteRenderer>();

@@ -4,22 +4,23 @@ using UnityEngine;
 public class FlyingEnemy : MonoBehaviour
 {
     [Header("Target")]
-    public Transform player;          // Player’ýn transform’u (Inspector’da sürükle býrak)
+    public Transform player;          // Player'Ä±n transformu
 
     [Header("Movement Settings")]
-    public float moveSpeed = 3f;      // Hýz
-    public float stopDistance = 1.5f; // Çok yaklaþtýðýnda durmasý için mesafe
-    public float smoothFollow = 5f;   // Hareket yumuþatma
+    public float moveSpeed = 3f;      // HÄ±z
+    public float stopDistance = 1.5f; // Ã‡ok yaklaÅŸtÄ±ÄŸÄ±nda durma mesafesi
+    public float smoothFollow = 5f;   // Hareket yumuÅŸatma
 
     private Rigidbody2D rb;
+    private SpriteRenderer sr;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
 
         if (player == null)
         {
-            // Eðer inspector’dan verilmemiþse otomatik player bul
             GameObject p = GameObject.FindGameObjectWithTag("Player");
             if (p != null) player = p.transform;
         }
@@ -29,21 +30,24 @@ public class FlyingEnemy : MonoBehaviour
     {
         if (player == null) return;
 
-        // Player ile aradaki mesafeyi bul
         float distance = Vector2.Distance(transform.position, player.position);
 
         if (distance > stopDistance)
         {
-            // Player’a doðru yön
             Vector2 direction = (player.position - transform.position).normalized;
 
-            // Rigidbody ile hareket
+            // Move with Rigidbody
             Vector2 targetVelocity = direction * moveSpeed;
             rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, targetVelocity, Time.fixedDeltaTime * smoothFollow);
+
+            // ðŸ”¥ Flip sprite depending on horizontal direction
+            if (direction.x > 0.1f)
+                sr.flipX = false; // Facing right
+            else if (direction.x < -0.1f)
+                sr.flipX = true;  // Facing left
         }
         else
         {
-            // Yaklaþtýðýnda dur
             rb.linearVelocity = Vector2.zero;
         }
     }
