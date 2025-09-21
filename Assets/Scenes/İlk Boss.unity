@@ -2542,6 +2542,9 @@ MonoBehaviour:
   maxHealth: 50
   currentHealth: 50
   invulnerableTime: 0.2
+  canBeKnockedBack: 1
+  knockbackForce: 5
+  knockbackTime: 0.2
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
