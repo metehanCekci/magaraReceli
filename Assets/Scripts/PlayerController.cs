@@ -394,7 +394,7 @@ if (Attack != null && Attack.action != null)
 
     void OnHealPerformed(InputAction.CallbackContext ctx)
     {
-        if (Soul >= MaxSoul)  // Soul 100 veya daha fazla olduğunda iyileştirme yapılabilir.
+        if (Soul == MaxSoul)
         {
             var healthSystem = GetComponent<HealthSystem>();
             rb.linearVelocity = Vector2.zero;
@@ -403,11 +403,10 @@ if (Attack != null && Attack.action != null)
                 StartCoroutine(HealWaitRoutine());
                 Debug.Log("Player's health increased by 60.");
             }
-            Soul = 0f;  // Can iyileştirildikten sonra Soul sıfırlanır
-            UpdateSoulBar();  // Soul barını günceller
+            Soul = 0f;
+            UpdateSoulBar();
         }
     }
-
 
     IEnumerator HealRoutine()
     {
