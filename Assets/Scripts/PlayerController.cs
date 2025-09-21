@@ -113,6 +113,12 @@ public class PlayerController : MonoBehaviour
         abilityManager = GetComponent<AbilityManager>();
         saveSystem = GetComponent<SaveSystem>();
 
+        // DEĞİŞİKLİK: Kayıtlı veriyi, diğer objelerin Start() metodundan önce çalışacak olan Awake()'de yüklüyoruz.
+        if (saveSystem != null)
+        {
+            saveSystem.Load(gameObject);
+        }
+
         if (!animator) animator = GetComponent<Animator>();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
         if (attackHitbox) attackHitbox.gameObject.SetActive(false);
@@ -122,9 +128,7 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-        if (saveSystem != null)
-            saveSystem.Load(gameObject);
-
+        // Yükleme işlemi Awake'e taşındığı için burası artık daha temiz.
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (var enemy in enemies)
         {

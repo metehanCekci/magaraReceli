@@ -1,55 +1,47 @@
+// metehancekci/magarareceli/magaraReceli-c354ca461671bdc0711870d4b7d693c7cf44512b/Assets/Scripts/DashGet.cs
+
 using UnityEngine;
 
 public class DashGet : MonoBehaviour
 {
-    private void Awake()
-    {
+    private AbilityManager abilityManager;
 
-    }
-    private void FixedUpdate()
+    // YENÝ: Sahne baþladýðýnda bu fonksiyon çalýþýr
+    void Start()
     {
-        // Oyuncunun AbilityManager'ýný al
+        // Oyuncuyu bul ve AbilityManager'ýna eriþ
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-
         if (player != null)
         {
-            AbilityManager abilityManager = player.GetComponent<AbilityManager>();
+            abilityManager = player.GetComponent<AbilityManager>();
 
-            // Eðer Dash yeteneði zaten alýndýysa, objeyi yok et
+            // KONTROL: Eðer oyuncunun AbilityManager'ý varsa VE Dash zaten açýksa...
             if (abilityManager != null && abilityManager.IsDashUnlocked())
             {
-                Destroy(gameObject);  // Dash alýndýysa objeyi yok et
+                // Dash zaten alýnmýþ olduðu için bu objeyi sahnede göstermeye gerek yok.
+                gameObject.SetActive(false);
             }
-            else
-            {
-                Debug.Log("Dash yeteneði alýnmadý, obje sahnede kalacak.");
-            }
-        }
-        else
-        {
-            Debug.LogError("Player GameObject bulunamadý!");
         }
     }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Oyuncu ile temas etti mi?
         if (other.CompareTag("Player"))
         {
-            // Oyuncunun AbilityManager'ýný bul
-            AbilityManager abilityManager = other.GetComponent<AbilityManager>();
-
-            if (abilityManager != null && !abilityManager.IsDashUnlocked())
+            if (abilityManager == null)
             {
-                abilityManager.UnlockDash(); // Dash kilidini aç
-                Debug.Log("Dash yeteneði açýldý!");
+                abilityManager = other.GetComponent<AbilityManager>();
+            }
 
-                // Pickup objesini yok et
-                Destroy(gameObject);
-            }
-            else
+            // Dash'in kilidini aç
+            if (abilityManager != null)
             {
-                Debug.Log("Dash zaten alýndý, obje yok edilmedi.");
+                abilityManager.UnlockDash();
+                Debug.Log("Dash yeteneði kazanýldý!");
             }
+
+            // Oyuncu Dash'i aldýðý için bu objeyi yok et
+            Destroy(gameObject);
         }
     }
 }
