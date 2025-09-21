@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))] // Rigidbody2D bileşenini zorunlu hale getir
 public class PatrolEnemy : MonoBehaviour
 {
     public float patrolSpeed = 2f;
@@ -8,9 +9,9 @@ public class PatrolEnemy : MonoBehaviour
     public float chaseStopDistance = 10f;
     public Transform[] waypoints;
     public SpriteRenderer graphics;
-    public LayerMask playerLayer;
     public Transform player;
 
+    private Rigidbody2D rb; // Rigidbody2D referansı
     private Transform target;
     private int destPoint = 0;
     private EnemyHealth2D enemyHealth;
@@ -20,6 +21,7 @@ public class PatrolEnemy : MonoBehaviour
 
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>(); // Rigidbody2D bileşenini al
         enemyHealth = GetComponent<EnemyHealth2D>();
         currentState = State.PATROL;
 
@@ -42,6 +44,7 @@ public class PatrolEnemy : MonoBehaviour
     {
         if (enemyHealth != null && enemyHealth.IsKnockedBack())
         {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); // Knockback sırasında X hızını durdur
             return;
         }
 
@@ -53,48 +56,59 @@ public class PatrolEnemy : MonoBehaviour
         switch (currentState)
         {
             case State.PATROL:
-                Patrol();
                 CheckForPlayer();
                 break;
             case State.CHASE:
-                Chase();
+                // Chase(); // Fizik güncellemeleri için Update yerine FixedUpdate kullanacağız
                 break;
         }
     }
 
+    // Fizik işlemleri için FixedUpdate kullanmak daha doğrudur.
+    void FixedUpdate()
+    {
+        if (enemyHealth != null && enemyHealth.IsKnockedBack())
+        {
+            return; // Knockback sırasında hareket etme
+        }
+
+        if (currentState == State.PATROL)
+        {
+            Patrol();
+        }
+        else if (currentState == State.CHASE)
+        {
+            Chase();
+        }
+    }
+
+
     void Patrol()
     {
-        Vector3 dir = target.position - transform.position;
-        transform.Translate(dir.normalized * patrolSpeed * Time.deltaTime, Space.World);
+        float directionX = target.position.x - transform.position.x;
+        rb.linearVelocity = new Vector2(Mathf.Sign(directionX) * patrolSpeed, rb.linearVelocity.y);
 
-        if (Vector3.Distance(transform.position, target.position) < 0.3f)
+        if (Mathf.Abs(directionX) < 0.3f)
         {
             destPoint = (destPoint + 1) % waypoints.Length;
             target = waypoints[destPoint];
         }
 
-        //FlipSprite(dir.x);
+        //FlipSprite(rb.linearVelocity.x);
     }
 
     void Chase()
     {
-        // Hedef pozisyonu oyuncunun x'i ve düşmanın kendi y'si olarak ayarla
-        Vector3 targetPosition = new Vector3(player.position.x, transform.position.y, transform.position.z);
+        float directionX = player.position.x - transform.position.x;
+        rb.linearVelocity = new Vector2(Mathf.Sign(directionX) * chaseSpeed, rb.linearVelocity.y);
 
-        // Sadece X ekseninde hareket et
-        Vector3 dir = targetPosition - transform.position;
-        transform.Translate(dir.normalized * chaseSpeed * Time.deltaTime, Space.World);
-
-       // FlipSprite(dir.x);
+        //FlipSprite(rb.linearVelocity.x);
 
         // İsteğe bağlı: Oyuncu menzilden çıkarsa devriyeye geri dön
-        /*
         if (Vector2.Distance(transform.position, player.position) > chaseStopDistance)
         {
             currentState = State.PATROL;
-            target = waypoints[destPoint];
         }
-        */
     }
 
     void CheckForPlayer()
@@ -105,6 +119,7 @@ public class PatrolEnemy : MonoBehaviour
         }
     }
 
+    // Sprite'ın yönünü çevirmek için bu fonksiyonu tekrar aktif edelim
     /**void FlipSprite(float direction)
     {
         if (direction > 0.1f)
