@@ -129,7 +129,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: Heykel
     originalName: 
-    pivot: {x: 0.868421, y: -1.3012048}
+    pivot: {x: 0.87804884, y: -1.3012048}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,7 +137,7 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 38
+      width: 41
       height: 83
     spriteID: 288c5108887da1341be6da918253caae
     spriteBone: []
@@ -167,9 +167,9 @@ ScriptedImporter:
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 87
+        x: 84
         y: 108
-        width: 38
+        width: 41
         height: 83
       spriteId: 288c5108887da1341be6da918253caae
     linkedCells: []
