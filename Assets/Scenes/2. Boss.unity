@@ -49145,7 +49145,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: maxHealth
-      value: 50
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: doorScript
@@ -49153,7 +49153,7 @@ PrefabInstance:
       objectReference: {fileID: 1878158046}
     - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: currentHealth
-      value: 50
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1306120911495408851, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: knockbackForce

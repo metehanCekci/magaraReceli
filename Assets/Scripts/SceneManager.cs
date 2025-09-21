@@ -5,12 +5,26 @@ public class SceneLoader : MonoBehaviour
 {
     public int sceneIndex = 1;
 
-    // Dışarıdan sahne indexi ile yükleme
-    public void LoadSceneByIndex()
+    /// <summary>
+    /// Ana menüdeki "Oyna" butonu için. Kayıt varsa yükler, yoksa yeni oyun başlatır.
+    /// </summary>
+    public void PlayGame()
     {
-
-        FadeInOutManager.Instance.FadeOutAndLoadScene(sceneIndex);
+        Time.timeScale = 1f; // Pause menüsünden gelme ihtimaline karşı zamanı normale döndür.
         
+        Debug.Log("Yeni oyun başlatılıyor...");
+        // Yeni oyun için belirlenen sahneyi yükle.
+        // Kaydetme sistemi kaldırıldığı için her zaman yeni oyun başlatılır.
+        if (FadeInOutManager.Instance != null)
+        {
+            FadeInOutManager.Instance.FadeOutAndLoadScene(sceneIndex);
+        }
+        else
+        {
+            // FadeInOutManager bulunamazsa, doğrudan sahneyi yükle.
+            Debug.LogWarning("FadeInOutManager bulunamadı! Sahne doğrudan yükleniyor.");
+            SceneManager.LoadScene(sceneIndex);
+        }
     }
 
     // Oyunu kapatmak için
@@ -26,19 +40,4 @@ public class SceneLoader : MonoBehaviour
 #endif
     }
 
-    // Kayıt verisini silme fonksiyonu
-    public void DeleteSaveData()
-    {
-        // Sahnedeki SaveSystem objesini bul
-        SaveSystem saveSystem = FindObjectOfType<SaveSystem>();
-        if (saveSystem != null)
-        {
-            // SaveSystem'deki silme fonksiyonunu çağır
-            saveSystem.DeleteSaveData();
-        }
-        else
-        {
-            Debug.LogError("SaveSystem objesi sahnede bulunamadı! Kayıt dosyası silinemedi.");
-        }
-    }
 }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 249d37991e985344096c02447c2774d6
+guid: e5cb40285d67e1546bff237a1b74e6f1
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,19 +127,19 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: TUSMEL
+  - name: facility
     originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 127
-      height: 168
-    spriteID: e53abd007d954ef41afaa555fc8c7939
+      width: 540
+      height: 360
+    spriteID: 2971557a0005af54f98bc2d2bacbd825
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,25 +153,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 1604449660
+      value0: 3339970441
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: TUSMEL
+    name: facility
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: TUSMEL
+    - name: facility
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 32
-        y: 32
-        width: 127
-        height: 168
-      spriteId: e53abd007d954ef41afaa555fc8c7939
+        x: 0
+        y: 0
+        width: 540
+        height: 360
+      spriteId: 2971557a0005af54f98bc2d2bacbd825
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -181,5 +181,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 200, y: 200}
-  previousTextureSize: {x: 256, y: 256}
+  canvasSize: {x: 540, y: 360}
+  previousTextureSize: {x: 1024, y: 512}
