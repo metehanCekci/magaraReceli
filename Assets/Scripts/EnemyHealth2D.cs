@@ -16,6 +16,11 @@ public class EnemyHealth2D : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public AudioSource audioSource;
 
+    public SquareShootng doorScript;
+
+    [Header("Boss Settings")]
+    public bool isBoss = false; // default false
+
     private bool invulnerable;
 
     void Awake()
@@ -45,6 +50,7 @@ public class EnemyHealth2D : MonoBehaviour
         // Hurt feedback
         if (animator) animator.SetTrigger("Hurt");
         if (SFXPlayer.Instance) SFXPlayer.Instance.PlayGore();
+
         StartCoroutine(FlashRoutine());
 
         // i-frames
@@ -61,6 +67,7 @@ public class EnemyHealth2D : MonoBehaviour
     private IEnumerator FlashRoutine()
     {
         if (!spriteRenderer) yield break;
+
         Color original = spriteRenderer.color;
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.1f);
@@ -70,7 +77,12 @@ public class EnemyHealth2D : MonoBehaviour
     private void Die()
     {
         if (SFXPlayer.Instance) SFXPlayer.Instance.PlayKill();
-        if (animator) animator.SetTrigger("Die");
+
+        // Boss death check
+        if (isBoss)
+        {
+            doorScript.enabled = true;
+        }
 
         // Destroy the enemy immediately
         Destroy(gameObject);

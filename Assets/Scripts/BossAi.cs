@@ -8,7 +8,7 @@ public class BossAi : MonoBehaviour
     public Transform rightTrigger;
     public float moveSpeed = 2f;
     public float wallOffset = 0.3f;
-    private bool movingRight = true;
+    private bool movingRight = false;
     private bool canMove = true;
 
     [Header("Spike Attack")]
@@ -87,6 +87,7 @@ public class BossAi : MonoBehaviour
 
             int roll = Random.Range(0, 100);
             int cumulative = 0;
+            animator.SetTrigger("Command");
 
             if (roll < (cumulative += spikeChance))
             {

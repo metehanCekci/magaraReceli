@@ -324,7 +324,31 @@ public class PlayerController : MonoBehaviour
         lastAttackTime = Time.time;
         attackHitbox.gameObject.SetActive(false);
     }
-    public void IncreaseSoul(int amount) { Soul += amount; Debug.Log($"Soul increased by {amount}. Total soul: {Soul}"); }
+
+    IEnumerator HealColorRoutine()
+{
+    SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+    if (sr == null) yield break;
+
+    Color original = sr.color;
+    Color healColor = new Color(0.5f, 1f, 0.5f, 1f); // soft green tint
+
+    float elapsed = 0f;
+    while (elapsed < healTime)
+    {
+        // Ping-pong color for pulsing effect
+        sr.color = Color.Lerp(original, healColor, Mathf.PingPong(elapsed * 2f, 1f));
+        elapsed += Time.deltaTime;
+        yield return null;
+    }
+
+    // Restore original color
+    sr.color = original;
+}
+    public void IncreaseSoul(int amount) { 
+        Soul += amount; 
+        if(Soul > MaxSoul) Soul = MaxSoul;
+        }
     void OnHealPerformed(InputAction.CallbackContext ctx)
     {
         if (Soul == MaxSoul)
@@ -349,18 +373,23 @@ public class PlayerController : MonoBehaviour
         isHealing = false;
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
     }
-    IEnumerator HealWaitRoutine()
-    {
-        var healthSystem = GetComponent<HealthSystem>();
-        Move.action.Disable();
-        isHealing = true;
-        animator.SetTrigger("Heal");
-        PlayOne(healSound);
-        yield return new WaitForSeconds(healTime);
-        healthSystem.Heal(60);
-        isHealing = false;
-        Move.action.Enable();
-    }
+IEnumerator HealWaitRoutine()
+{
+    var healthSystem = GetComponent<HealthSystem>();
+    Move.action.Disable();
+    isHealing = true;
+
+    PlayOne(healSound);
+
+    // Start the healing visual
+    StartCoroutine(HealColorRoutine());
+
+    yield return new WaitForSeconds(healTime);
+
+    healthSystem.Heal(60);
+    isHealing = false;
+    Move.action.Enable();
+}
     void OnPausePerformed(InputAction.CallbackContext ctx) { if (isPaused) ResumeGame(); else PauseGame(); }
     bool IsGrounded() => groundCheck && Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
     void DoJump()
