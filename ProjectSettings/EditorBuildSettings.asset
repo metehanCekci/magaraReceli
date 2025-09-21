@@ -35,6 +35,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Final Boss.unity
     guid: 0bbf4eff0f7d94d498fbfb05408dd187
+  - enabled: 1
+    path: Assets/Scenes/Ending.unity
+    guid: 6fcc935371a571f4889de1003217f807
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 47aaf5055efc839bf96464cbe7c27762, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

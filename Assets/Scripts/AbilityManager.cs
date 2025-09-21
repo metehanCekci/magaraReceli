@@ -34,7 +34,7 @@ public class AbilityManager : MonoBehaviour
 
     private void CheckForSceneBasedUnlocks()
     {
-        if (SceneManager.GetActiveScene().buildIndex > dashUnlockSceneIndex)
+        if (SceneManager.GetActiveScene().buildIndex >= dashUnlockSceneIndex)
         {
             UnlockDash();
         }
