@@ -123,14 +123,19 @@ public class PlayerController : MonoBehaviour
 
     [Header("Limb Throw (Fırlayan El)")]
 
-    public Sprite[] limbFrames;   // Inspector'dan atayacağın sprite animasyonu
     public float frameTime = 0.05f; // her frame süresi
 
     public GameObject limbPrefab; // Inspector'dan atanacak prefab
+                                  // PlayerController.cs içinde, class seviyesine ekle
+    private GameObject currentLimb;           // Şu an fırlatılan uzuv
+    private EnemyHealth2D hitEnemy;           // Çarpılan düşman
+
     public float limbThrowSpeed = 15f;
     public float limbPullDuration = 0.5f;
     public LayerMask enemyLayer;
     public InputActionReference Pull; // Input System aksiyonu
+
+    public float pullSpeed = 8f; // Düşmanı çekme hızı
 
     private bool heavyAttackButtonHeld = false;
 
@@ -156,6 +161,12 @@ public class PlayerController : MonoBehaviour
         // Game ba�lad���nda kaydedilmi� veriyi y�kle
         if (saveSystem != null)
             saveSystem.Load(gameObject);  // Y�kleme i�lemi
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (var enemy in enemies)
+        {
+            Debug.Log($"Enemy {enemy.name} is on layer: {LayerMask.LayerToName(enemy.layer)}");
+        }
     }
 
     void OnApplicationQuit()
@@ -175,9 +186,9 @@ public class PlayerController : MonoBehaviour
         if (Attack) { Attack.action.Enable(); Attack.action.performed += OnAttackPerformed; }
         if (Heal) { Heal.action.Enable(); Heal.action.performed += OnHealPerformed; }
         if (Pause) { Pause.action.Enable(); Pause.action.performed += OnPausePerformed; }
-    if (Pull) { Pull.action.Enable(); Pull.action.performed += OnPullPerformed; }
-    if (HeavyAttack != null)
-        HeavyAttack.action.performed += OnHeavyAttack;
+        if (Pull) { Pull.action.Enable(); Pull.action.performed += OnPullPerformed; }
+        if (HeavyAttack != null)
+            HeavyAttack.action.performed += OnHeavyAttack;
         // HeavyAttack kaldırıldı
     }
 
@@ -189,9 +200,9 @@ public class PlayerController : MonoBehaviour
         if (Attack) { Attack.action.performed -= OnAttackPerformed; Attack.action.Disable(); }
         if (Heal) { Heal.action.performed -= OnHealPerformed; Heal.action.Disable(); }
         if (Pause) { Pause.action.performed -= OnPausePerformed; Pause.action.Disable(); }
-    if (Pull) { Pull.action.performed -= OnPullPerformed; Pull.action.Disable(); }
-    if (HeavyAttack != null)
-        HeavyAttack.action.performed -= OnHeavyAttack;
+        if (Pull) { Pull.action.performed -= OnPullPerformed; Pull.action.Disable(); }
+        if (HeavyAttack != null)
+            HeavyAttack.action.performed -= OnHeavyAttack;
         // HeavyAttack kaldırıldı
     }
 
@@ -317,31 +328,31 @@ public class PlayerController : MonoBehaviour
         RecalcMaxJumps();
 
         // Mouse attack tuşu basılı tutulma kontrolü (Heavy Attack)
-// --- Heavy Attack Hold & Release ---
-if (Attack != null && Attack.action != null)
-{
-    if (Attack.action.IsPressed())
-    {
-        if (!heavyAttackButtonHeld) // first press
+        // --- Heavy Attack Hold & Release ---
+        if (Attack != null && Attack.action != null)
         {
-            heavyAttackButtonHeld = true;
-            attackButtonHeldTime = 0f;
-        }
+            if (Attack.action.IsPressed())
+            {
+                if (!heavyAttackButtonHeld) // first press
+                {
+                    heavyAttackButtonHeld = true;
+                    attackButtonHeldTime = 0f;
+                }
 
-        attackButtonHeldTime += Time.deltaTime;
-    }
-    else if (heavyAttackButtonHeld) // just released
-    {
-        if (attackButtonHeldTime >= heavyAttackHoldTime && !isHeavying && Time.time > lastHeavyAttackTime + heavyAttackCooldown)
-        {
-            StartCoroutine(HeavyAttackRoutine());
-        }
+                attackButtonHeldTime += Time.deltaTime;
+            }
+            else if (heavyAttackButtonHeld) // just released
+            {
+                if (attackButtonHeldTime >= heavyAttackHoldTime && !isHeavying && Time.time > lastHeavyAttackTime + heavyAttackCooldown)
+                {
+                    StartCoroutine(HeavyAttackRoutine());
+                }
 
-        // reset
-        heavyAttackButtonHeld = false;
-        attackButtonHeldTime = 0f;
-    }
-}
+                // reset
+                heavyAttackButtonHeld = false;
+                attackButtonHeldTime = 0f;
+            }
+        }
 
 
     }
@@ -495,26 +506,26 @@ if (Attack != null && Attack.action != null)
         isAttacking = false;
     }
 
-private void OnHeavyAttack(InputAction.CallbackContext context)
-{
-    if (!isHeavying && Time.time > lastHeavyAttackTime + heavyAttackCooldown)
+    private void OnHeavyAttack(InputAction.CallbackContext context)
     {
-        StartCoroutine(HeavyAttackRoutine());
+        if (!isHeavying && Time.time > lastHeavyAttackTime + heavyAttackCooldown)
+        {
+            StartCoroutine(HeavyAttackRoutine());
+        }
     }
-}
 
-private IEnumerator HeavyAttackRoutine()
-{
-    isHeavying = true;
-    lastHeavyAttackTime = Time.time;
+    private IEnumerator HeavyAttackRoutine()
+    {
+        isHeavying = true;
+        lastHeavyAttackTime = Time.time;
 
-    if (animator != null)
-        animator.SetTrigger("HeavyAttack");   // animator trigger
+        if (animator != null)
+            animator.SetTrigger("HeavyAttack");   // animator trigger
 
-    yield return new WaitForSeconds(1.15f);    // anim süresi kadar bekle
+        yield return new WaitForSeconds(1.15f);    // anim süresi kadar bekle
 
-    isHeavying = false;
-}
+        isHeavying = false;
+    }
 
 
     public void HeavyStart()
@@ -558,7 +569,11 @@ private IEnumerator HeavyAttackRoutine()
             Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         }
     }
-
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position + transform.right * 1f, 0.5f);
+    }
     public void AttackHitboxEnable()
     {
         if (attackHitbox)
@@ -575,64 +590,91 @@ private IEnumerator HeavyAttackRoutine()
     // Pull input action callback
     void OnPullPerformed(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Pull input tetiklendi, el fırlatılıyor!");
-        StartCoroutine(FireLimbSpriteAnimRoutine());
-        
+        if (animator != null)
+        {
+            animator.SetBool("Pull", true);
+        }
     }
-    private IEnumerator FireLimbSpriteAnimRoutine()
+    // Animator Event: Animasyon başında çağır
+    public void LimbSpawn()
     {
-        // Animator’da Pull bool’unu aktif et
-        animator.SetBool("Pull", true);
-
+        if (limbPrefab == null)
+        {
+            Debug.LogError("Limb prefab is not assigned!");
+            return;
+        }
+        Debug.Log("LimbSpawn called");
         GameObject limb = Instantiate(limbPrefab, transform.position, Quaternion.identity);
-        SpriteRenderer sr = limb.GetComponent<SpriteRenderer>();
-        if (sr == null) sr = limb.AddComponent<SpriteRenderer>();
-
-        EnemyHealth2D hitEnemy = null;
-        int frameIndex = 0;
-
-        // İleri oynatma
-        while (frameIndex < limbFrames.Length)
+        currentLimb = limb;
+    }
+    // Animator Event: animasyon ortasında çağır
+    public void LimbHitboxCheck()
+    {
+        if (enemyLayer.value == 0)
         {
-            sr.sprite = limbFrames[frameIndex];
-
-            // Çarpışma kontrolü
-            Collider2D[] hits = Physics2D.OverlapCircleAll(limb.transform.position, 0.3f, enemyLayer);
-            foreach (var col in hits)
-            {
-                hitEnemy = col.GetComponent<EnemyHealth2D>();
-                if (hitEnemy != null)
-                {
-                    Debug.Log("Düşmana çarptı! Geri sarıyor...");
-                    goto ReverseAnim;
-                }
-            }
-
-            frameIndex++;
-            yield return new WaitForSeconds(frameTime);
-            animator.SetBool("Pull", false);
-        }   
-
-    ReverseAnim:
-        // Geri sarma
-        while (frameIndex >= 0)
-        {
-            sr.sprite = limbFrames[frameIndex];
-
-            if (hitEnemy != null)
-            {
-                // Düşmanı karaktere doğru çek
-                Vector3 target = transform.position;
-                hitEnemy.transform.position = Vector3.Lerp(hitEnemy.transform.position, target, 0.2f);
-            }
-
-            frameIndex--;
-            yield return new WaitForSeconds(frameTime);
+            Debug.LogError("enemyLayer is not set in the Inspector!");
+            return;
         }
 
-        Destroy(limb);
+        Vector2 checkPos = transform.position + transform.right * 1f;
+        Debug.Log($"Checking hitbox at position: {checkPos}, radius: 0.5f, layer: {LayerMask.LayerToName(enemyLayer.value)}");
+        Collider2D[] hits = Physics2D.OverlapCircleAll(checkPos, 0.5f, enemyLayer);
+        Debug.Log($"Found {hits.Length} colliders");
+        foreach (var col in hits)
+        {
+            EnemyHealth2D enemy = col.GetComponent<EnemyHealth2D>();
+            if (enemy != null)
+            {
+                hitEnemy = enemy;
+                Debug.Log("Enemy hit: " + enemy.name);
+                break;
+            }
+        }
+    }
+    // Animator Event: geri sarma başlarken çağır
+    public void LimbReturn()
+    {
+        Debug.Log("LimbReturn called");
+        if (currentLimb != null)
+        {
+            Destroy(currentLimb);
+            currentLimb = null;
+        }
 
-        // Animasyon bitti → Pull bool’unu kapat
-        animator.SetBool("Pull", false);
+
+        if (hitEnemy != null)
+        {
+            StartCoroutine(PullEnemyToPlayer(hitEnemy));
+            hitEnemy = null; // Reset hitEnemy after pulling
+        }
+
+
+        else
+        {
+            Debug.LogWarning("No enemy to pull!");
+        }
+        animator.SetBool("Pull", false); // Reset animator bool
+    }
+    private IEnumerator PullEnemyToPlayer(EnemyHealth2D enemy)
+    {
+        if (enemy == null) yield break;
+
+        Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
+        if (enemyRb == null) yield break;
+
+        float duration = limbPullDuration;
+        float t = 0f;
+        Vector3 start = enemy.transform.position;
+        Vector3 target = transform.position;
+        while (t < 1f)
+        {
+            if (enemy == null || enemyRb == null) yield break;
+            Debug.Log($"Pulling enemy {enemy.name} from {start} to {target}");
+            t += Time.deltaTime / duration;
+            Vector2 newPos = Vector2.Lerp(start, target, t);
+            enemyRb.MovePosition(newPos); // Fizik sistemiyle uyumlu hareket
+
+            yield return null;
+        }
     }
 }
