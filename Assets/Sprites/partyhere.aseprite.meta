@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dc1a4ef126e241e46aa741e728346a13
+guid: 3bc5a171d9c5ece408ac939b191e892b
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Heykel
+  - name: partyhere
     originalName: 
-    pivot: {x: 0.87804884, y: -1.3012048}
+    pivot: {x: 0.5, y: -0.08280255}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 41
-      height: 83
-    spriteID: 288c5108887da1341be6da918253caae
+      width: 152
+      height: 157
+    spriteID: 1c834dedf1991174996699b59c0a7e68
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,25 +153,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 2390349492
+      value0: 2980988304
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: Heykel
+    name: partyhere
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Heykel
+    - name: partyhere
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 84
-        y: 108
-        width: 41
-        height: 83
-      spriteId: 288c5108887da1341be6da918253caae
+        x: 44
+        y: 13
+        width: 152
+        height: 157
+      spriteId: 1c834dedf1991174996699b59c0a7e68
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -182,4 +182,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 240, y: 240}
-  previousTextureSize: {x: 64, y: 128}
+  previousTextureSize: {x: 256, y: 256}

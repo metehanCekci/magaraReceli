@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: dc1a4ef126e241e46aa741e728346a13
+guid: 8476ae2e2cd8d1046b9bcf009f919f1b
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,9 +127,9 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Heykel
+  - name: laserlauncher
     originalName: 
-    pivot: {x: 0.87804884, y: -1.3012048}
+    pivot: {x: 0.56, y: -1.5749999}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 41
-      height: 83
-    spriteID: 288c5108887da1341be6da918253caae
+      width: 50
+      height: 40
+    spriteID: 28bc27528f9fcb347adc9fe35c6bf4df
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,25 +153,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 2390349492
+      value0: 3960513203
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: Heykel
+    name: laserlauncher
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Heykel
+    - name: laserlauncher
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 84
-        y: 108
-        width: 41
-        height: 83
-      spriteId: 288c5108887da1341be6da918253caae
+        x: 32
+        y: 63
+        width: 50
+        height: 40
+      spriteId: 28bc27528f9fcb347adc9fe35c6bf4df
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -181,5 +181,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 240, y: 240}
-  previousTextureSize: {x: 64, y: 128}
+  canvasSize: {x: 120, y: 120}
+  previousTextureSize: {x: 64, y: 64}
