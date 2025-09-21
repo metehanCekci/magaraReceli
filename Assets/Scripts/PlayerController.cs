@@ -102,6 +102,8 @@ public class PlayerController : MonoBehaviour
     public float limbThrowSpeed = 15f;
     public float limbPullDuration = 0.5f;
     public LayerMask enemyLayer;
+    public float limbCheckDistance = 1f;
+    public Vector2 limbCheckSize = new Vector2(1f, 2f);
     public InputActionReference Pull;
     public float pullSpeed = 15f;
     private bool heavyAttackButtonHeld = false;
@@ -113,6 +115,12 @@ public class PlayerController : MonoBehaviour
         abilityManager = GetComponent<AbilityManager>();
         saveSystem = GetComponent<SaveSystem>();
 
+        // DEĞİŞİKLİK: Kayıtlı veriyi, diğer objelerin Start() metodundan önce çalışacak olan Awake()'de yüklüyoruz.
+        if (saveSystem != null)
+        {
+            saveSystem.Load(gameObject);
+        }
+
         if (!animator) animator = GetComponent<Animator>();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
         if (attackHitbox) attackHitbox.gameObject.SetActive(false);
@@ -122,9 +130,7 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-        if (saveSystem != null)
-            saveSystem.Load(gameObject);
-
+        // Yükleme işlemi Awake'e taşındığı için burası artık daha temiz.
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (var enemy in enemies)
         {
@@ -184,15 +190,28 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Walking", Mathf.Abs(x) > 0.01f);
         }
         moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
-        if (!isDashing)
-        {
-            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
-        }
-        if (!facingLocked && Mathf.Abs(moveInput.x) > 0.01f)
-        {
-            lockedFacing = Mathf.Sign(moveInput.x);
-        }
-        transform.localScale = new Vector3(lockedFacing * 1f, 1f, 1f);
+float currentSpeed = moveSpeed;
+
+// If heavy attacking, slow by half
+if (isHeavying)
+{
+    currentSpeed *= 0.5f;
+    facingLocked = true; // lock facing during heavy attack
+}
+
+if (!isDashing)
+{
+    rb.linearVelocity = new Vector2(moveInput.x * currentSpeed, rb.linearVelocity.y);
+}
+
+// Only update facing if not locked by heavy attack
+if (!facingLocked && Mathf.Abs(moveInput.x) > 0.01f)
+{
+    lockedFacing = Mathf.Sign(moveInput.x);
+}
+
+transform.localScale = new Vector3(lockedFacing * 1f, 1f, 1f);
+
         if (facingLocked)
         {
             facingLockTimer -= Time.deltaTime;
@@ -324,7 +343,31 @@ public class PlayerController : MonoBehaviour
         lastAttackTime = Time.time;
         attackHitbox.gameObject.SetActive(false);
     }
-    public void IncreaseSoul(int amount) { Soul += amount; Debug.Log($"Soul increased by {amount}. Total soul: {Soul}"); }
+
+    IEnumerator HealColorRoutine()
+{
+    SpriteRenderer sr = GetComponentInChildren<SpriteRenderer>();
+    if (sr == null) yield break;
+
+    Color original = sr.color;
+    Color healColor = new Color(0.5f, 1f, 0.5f, 1f); // soft green tint
+
+    float elapsed = 0f;
+    while (elapsed < healTime)
+    {
+        // Ping-pong color for pulsing effect
+        sr.color = Color.Lerp(original, healColor, Mathf.PingPong(elapsed * 2f, 1f));
+        elapsed += Time.deltaTime;
+        yield return null;
+    }
+
+    // Restore original color
+    sr.color = original;
+}
+    public void IncreaseSoul(int amount) { 
+        Soul += amount; 
+        if(Soul > MaxSoul) Soul = MaxSoul;
+        }
     void OnHealPerformed(InputAction.CallbackContext ctx)
     {
         if (Soul == MaxSoul)
@@ -349,18 +392,23 @@ public class PlayerController : MonoBehaviour
         isHealing = false;
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
     }
-    IEnumerator HealWaitRoutine()
-    {
-        var healthSystem = GetComponent<HealthSystem>();
-        Move.action.Disable();
-        isHealing = true;
-        animator.SetTrigger("Heal");
-        PlayOne(healSound);
-        yield return new WaitForSeconds(healTime);
-        healthSystem.Heal(60);
-        isHealing = false;
-        Move.action.Enable();
-    }
+IEnumerator HealWaitRoutine()
+{
+    var healthSystem = GetComponent<HealthSystem>();
+    Move.action.Disable();
+    isHealing = true;
+
+    PlayOne(healSound);
+
+    // Start the healing visual
+    StartCoroutine(HealColorRoutine());
+
+    yield return new WaitForSeconds(healTime);
+
+    healthSystem.Heal(60);
+    isHealing = false;
+    Move.action.Enable();
+}
     void OnPausePerformed(InputAction.CallbackContext ctx) { if (isPaused) ResumeGame(); else PauseGame(); }
     bool IsGrounded() => groundCheck && Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
     void DoJump()
@@ -421,17 +469,34 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(HeavyAttackRoutine());
         }
     }
-    private IEnumerator HeavyAttackRoutine()
-    {
-        isHeavying = true;
-        lastHeavyAttackTime = Time.time;
-        if (animator != null)
-            animator.SetTrigger("HeavyAttack");
-        yield return new WaitForSeconds(1.15f);
+private IEnumerator HeavyAttackRoutine()
+{
+    isHeavying = true;
+    facingLocked = true;          // lock facing at start
+    lockedFacing = Mathf.Sign(transform.localScale.x); // keep current facing
+    lastHeavyAttackTime = Time.time;
+
+    if (animator != null)
+        animator.SetTrigger("HeavyAttack");
+
+    yield return new WaitForSeconds(0);
+
+    
+}
+
+    public void HeavyStart() { 
+        GameObject clone = Instantiate(this.gameObject.transform.GetChild(2).gameObject);
+        clone.transform.position = this.gameObject.transform.GetChild(2).transform.position;
+        clone.transform.SetParent(this.transform);
+        clone.SetActive(true);
+        lastHeavyAttackTime = Time.time; 
+        }
+    public void HeavyEnd() { 
+        
+        animator.SetBool("Heavying", false); isHeavying = false; 
         isHeavying = false;
-    }
-    public void HeavyStart() { AttackHitboxEnable(); lastHeavyAttackTime = Time.time; }
-    public void HeavyEnd() { AttackHitboxDisable(); animator.SetBool("Heavying", false); isHeavying = false; }
+        facingLocked = false; // unlock facing at the end
+        }
     void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }
     void PauseGame() { Time.timeScale = 0f; isPaused = true; if (pauseMenuUI) pauseMenuUI.SetActive(true); }
     public void ResumeGame() { Time.timeScale = 1f; isPaused = false; if (pauseMenuUI) pauseMenuUI.SetActive(false); }
@@ -445,9 +510,10 @@ public class PlayerController : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         }
+        // Pull check gizmo
         Gizmos.color = Color.cyan;
-        Vector2 checkPos = transform.position + new Vector3(transform.localScale.x * 1f, 0, 0);
-        Gizmos.DrawWireSphere(checkPos, 0.5f);
+        Vector2 pullCheckPos = (Vector2)transform.position + new Vector2(transform.localScale.x * limbCheckDistance, 0);
+        Gizmos.DrawWireCube(pullCheckPos, limbCheckSize);
     }
     public void AttackHitboxEnable() { if (attackHitbox) attackHitbox.gameObject.SetActive(true); }
     public void AttackHitboxDisable() { if (attackHitbox) attackHitbox.gameObject.SetActive(false); }
@@ -466,6 +532,7 @@ public class PlayerController : MonoBehaviour
     // Event 1: Animasyonda eli oluşturur
     public void LimbSpawn()
     {
+        Debug.Log("LimbSpawn event triggered.");
         if (limbPrefab == null) return;
 
         currentLimb = Instantiate(limbPrefab, transform.position, Quaternion.identity);
@@ -482,34 +549,63 @@ public class PlayerController : MonoBehaviour
     // Event 2: Düşmanı kontrol eder
     public void LimbHitboxCheck()
     {
-        if (enemyLayer.value == 0) return;
-
-        Vector2 checkPos = transform.position + new Vector3(transform.localScale.x * 1f, 0, 0);
-
-        Debug.Log($"Checking hitbox at position: {checkPos}, radius: 0.5f");
-
-        Collider2D[] hits = Physics2D.OverlapCircleAll(checkPos, 0.5f, enemyLayer);
-        if (hits.Length > 0)
+        Debug.Log("LimbHitboxCheck event triggered.");
+        if (enemyLayer.value == 0)
         {
-            Debug.Log($"Found {hits.Length} colliders.");
+            Debug.LogWarning("LimbHitboxCheck: Enemy Layer is not set in the Inspector.");
+            return;
         }
+
+        Vector2 checkPos = (Vector2)transform.position + new Vector2(transform.localScale.x * limbCheckDistance, 0);
+
+        Collider2D[] hits = Physics2D.OverlapBoxAll(checkPos, limbCheckSize, 0f, enemyLayer);
+
+        if (hits.Length == 0)
+        {
+            Debug.Log("LimbHitboxCheck: No enemies found in the hitbox.");
+            return;
+        }
+        
+        Debug.Log($"LimbHitboxCheck: Found {hits.Length} colliders in the hitbox.");
+
+        EnemyHealth2D closestEnemy = null;
+        float closestDistanceSqr = float.MaxValue;
 
         foreach (var col in hits)
         {
             EnemyHealth2D enemy = col.GetComponentInParent<EnemyHealth2D>();
             if (enemy != null)
             {
-                hitEnemy = enemy;
-                Debug.Log("Enemy hit: " + enemy.name);
-                if (currentLimb != null) Destroy(currentLimb);
-                break;
+                float distanceSqr = (enemy.transform.position - transform.position).sqrMagnitude;
+                if (distanceSqr < closestDistanceSqr)
+                {
+                    closestDistanceSqr = distanceSqr;
+                    closestEnemy = enemy;
+                    LimbReturn(); // Düşman bulunduğunda eli geri çek
+                }
             }
+        }
+
+        if (closestEnemy != null)
+        {
+            hitEnemy = closestEnemy;
+            Debug.Log("LimbHitboxCheck: Locked onto closest enemy: " + hitEnemy.name);
+            if (currentLimb != null)
+            {
+                Destroy(currentLimb);
+                currentLimb = null; // Set to null after destroying
+            }
+        }
+        else
+        {
+            Debug.Log("LimbHitboxCheck: Found colliders, but none had an EnemyHealth2D component.");
         }
     }
 
     // Event 3: Eli geri çeker ve düşmanı çeker
     public void LimbReturn()
     {
+        Debug.Log("LimbReturn event triggered.");
         if (currentLimb != null)
         {
             Destroy(currentLimb);
@@ -518,16 +614,23 @@ public class PlayerController : MonoBehaviour
 
         if (hitEnemy != null)
         {
+            Debug.Log($"LimbReturn: 'hitEnemy' is '{hitEnemy.name}'. Starting PullEnemyCoroutine.");
             StartCoroutine(PullEnemyCoroutine(hitEnemy.transform));
             hitEnemy = null;
+        }
+        else
+        {
+            Debug.Log("LimbReturn: 'hitEnemy' is null. Nothing to pull.");
         }
     }
 
     // YENİ VE GARANTİLİ ÇEKME FONKSİYONU
     private IEnumerator PullEnemyCoroutine(Transform enemyTransform)
     {
+        Debug.Log("PullEnemyCoroutine has started.");
         if (enemyTransform == null)
         {
+            Debug.LogError("PullEnemyCoroutine: enemyTransform was null on entry!");
             yield break;
         }
 
@@ -541,6 +644,7 @@ public class PlayerController : MonoBehaviour
         {
             if (enemyTransform == null)
             {
+                Debug.LogError("PullEnemyCoroutine: enemyTransform became null during the pull!");
                 yield break;
             }
 
@@ -555,8 +659,9 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
+        Debug.Log("PullEnemyCoroutine has finished.");
+
         // if (enemyAI != null) enemyAI.enabled = true;
     }
     // --- PULL MEKANİĞİ BİTİŞ ---
 }
-

@@ -2,7 +2,7 @@
 
 using UnityEngine;
 using TMPro;
-using System.Collections; // Coroutine için bu satýr gerekli
+using System.Collections;
 
 public class TextBoxScript : MonoBehaviour
 {
@@ -11,13 +11,14 @@ public class TextBoxScript : MonoBehaviour
     public TextMeshProUGUI textDisplay;
     [TextArea(3, 10)]
     public string dialogueString;
-    public float typingSpeed = 0.04f; // Yazýnýn yazýlma hýzý
+    public float typingSpeed = 0.04f;
 
     [Header("Tetiklenecek Olay")]
     public GameObject objectToReveal;
 
-    private bool hasDialogueFinished = false;
-    private Coroutine typingCoroutine; // Yazma iþlemini kontrol etmek için
+    // Bu deðiþken artýk sadece objenin ortaya çýkýp çýkmadýðýný kontrol edecek.
+    private bool hasObjectBeenRevealed = false;
+    private Coroutine typingCoroutine;
 
     void Start()
     {
@@ -25,7 +26,6 @@ public class TextBoxScript : MonoBehaviour
         {
             objectToReveal.SetActive(false);
         }
-        // Baþlangýçta diyalog kutusunun kapalý olduðundan emin ol
         if (textBox != null)
         {
             textBox.SetActive(false);
@@ -34,18 +34,18 @@ public class TextBoxScript : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && !hasDialogueFinished)
+        // DEÐÝÞÝKLÝK: Buradaki "tek seferlik" kontrolünü kaldýrdýk.
+        // Artýk oyuncu alana her girdiðinde diyalog baþlayacak.
+        if (other.CompareTag("Player"))
         {
             textBox.SetActive(true);
-            // Direkt yazýyý göstermek yerine, yavaþ yavaþ yazma efektini baþlat
             typingCoroutine = StartCoroutine(TypeText(dialogueString));
         }
     }
 
-    // Yazýyý harf harf yazdýran fonksiyon (Coroutine)
     IEnumerator TypeText(string text)
     {
-        textDisplay.text = ""; // Baþlamadan önce metin kutusunu temizle
+        textDisplay.text = "";
         foreach (char letter in text.ToCharArray())
         {
             textDisplay.text += letter;
@@ -57,23 +57,23 @@ public class TextBoxScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // Eðer hala devam eden bir yazma iþlemi varsa durdur
             if (typingCoroutine != null)
             {
                 StopCoroutine(typingCoroutine);
             }
 
-            // SORUN 1 ÇÖZÜMÜ: Diyalog kutusunu kapatmadan önce içindeki yazýyý temizle
             textDisplay.text = "";
             textBox.SetActive(false);
 
-            if (!hasDialogueFinished)
+            // DEÐÝÞÝKLÝK: Bu kontrol artýk sadece objenin 1 kere ortaya çýkmasýný saðlýyor.
+            // Diyaloðun gösterilmesini engellemiyor.
+            if (!hasObjectBeenRevealed)
             {
                 if (objectToReveal != null)
                 {
                     objectToReveal.SetActive(true);
                 }
-                hasDialogueFinished = true;
+                hasObjectBeenRevealed = true;
             }
         }
     }

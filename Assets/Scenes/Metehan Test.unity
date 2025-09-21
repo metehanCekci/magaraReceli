@@ -281,7 +281,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 315940850}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
@@ -554,37 +554,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1 &859818825
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 859818826}
-  m_Layer: 0
-  m_Name: uygyjk
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &859818826
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859818825}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.2972, y: 0.72500014, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &902973757
 GameObject:
   m_ObjectHideFlags: 0
@@ -1258,10 +1227,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4265303545122163627, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
     - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: pullSpeed
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: limbPrefab
       value: 
       objectReference: {fileID: 11430882288494158, guid: 2f34d664276a07843919da6e5f2641a1, type: 3}
@@ -1270,12 +1235,24 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: limbCheckSize.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: limbCheckSize.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: wallLayer.m_Bits
       value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: enemyLayer.m_Bits
       value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: limbCheckDistance
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: limbFrames.Array.size
@@ -1348,11 +1325,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1045160414630831676, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.505
+      value: 9.45
       objectReference: {fileID: 0}
     - target: {fileID: 1045160414630831676, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.552
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 1045160414630831676, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1420,7 +1397,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7258894641560003482, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8904884055748503870, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_Name
@@ -1523,4 +1500,3 @@ SceneRoots:
   - {fileID: 1739141337}
   - {fileID: 1803762330}
   - {fileID: 1499494936}
-  - {fileID: 859818826}
