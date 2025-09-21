@@ -4192,6 +4192,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7676088459934626032, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: dashUnlockSceneIndex
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5001,7 +5005,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: You've changed and grown a lot since I found you. To help you avenge your
+    mother and fulfill the duty your cloak entrusted to you, one of the four stones
+    I've kept since that day is now yours. Go and gather the remaining stones.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5028,8 +5034,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.4
-  m_fontSizeBase: 0.4
+  m_fontSize: 0.3
+  m_fontSizeBase: 0.3
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6099,7 +6105,7 @@ Transform:
   m_GameObject: {fileID: 1267324566}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 36.97, y: 33.08, z: 0}
+  m_LocalPosition: {x: 38.17, y: 33.08, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6857,6 +6863,10 @@ PrefabInstance:
       propertyPath: objectToReveal
       value: 
       objectReference: {fileID: 1267324566}
+    - target: {fileID: 3551117001218829235, guid: 567c60e87b93b65449e74b38d87ed79a, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4774903456373063849, guid: 567c60e87b93b65449e74b38d87ed79a, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6834
@@ -6871,7 +6881,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4774903456373063849, guid: 567c60e87b93b65449e74b38d87ed79a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 33.2463
+      value: 33.04
       objectReference: {fileID: 0}
     - target: {fileID: 4774903456373063849, guid: 567c60e87b93b65449e74b38d87ed79a, type: 3}
       propertyPath: m_LocalPosition.z

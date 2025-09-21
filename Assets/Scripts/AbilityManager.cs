@@ -1,10 +1,44 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AbilityManager : MonoBehaviour
 {
     private HashSet<AbilityTypeList> unlockedAbilities = new HashSet<AbilityTypeList>();
     private bool dashUnlocked = false;
+
+    [Header("Sahneye Göre Yetenek Açma")]
+    [Tooltip("Eğer mevcut sahne indeksi bu değerden büyükse Dash yeteneği otomatik olarak açılır.")]
+    public int dashUnlockSceneIndex = 6;
+
+    void Awake()
+    {
+        CheckForSceneBasedUnlocks();
+    }
+
+    private void OnEnable()
+    {
+        // Sahne her yüklendiğinde kontrol etmek için event'e abone ol.
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        CheckForSceneBasedUnlocks();
+    }
+
+    private void CheckForSceneBasedUnlocks()
+    {
+        if (SceneManager.GetActiveScene().buildIndex > dashUnlockSceneIndex)
+        {
+            UnlockDash();
+        }
+    }
 
     // Dash'ın kilidini açma
     public void UnlockDash()
