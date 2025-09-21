@@ -8,7 +8,7 @@ public class SpawnerManager : MonoBehaviour
     public int totalSpawns = 10;        // Kaç tane spawn etsin?
     private int spawnedCount = 0;       // Şu ana kadar kaç spawn etti
 
-    public SquareShootng door;
+    public DoorScript door;
 
     private List<GameObject> spawnedObjects = new List<GameObject>();
 
