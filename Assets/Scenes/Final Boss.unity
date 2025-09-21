@@ -1642,6 +1642,7 @@ GameObject:
   - component: {fileID: 1657442649}
   - component: {fileID: 1657442648}
   - component: {fileID: 1657442651}
+  - component: {fileID: 1657442652}
   m_Layer: 7
   m_Name: Kafa
   m_TagString: Enemy
@@ -1679,12 +1680,14 @@ MonoBehaviour:
   maxHealth: 500
   currentHealth: 500
   invulnerableTime: 0.2
+  canBeKnockedBack: 1
   knockbackForce: 0
-  knockbackScale: {x: 1, y: 0.5}
-  rb: {fileID: 0}
+  knockbackTime: 0.2
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
+  doorScript: {fileID: 0}
+  isBoss: 0
 --- !u!58 &1657442649
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1801,6 +1804,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!50 &1657442652
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657442646}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1677022238
 GameObject:
   m_ObjectHideFlags: 0
