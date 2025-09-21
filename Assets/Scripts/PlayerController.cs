@@ -10,17 +10,12 @@ public class PlayerController : MonoBehaviour
     public float wallJumpHorizontalForce = 10f;
     public float wallJumpVerticalForce = 12f;
     private bool isOnWall = false;
-    private int wallDir = 0; // -1: sol duvar, 1: sa� duvar
-
-    // Wall jump i�in son ge�erli wallDir'i ve coyote s�resini sakla
+    private int wallDir = 0; // -1: sol duvar, 1: sağ duvar
     private int lastWallDir = 0;
     private float lastWallCoyoteCounter = 0f;
-
-    // Wall coyote time: duvardan ayr�ld�ktan sonra k�sa s�re wall jump hakk�
     [Header("Wall Coyote Time")]
     public float wallCoyoteTime = 0.15f;
     private float wallCoyoteCounter = 0f;
-
     [Header("Input (New Input System)")]
     public InputActionReference Move;
     public InputActionReference Jump;
@@ -28,31 +23,25 @@ public class PlayerController : MonoBehaviour
     public InputActionReference Attack;
     public InputActionReference Heal;
     public InputActionReference Pause;
-    public InputActionReference HeavyAttack; // sağ tık için yeni input action
-
-
+    public InputActionReference HeavyAttack;
     [Header("Movement")]
     public float moveSpeed = 8f;
-
     [Header("Jumping")]
     public float jumpForce = 15f;
     [Range(0f, 1f)] public float variableJumpMultiplier = 0.5f;
     public float coyoteTime = 0.15f;
     public float jumpBufferTime = 0.20f;
-
     [Header("Double Jump (Ability)")]
     public int baseMaxJumps = 1;
     int maxJumps, jumpCount;
     float coyoteCounter, bufferCounter;
     bool jumpHeld;
-
     [Header("Dashing")]
     public float dashForce = 20f;
     public float dashDuration = 0.20f;
     public float dashCooldown = 0.50f;
     bool isDashing;
     float lastDashTime;
-
     [Header("Combat")]
     public Transform attackHitbox;
     public float attackDuration = 0.20f;
@@ -61,82 +50,60 @@ public class PlayerController : MonoBehaviour
     int swingId;
     public int CurrentSwingId => swingId;
     bool isAttacking;
-
     [Header("Combat Facing Lock")]
-    public float facingLockDuration = 0.3f; // Duration to lock facing after attack
+    public float facingLockDuration = 0.3f;
     bool facingLocked = false;
     float facingLockTimer = 0f;
     float lockedFacing = 1f;
-
     [Header("Healing")]
     public float healTime = 3f;
     public int healAmount = 1;
     bool isHealing;
-
     [Header("Ground Check")]
     public Transform groundCheck;
     public float groundRadius = 0.15f;
     public LayerMask groundLayer;
-
     [Header("Wall Check")]
     public float wallCheckDistance = 0.5f;
     public LayerMask wallLayer;
-
     [Header("References")]
     public Animator animator;
     public AudioSource audioSource;
     public AudioClip jumpSound, dashSound, attackSound, healSound;
-
     [Header("Pause Menu")]
     public GameObject pauseMenuUI;
-
     [Header("Soul")]
     public float MaxSoul = 100f;
     public float Soul = 0f;
-
     bool isPaused = false;
     Rigidbody2D rb;
     Vector2 moveInput;
     AbilityManager abilityManager;
-
     [Header("Soul System")]
     public SoulSystem soulSystem;
-
-    // **SaveSystem** i�in bir referans ekleyelim
-    private SaveSystem saveSystem;  // Add SaveSystem reference
-
-    // Çoklu raycast için offset
+    private SaveSystem saveSystem;
     [Header("Wall Raycast Offsets")]
     public float wallRaycastVerticalOffset = 0.3f;
-    // Wall jump input buffer
     private bool wallJumpRequested = false;
     private float wallJumpBufferTime = 0.15f;
     private float wallJumpBufferCounter = 0f;
-
     [Header("Heavy Attack")]
-    public float heavyAttackHoldTime = 0.5f; // Kaç saniye basılı tutulursa heavy attack
+    public float heavyAttackHoldTime = 0.5f;
     public float heavyAttackCooldown = 1.0f;
     private float lastHeavyAttackTime = -10f;
     private float attackButtonHeldTime = 0f;
     private bool heavyAttackQueued = false;
     private bool isHeavying = false;
-
     [Header("Limb Throw (Fırlayan El)")]
-
-    public float frameTime = 0.05f; // her frame süresi
-
-    public GameObject limbPrefab; // Inspector'dan atanacak prefab
-                                  // PlayerController.cs içinde, class seviyesine ekle
-    private GameObject currentLimb;           // Şu an fırlatılan uzuv
-    private EnemyHealth2D hitEnemy;           // Çarpılan düşman
-
+    public float frameTime = 0.05f;
+    public GameObject limbPrefab;
+    private GameObject currentLimb;
+    private EnemyHealth2D hitEnemy;
     public float limbThrowSpeed = 15f;
     public float limbPullDuration = 0.5f;
     public LayerMask enemyLayer;
-    public InputActionReference Pull; // Input System aksiyonu
-
-    public float pullSpeed = 8f; // Düşmanı çekme hızı
-
+    public InputActionReference Pull;
+    public float pullSpeed = 15f;
     private bool heavyAttackButtonHeld = false;
 
     void Awake()
@@ -144,23 +111,19 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = 1;
         rb = GetComponent<Rigidbody2D>();
         abilityManager = GetComponent<AbilityManager>();
-        saveSystem = GetComponent<SaveSystem>();  // Initialize SaveSystem
+        saveSystem = GetComponent<SaveSystem>();
 
         if (!animator) animator = GetComponent<Animator>();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
         if (attackHitbox) attackHitbox.gameObject.SetActive(false);
         if (pauseMenuUI) pauseMenuUI.SetActive(false);
         RecalcMaxJumps();
-
-        // Ensure default scale is 2,2,1
         transform.localScale = new Vector3(1f, 1f, 1f);
     }
-
     void Start()
     {
-        // Game ba�lad���nda kaydedilmi� veriyi y�kle
         if (saveSystem != null)
-            saveSystem.Load(gameObject);  // Y�kleme i�lemi
+            saveSystem.Load(gameObject);
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (var enemy in enemies)
@@ -168,18 +131,14 @@ public class PlayerController : MonoBehaviour
             Debug.Log($"Enemy {enemy.name} is on layer: {LayerMask.LayerToName(enemy.layer)}");
         }
     }
-
     void OnApplicationQuit()
     {
-        // Oyundan ��kmadan �nce kaydet
         if (saveSystem != null)
-            saveSystem.Save(gameObject);  // Kaydetme i�lemi
+            saveSystem.Save(gameObject);
     }
-
     void OnEnable()
     {
         attackHitbox.gameObject.SetActive(false);
-
         if (Move) Move.action.Enable();
         if (Jump) { Jump.action.Enable(); Jump.action.performed += OnJumpPerformed; Jump.action.canceled += OnJumpCanceled; }
         if (Dash) { Dash.action.Enable(); Dash.action.performed += OnDashPerformed; }
@@ -189,9 +148,7 @@ public class PlayerController : MonoBehaviour
         if (Pull) { Pull.action.Enable(); Pull.action.performed += OnPullPerformed; }
         if (HeavyAttack != null)
             HeavyAttack.action.performed += OnHeavyAttack;
-        // HeavyAttack kaldırıldı
     }
-
     void OnDisable()
     {
         if (Move) Move.action.Disable();
@@ -203,20 +160,16 @@ public class PlayerController : MonoBehaviour
         if (Pull) { Pull.action.performed -= OnPullPerformed; Pull.action.Disable(); }
         if (HeavyAttack != null)
             HeavyAttack.action.performed -= OnHeavyAttack;
-        // HeavyAttack kaldırıldı
     }
-
     void RecalcMaxJumps()
     {
         maxJumps = abilityManager ? abilityManager.GetMaxJumps() : baseMaxJumps;
         if (jumpCount > maxJumps) jumpCount = maxJumps;
     }
-
     void Update()
     {
         if (isPaused) return;
         if (isHealing) return;
-
         float x = 0f;
         if (Move != null && Move.action != null)
         {
@@ -228,32 +181,24 @@ public class PlayerController : MonoBehaviour
             {
                 x = Move.action.ReadValue<float>();
             }
-
             animator.SetBool("Walking", Mathf.Abs(x) > 0.01f);
         }
-
         moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
-
         if (!isDashing)
         {
             rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
         }
-
-        // Handle facing
         if (!facingLocked && Mathf.Abs(moveInput.x) > 0.01f)
         {
             lockedFacing = Mathf.Sign(moveInput.x);
         }
         transform.localScale = new Vector3(lockedFacing * 1f, 1f, 1f);
-
-        // Update facing lock timer
         if (facingLocked)
         {
             facingLockTimer -= Time.deltaTime;
             if (facingLockTimer <= 0f)
                 facingLocked = false;
         }
-
         if (bufferCounter > 0f && (coyoteCounter > 0f || jumpCount < maxJumps))
         {
             wallJumpRequested = true;
@@ -262,20 +207,15 @@ public class PlayerController : MonoBehaviour
         }
         if (wallJumpBufferCounter > 0f)
             wallJumpBufferCounter -= Time.deltaTime;
-
         if (!jumpHeld && rb.linearVelocity.y > 0f)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * variableJumpMultiplier);
-
         if (IsGrounded())
         {
             coyoteCounter = coyoteTime;
             jumpCount = 0;
         }
         else coyoteCounter -= Time.deltaTime;
-
         animator.SetBool("IsGrounded", IsGrounded());
-
-        // Wall check logic (gelişmiş raycast ile)
         bool wasOnWall = isOnWall;
         isOnWall = false;
         wallDir = 0;
@@ -309,8 +249,6 @@ public class PlayerController : MonoBehaviour
                 jumpCount = 0;
             }
         }
-
-        // Wall coyote time ve wallDir buffer g�ncelle
         if (isOnWall)
         {
             wallCoyoteCounter = wallCoyoteTime;
@@ -323,40 +261,30 @@ public class PlayerController : MonoBehaviour
             lastWallCoyoteCounter -= Time.deltaTime;
         }
         animator.SetBool("WallJump", isOnWall);
-
         UpdateSoulBar();
         RecalcMaxJumps();
-
-        // Mouse attack tuşu basılı tutulma kontrolü (Heavy Attack)
-        // --- Heavy Attack Hold & Release ---
         if (Attack != null && Attack.action != null)
         {
             if (Attack.action.IsPressed())
             {
-                if (!heavyAttackButtonHeld) // first press
+                if (!heavyAttackButtonHeld)
                 {
                     heavyAttackButtonHeld = true;
                     attackButtonHeldTime = 0f;
                 }
-
                 attackButtonHeldTime += Time.deltaTime;
             }
-            else if (heavyAttackButtonHeld) // just released
+            else if (heavyAttackButtonHeld)
             {
                 if (attackButtonHeldTime >= heavyAttackHoldTime && !isHeavying && Time.time > lastHeavyAttackTime + heavyAttackCooldown)
                 {
                     StartCoroutine(HeavyAttackRoutine());
                 }
-
-                // reset
                 heavyAttackButtonHeld = false;
                 attackButtonHeldTime = 0f;
             }
         }
-
-
     }
-
     void FixedUpdate()
     {
         if (wallJumpRequested && wallJumpBufferCounter > 0f)
@@ -366,7 +294,6 @@ public class PlayerController : MonoBehaviour
             wallJumpBufferCounter = 0f;
         }
     }
-
     void UpdateSoulBar()
     {
         if (soulSystem != null)
@@ -375,15 +302,9 @@ public class PlayerController : MonoBehaviour
             soulSystem.UpdateSoulBar(soulPercentage);
         }
     }
-
     void OnJumpPerformed(InputAction.CallbackContext ctx) { jumpHeld = true; bufferCounter = jumpBufferTime; }
     void OnJumpCanceled(InputAction.CallbackContext ctx) { jumpHeld = false; }
-
-    void OnDashPerformed(InputAction.CallbackContext ctx)
-    {
-        StartDash();
-    }
-
+    void OnDashPerformed(InputAction.CallbackContext ctx) { StartDash(); }
     void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
         if (isHealing) return;
@@ -396,13 +317,7 @@ public class PlayerController : MonoBehaviour
         lastAttackTime = Time.time;
         attackHitbox.gameObject.SetActive(false);
     }
-
-    public void IncreaseSoul(int amount)
-    {
-        Soul += amount;
-        Debug.Log($"Soul increased by {amount}. Total soul: {Soul}");
-    }
-
+    public void IncreaseSoul(int amount) { Soul += amount; Debug.Log($"Soul increased by {amount}. Total soul: {Soul}"); }
     void OnHealPerformed(InputAction.CallbackContext ctx)
     {
         if (Soul == MaxSoul)
@@ -418,41 +333,29 @@ public class PlayerController : MonoBehaviour
             UpdateSoulBar();
         }
     }
-
     IEnumerator HealRoutine()
     {
         isHealing = true;
         animator.SetTrigger("Heal");
-
         rb.linearVelocity = Vector2.zero;
         yield return new WaitForSeconds(healTime);
         isHealing = false;
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
     }
-
     IEnumerator HealWaitRoutine()
     {
         var healthSystem = GetComponent<HealthSystem>();
         Move.action.Disable();
         isHealing = true;
         animator.SetTrigger("Heal");
-
         PlayOne(healSound);
-
         yield return new WaitForSeconds(healTime);
         healthSystem.Heal(60);
         isHealing = false;
         Move.action.Enable();
     }
-
-    void OnPausePerformed(InputAction.CallbackContext ctx)
-    {
-        if (isPaused) ResumeGame();
-        else PauseGame();
-    }
-
+    void OnPausePerformed(InputAction.CallbackContext ctx) { if (isPaused) ResumeGame(); else PauseGame(); }
     bool IsGrounded() => groundCheck && Physics2D.OverlapCircle(groundCheck.position, groundRadius, groundLayer);
-
     void DoJump()
     {
         if (((isOnWall || wallCoyoteCounter > 0f || lastWallCoyoteCounter > 0f)) && !IsGrounded())
@@ -460,7 +363,6 @@ public class PlayerController : MonoBehaviour
             int jumpWallDir = wallDir;
             if (jumpWallDir == 0) jumpWallDir = lastWallDir;
             if (jumpWallDir == 0) jumpWallDir = (int)Mathf.Sign(transform.localScale.x);
-            // Friction etkisini azaltmak için velocity'yi doğrudan ayarla
             rb.linearVelocity = new Vector2(wallJumpHorizontalForce * -jumpWallDir, wallJumpVerticalForce);
             wallCoyoteCounter = 0f;
             lastWallCoyoteCounter = 0f;
@@ -474,7 +376,6 @@ public class PlayerController : MonoBehaviour
         coyoteCounter = 0f;
         PlayOne(jumpSound);
     }
-
     void StartDash()
     {
         isDashing = true; lastDashTime = Time.time;
@@ -482,30 +383,20 @@ public class PlayerController : MonoBehaviour
         animator?.SetTrigger("Dash");
         Invoke(nameof(_EndDash), dashDuration);
     }
-
     void _EndDash() => isDashing = false;
-
     IEnumerator AttackSwing()
     {
         isAttacking = true;
-
-        // Lock facing during attack
         facingLocked = true;
         facingLockTimer = facingLockDuration;
-
         animator?.SetTrigger("Swing1");
-
         if (SFXPlayer.Instance) SFXPlayer.Instance.PlayWhoosh();
-
         yield return new WaitForSeconds(attackDuration);
-
         animator?.SetTrigger("Swing2");
         if (attackHitbox)
             attackHitbox.gameObject.SetActive(false);
-
         isAttacking = false;
     }
-
     private void OnHeavyAttack(InputAction.CallbackContext context)
     {
         if (!isHeavying && Time.time > lastHeavyAttackTime + heavyAttackCooldown)
@@ -513,54 +404,23 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(HeavyAttackRoutine());
         }
     }
-
     private IEnumerator HeavyAttackRoutine()
     {
         isHeavying = true;
         lastHeavyAttackTime = Time.time;
-
         if (animator != null)
-            animator.SetTrigger("HeavyAttack");   // animator trigger
-
-        yield return new WaitForSeconds(1.15f);    // anim süresi kadar bekle
-
+            animator.SetTrigger("HeavyAttack");
+        yield return new WaitForSeconds(1.15f);
         isHeavying = false;
     }
-
-
-    public void HeavyStart()
-    {
-        AttackHitboxEnable();
-        lastHeavyAttackTime = Time.time;
-    }
-
-    public void HeavyEnd()
-    {
-        AttackHitboxDisable();
-        animator.SetBool("Heavying", false);
-        isHeavying = false;
-    }
-
+    public void HeavyStart() { AttackHitboxEnable(); lastHeavyAttackTime = Time.time; }
+    public void HeavyEnd() { AttackHitboxDisable(); animator.SetBool("Heavying", false); isHeavying = false; }
     void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }
-
-    void PauseGame()
-    {
-        Time.timeScale = 0f;
-        isPaused = true;
-        if (pauseMenuUI) pauseMenuUI.SetActive(true);
-    }
-
-    public void ResumeGame()
-    {
-        Time.timeScale = 1f;
-        isPaused = false;
-        if (pauseMenuUI) pauseMenuUI.SetActive(false);
-    }
-
+    void PauseGame() { Time.timeScale = 0f; isPaused = true; if (pauseMenuUI) pauseMenuUI.SetActive(true); }
+    public void ResumeGame() { Time.timeScale = 1f; isPaused = false; if (pauseMenuUI) pauseMenuUI.SetActive(false); }
     public void ResumeButton() => ResumeGame();
     public void RestartButton() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     public void QuitButton() => Application.Quit();
-
     void OnDrawGizmosSelected()
     {
         if (groundCheck)
@@ -568,113 +428,118 @@ public class PlayerController : MonoBehaviour
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         }
+        Gizmos.color = Color.cyan;
+        Vector2 checkPos = transform.position + new Vector3(transform.localScale.x * 1f, 0, 0);
+        Gizmos.DrawWireSphere(checkPos, 0.5f);
     }
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position + transform.right * 1f, 0.5f);
-    }
-    public void AttackHitboxEnable()
-    {
-        if (attackHitbox)
-            attackHitbox.gameObject.SetActive(true);
-    }
+    public void AttackHitboxEnable() { if (attackHitbox) attackHitbox.gameObject.SetActive(true); }
+    public void AttackHitboxDisable() { if (attackHitbox) attackHitbox.gameObject.SetActive(false); }
 
-    public void AttackHitboxDisable()
-    {
-        if (attackHitbox)
-            attackHitbox.gameObject.SetActive(false);
-    }
+    // --- PULL MEKANİĞİ BAŞLANGIÇ ---
 
-    // El fırlatma fonksiyonu (animasyon eventinden veya istediğin yerden çağırabilirsin)
-    // Pull input action callback
     void OnPullPerformed(InputAction.CallbackContext ctx)
     {
-        if (animator != null)
+        if (isAttacking || isHealing || isDashing) return; // Başka bir aksiyon sırasında engelle
+        if (animator != null && currentLimb == null)
         {
-            animator.SetBool("Pull", true);
+            animator.SetTrigger("Pull");
         }
     }
-    // Animator Event: Animasyon başında çağır
+
+    // Event 1: Animasyonda eli oluşturur
     public void LimbSpawn()
     {
-        if (limbPrefab == null)
+        if (limbPrefab == null) return;
+
+        currentLimb = Instantiate(limbPrefab, transform.position, Quaternion.identity);
+        Rigidbody2D limbRb = currentLimb.GetComponent<Rigidbody2D>();
+        if (limbRb != null)
         {
-            Debug.LogError("Limb prefab is not assigned!");
-            return;
+            limbRb.linearVelocity = new Vector2(transform.localScale.x * limbThrowSpeed, 0);
         }
-        Debug.Log("LimbSpawn called");
-        GameObject limb = Instantiate(limbPrefab, transform.position, Quaternion.identity);
-        currentLimb = limb;
+        currentLimb.transform.localScale = new Vector3(transform.localScale.x, 1f, 1f);
+
+        Destroy(currentLimb, 3f); // El 3 saniye sonra her türlü yok olsun
     }
-    // Animator Event: animasyon ortasında çağır
+
+    // Event 2: Düşmanı kontrol eder
     public void LimbHitboxCheck()
     {
-        if (enemyLayer.value == 0)
+        if (enemyLayer.value == 0) return;
+
+        Vector2 checkPos = transform.position + new Vector3(transform.localScale.x * 1f, 0, 0);
+
+        Debug.Log($"Checking hitbox at position: {checkPos}, radius: 0.5f");
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(checkPos, 0.5f, enemyLayer);
+        if (hits.Length > 0)
         {
-            Debug.LogError("enemyLayer is not set in the Inspector!");
-            return;
+            Debug.Log($"Found {hits.Length} colliders.");
         }
 
-        Vector2 checkPos = transform.position + transform.right * 1f;
-        Debug.Log($"Checking hitbox at position: {checkPos}, radius: 0.5f, layer: {LayerMask.LayerToName(enemyLayer.value)}");
-        Collider2D[] hits = Physics2D.OverlapCircleAll(checkPos, 0.5f, enemyLayer);
-        Debug.Log($"Found {hits.Length} colliders");
         foreach (var col in hits)
         {
-            EnemyHealth2D enemy = col.GetComponent<EnemyHealth2D>();
+            EnemyHealth2D enemy = col.GetComponentInParent<EnemyHealth2D>();
             if (enemy != null)
             {
                 hitEnemy = enemy;
                 Debug.Log("Enemy hit: " + enemy.name);
+                if (currentLimb != null) Destroy(currentLimb);
                 break;
             }
         }
     }
-    // Animator Event: geri sarma başlarken çağır
+
+    // Event 3: Eli geri çeker ve düşmanı çeker
     public void LimbReturn()
     {
-        Debug.Log("LimbReturn called");
         if (currentLimb != null)
         {
             Destroy(currentLimb);
             currentLimb = null;
         }
 
-
         if (hitEnemy != null)
         {
-            StartCoroutine(PullEnemyToPlayer(hitEnemy));
-            hitEnemy = null; // Reset hitEnemy after pulling
+            StartCoroutine(PullEnemyCoroutine(hitEnemy.transform));
+            hitEnemy = null;
         }
-
-
-        else
-        {
-            Debug.LogWarning("No enemy to pull!");
-        }
-        animator.SetBool("Pull", false); // Reset animator bool
     }
-    private IEnumerator PullEnemyToPlayer(EnemyHealth2D enemy)
+
+    // YENİ VE GARANTİLİ ÇEKME FONKSİYONU
+    private IEnumerator PullEnemyCoroutine(Transform enemyTransform)
     {
-        if (enemy == null) yield break;
-
-        Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
-        if (enemyRb == null) yield break;
-
-        float duration = limbPullDuration;
-        float t = 0f;
-        Vector3 start = enemy.transform.position;
-        Vector3 target = transform.position;
-        while (t < 1f)
+        if (enemyTransform == null)
         {
-            if (enemy == null || enemyRb == null) yield break;
-            Debug.Log($"Pulling enemy {enemy.name} from {start} to {target}");
-            t += Time.deltaTime / duration;
-            Vector2 newPos = Vector2.Lerp(start, target, t);
-            enemyRb.MovePosition(newPos); // Fizik sistemiyle uyumlu hareket
+            yield break;
+        }
 
+        // Örnek: var enemyAI = enemyTransform.GetComponent<YourEnemyAIScript>();
+        // if (enemyAI != null) enemyAI.enabled = false;
+
+        float journeyTime = limbPullDuration;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < journeyTime)
+        {
+            if (enemyTransform == null)
+            {
+                yield break;
+            }
+
+            Vector3 targetPosition = new Vector3(transform.position.x, enemyTransform.position.y, enemyTransform.position.z);
+
+            enemyTransform.position = Vector3.MoveTowards(
+                enemyTransform.position,
+                targetPosition,
+                pullSpeed * Time.deltaTime);
+
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
+
+        // if (enemyAI != null) enemyAI.enabled = true;
     }
+    // --- PULL MEKANİĞİ BİTİŞ ---
 }
+
