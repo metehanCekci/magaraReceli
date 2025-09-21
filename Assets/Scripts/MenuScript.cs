@@ -51,4 +51,25 @@ public class MenuScript : MonoBehaviour
         // Eğer ana menünüz farklı bir index'te ise bu sayıyı değiştirin.
         FadeInOutManager.Instance.FadeOutAndLoadScene(0);
     }
+
+    /// <summary>
+    /// Ana menüdeki "Oyna" butonu için. Kayıt varsa yükler, yoksa yeni oyun başlatır.
+    /// </summary>
+    public void PlayButtonAction()
+    {
+        Time.timeScale = 1f;
+        
+        Debug.Log("Yeni oyun başlatılıyor...");
+        // İlk oyun sahnesini yükle. Genellikle build index'i 1 olur.
+        // Kaydetme sistemi kaldırıldığı için her zaman yeni oyun başlatılır.
+        if (FadeInOutManager.Instance != null)
+        {
+            FadeInOutManager.Instance.FadeOutAndLoadScene(1);
+        }
+        else
+        {
+            Debug.LogWarning("FadeInOutManager bulunamadı! Sahne doğrudan yükleniyor.");
+            SceneManager.LoadScene(1);
+        }
+    }
 }

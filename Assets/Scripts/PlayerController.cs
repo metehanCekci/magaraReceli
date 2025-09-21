@@ -81,7 +81,6 @@ public class PlayerController : MonoBehaviour
     AbilityManager abilityManager;
     [Header("Soul System")]
     public SoulSystem soulSystem;
-    private SaveSystem saveSystem;
     [Header("Wall Raycast Offsets")]
     public float wallRaycastVerticalOffset = 0.3f;
     private bool wallJumpRequested = false;
@@ -113,13 +112,6 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = 1;
         rb = GetComponent<Rigidbody2D>();
         abilityManager = GetComponent<AbilityManager>();
-        saveSystem = GetComponent<SaveSystem>();
-
-        // DEĞİŞİKLİK: Kayıtlı veriyi, diğer objelerin Start() metodundan önce çalışacak olan Awake()'de yüklüyoruz.
-        if (saveSystem != null)
-        {
-            saveSystem.Load(gameObject);
-        }
 
         if (!animator) animator = GetComponent<Animator>();
         if (!audioSource) audioSource = GetComponent<AudioSource>();
@@ -139,8 +131,7 @@ public class PlayerController : MonoBehaviour
     }
     void OnApplicationQuit()
     {
-        if (saveSystem != null)
-            saveSystem.Save(gameObject);
+        // Kaydetme sistemi kaldırıldığı için bu fonksiyon boş bırakıldı.
     }
     void OnEnable()
     {
