@@ -27,6 +27,9 @@ EditorBuildSettings:
     path: "Assets/Scenes/\u0130lk Boss.unity"
     guid: cad4c9a82e41f4745973820c7eb7fc08
   - enabled: 1
+    path: Assets/Scenes/Arena.unity
+    guid: 25095df9999156f4eb33b5d98e27b2d6
+  - enabled: 1
     path: Assets/Scenes/2. Boss.unity
     guid: c5ddd403b1954054b88c3ae6ec2ccc3c
   - enabled: 1
