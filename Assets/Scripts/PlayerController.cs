@@ -325,6 +325,7 @@ transform.localScale = new Vector3(lockedFacing * 1f, 1f, 1f);
     void OnJumpCanceled(InputAction.CallbackContext ctx) { jumpHeld = false; }
     void OnDashPerformed(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
         // AbilityManager'dan dash yeteneğinin açık olup olmadığını kontrol et
         if (abilityManager != null && abilityManager.CanDash())
         {
@@ -333,7 +334,7 @@ transform.localScale = new Vector3(lockedFacing * 1f, 1f, 1f);
     }
     void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
-        if (isHealing) return;
+        if (isPaused || isHealing) return;
         if (Time.time < lastAttackTime + attackCooldown) return;
         Physics2D.SyncTransforms();
         rb?.WakeUp();
@@ -370,6 +371,7 @@ transform.localScale = new Vector3(lockedFacing * 1f, 1f, 1f);
         }
     void OnHealPerformed(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
         if (Soul == MaxSoul)
         {
             var healthSystem = GetComponent<HealthSystem>();
@@ -464,6 +466,7 @@ IEnumerator HealWaitRoutine()
     }
     private void OnHeavyAttack(InputAction.CallbackContext context)
     {
+        if (isPaused) return;
         if (!isHeavying && Time.time > lastHeavyAttackTime + heavyAttackCooldown)
         {
             StartCoroutine(HeavyAttackRoutine());
@@ -497,9 +500,19 @@ private IEnumerator HeavyAttackRoutine()
         isHeavying = false;
         facingLocked = false; // unlock facing at the end
         }
-    void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }
-    void PauseGame() { Time.timeScale = 0f; isPaused = true; if (pauseMenuUI) pauseMenuUI.SetActive(true); }
-    public void ResumeGame() { Time.timeScale = 1f; isPaused = false; if (pauseMenuUI) pauseMenuUI.SetActive(false); }
+    void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }    
+    void PauseGame()
+    {
+        Time.timeScale = 0f;
+        isPaused = true;
+        if (pauseMenuUI) pauseMenuUI.SetActive(true);
+    }
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        isPaused = false;
+        if (pauseMenuUI) pauseMenuUI.SetActive(false);
+    }
     public void ResumeButton() => ResumeGame();
     public void RestartButton() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     public void QuitButton() => Application.Quit();
@@ -522,7 +535,7 @@ private IEnumerator HeavyAttackRoutine()
 
     void OnPullPerformed(InputAction.CallbackContext ctx)
     {
-        if (isAttacking || isHealing || isDashing) return; // Başka bir aksiyon sırasında engelle
+        if (isPaused || isAttacking || isHealing || isDashing) return; // Başka bir aksiyon sırasında engelle
         if (animator != null && currentLimb == null)
         {
             animator.SetTrigger("Pull");

@@ -25,4 +25,20 @@ public class SceneLoader : MonoBehaviour
         Application.Quit();
 #endif
     }
+
+    // Kayıt verisini silme fonksiyonu
+    public void DeleteSaveData()
+    {
+        // Sahnedeki SaveSystem objesini bul
+        SaveSystem saveSystem = FindObjectOfType<SaveSystem>();
+        if (saveSystem != null)
+        {
+            // SaveSystem'deki silme fonksiyonunu çağır
+            saveSystem.DeleteSaveData();
+        }
+        else
+        {
+            Debug.LogError("SaveSystem objesi sahnede bulunamadı! Kayıt dosyası silinemedi.");
+        }
+    }
 }
