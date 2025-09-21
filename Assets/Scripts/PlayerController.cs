@@ -190,15 +190,28 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("Walking", Mathf.Abs(x) > 0.01f);
         }
         moveInput = new Vector2(Mathf.Clamp(x, -1f, 1f), 0f);
-        if (!isDashing)
-        {
-            rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
-        }
-        if (!facingLocked && Mathf.Abs(moveInput.x) > 0.01f)
-        {
-            lockedFacing = Mathf.Sign(moveInput.x);
-        }
-        transform.localScale = new Vector3(lockedFacing * 1f, 1f, 1f);
+float currentSpeed = moveSpeed;
+
+// If heavy attacking, slow by half
+if (isHeavying)
+{
+    currentSpeed *= 0.5f;
+    facingLocked = true; // lock facing during heavy attack
+}
+
+if (!isDashing)
+{
+    rb.linearVelocity = new Vector2(moveInput.x * currentSpeed, rb.linearVelocity.y);
+}
+
+// Only update facing if not locked by heavy attack
+if (!facingLocked && Mathf.Abs(moveInput.x) > 0.01f)
+{
+    lockedFacing = Mathf.Sign(moveInput.x);
+}
+
+transform.localScale = new Vector3(lockedFacing * 1f, 1f, 1f);
+
         if (facingLocked)
         {
             facingLockTimer -= Time.deltaTime;
@@ -456,17 +469,34 @@ IEnumerator HealWaitRoutine()
             StartCoroutine(HeavyAttackRoutine());
         }
     }
-    private IEnumerator HeavyAttackRoutine()
-    {
-        isHeavying = true;
-        lastHeavyAttackTime = Time.time;
-        if (animator != null)
-            animator.SetTrigger("HeavyAttack");
-        yield return new WaitForSeconds(1.15f);
+private IEnumerator HeavyAttackRoutine()
+{
+    isHeavying = true;
+    facingLocked = true;          // lock facing at start
+    lockedFacing = Mathf.Sign(transform.localScale.x); // keep current facing
+    lastHeavyAttackTime = Time.time;
+
+    if (animator != null)
+        animator.SetTrigger("HeavyAttack");
+
+    yield return new WaitForSeconds(0);
+
+    
+}
+
+    public void HeavyStart() { 
+        GameObject clone = Instantiate(this.gameObject.transform.GetChild(2).gameObject);
+        clone.transform.position = this.gameObject.transform.GetChild(2).transform.position;
+        clone.transform.SetParent(this.transform);
+        clone.SetActive(true);
+        lastHeavyAttackTime = Time.time; 
+        }
+    public void HeavyEnd() { 
+        
+        animator.SetBool("Heavying", false); isHeavying = false; 
         isHeavying = false;
-    }
-    public void HeavyStart() { AttackHitboxEnable(); lastHeavyAttackTime = Time.time; }
-    public void HeavyEnd() { AttackHitboxDisable(); animator.SetBool("Heavying", false); isHeavying = false; }
+        facingLocked = false; // unlock facing at the end
+        }
     void PlayOne(AudioClip clip) { if (clip && audioSource) audioSource.PlayOneShot(clip); }
     void PauseGame() { Time.timeScale = 0f; isPaused = true; if (pauseMenuUI) pauseMenuUI.SetActive(true); }
     public void ResumeGame() { Time.timeScale = 1f; isPaused = false; if (pauseMenuUI) pauseMenuUI.SetActive(false); }

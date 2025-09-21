@@ -549,11 +549,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 763666937889821566, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.05
+      value: 0.028
       objectReference: {fileID: 0}
     - target: {fileID: 763666937889821566, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.54
+      value: 5.578
       objectReference: {fileID: 0}
     - target: {fileID: 763666937889821566, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: m_LocalPosition.z
@@ -592,33 +592,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 84982817}
     - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: rb
-      value: 
-      objectReference: {fileID: 813221737}
-    - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: maxHealth
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: heartSystem
       value: 
       objectReference: {fileID: 84982817}
-    - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: currentHealth
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 3304049720111731278, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: enemyAttackLayer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: Pause
-      value: 
-      objectReference: {fileID: 4265303545122163627, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
-    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: healTime
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: soulSystem
       value: 
@@ -627,46 +603,12 @@ PrefabInstance:
       propertyPath: pauseMenuUI
       value: 
       objectReference: {fileID: 1921115909}
-    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: wallLayer.m_Bits
-      value: 512
-      objectReference: {fileID: 0}
-    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: wallCheckDistance
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: wallJumpVerticalForce
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: wallJumpHorizontalForce
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 4374133188994718376, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4776694086864521984, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4776694086864521984, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5623392159882546808, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8255352011368195476, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 1546523445830515929, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-    - {fileID: 8262628758864651163, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
@@ -977,11 +919,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!50 &813221737 stripped
-Rigidbody2D:
-  m_CorrespondingSourceObject: {fileID: 1163537010999393830, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
-  m_PrefabInstance: {fileID: 323749572}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &813221746 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 763666937889821566, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
@@ -1735,7 +1672,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1706125948
 Transform:
   m_ObjectHideFlags: 0
