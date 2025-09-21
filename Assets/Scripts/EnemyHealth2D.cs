@@ -22,7 +22,7 @@ public class EnemyHealth2D : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public AudioSource audioSource;
 
-    public SquareShootng doorScript;
+    public DoorScript doorScript;
 
     [Header("Boss Settings")]
     public bool isBoss = false;
