@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5c74f9938beb7d74aaf5f5ae59f54a3b
+guid: 5d377cabee33aa24ca6bdb5c5ffbb55c
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,7 +127,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 0, y: 0}
   animatedSpriteImportData:
-  - name: Sogan
+  - name: Bicak
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -137,9 +137,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 4
       y: 4
-      width: 30
-      height: 30
-    spriteID: 304d2eabb18c37a4eb13b1090e52e479
+      width: 47
+      height: 8
+    spriteID: 69d5e35c97437d148be3e0dd11c360ad
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,25 +153,25 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 3927448790
+      value0: 1319506704
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: Sogan
+    name: Bicak
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: Sogan
+    - name: Bicak
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
-        x: 10
-        y: 33
-        width: 30
-        height: 30
-      spriteId: 304d2eabb18c37a4eb13b1090e52e479
+        x: 125
+        y: 144
+        width: 47
+        height: 8
+      spriteId: 69d5e35c97437d148be3e0dd11c360ad
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
@@ -181,5 +181,5 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 64, y: 64}
-  previousTextureSize: {x: 64, y: 64}
+  canvasSize: {x: 240, y: 240}
+  previousTextureSize: {x: 64, y: 16}
