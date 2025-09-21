@@ -475,7 +475,7 @@ ScriptedImporter:
       x: 141
       y: 191
       width: 21
-      height: 43
+      height: 21
     spriteID: 125a5e47910025d4aaeae15bfde267af
     spriteBone: []
     spriteOutline: []
@@ -1128,6 +1128,27 @@ ScriptedImporter:
       width: 21
       height: 21
     spriteID: 7f07e852b7fc51242a723216d9c93414
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  - name: ornekplate2_44
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    customData: 
+    rect:
+      serializedVersion: 2
+      x: 141
+      y: 213
+      width: 21
+      height: 21
+    spriteID: c10fb51c9962b7e4b8859f30e68e5efa
     spriteBone: []
     spriteOutline: []
     vertices: []

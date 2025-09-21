@@ -23,8 +23,7 @@ public class BossAi : MonoBehaviour
     [Header("Lazer Launcher Attack")]
     public GameObject lazerLauncherPrefab;
     public GameObject lazerLauncherPrefab2;
-    public GameObject lazerLauncherPrefab3;
-    public GameObject lazerLauncherPrefab4;
+
 
     [Header("Charge Attack")]
     public float chargeSpeed = 6f;
@@ -158,11 +157,8 @@ public class BossAi : MonoBehaviour
     IEnumerator LazerLauncherAttack()
     {
         GameObject[] topCannons = { lazerLauncherPrefab, lazerLauncherPrefab2 };
-        GameObject[] bottomCannons = { lazerLauncherPrefab3, lazerLauncherPrefab4 };
 
         yield return StartCoroutine(ActivateCannons(topCannons));
-        yield return new WaitForSeconds(1f);
-        yield return StartCoroutine(ActivateCannons(bottomCannons));
     }
 
     IEnumerator ActivateCannons(GameObject[] cannons)
