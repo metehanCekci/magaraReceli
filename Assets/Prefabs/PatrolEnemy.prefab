@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6325637395142987342}
   - component: {fileID: 7193346218328965332}
   - component: {fileID: 5296368813280778330}
+  - component: {fileID: 3874654115031515039}
   m_Layer: 7
   m_Name: PatrolEnemy
   m_TagString: Enemy
@@ -32,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.45, y: 28.8, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -121,7 +122,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!114 &5612224751325447838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,14 +135,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39cbe912df430d4d98d1e4f1419996be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PatrolEnemy
-  patrolPoints:
+  patrolSpeed: 2
+  chaseSpeed: 3
+  detectionRadius: 4
+  chaseStopDistance: 10
+  waypoints:
   - {fileID: 0}
   - {fileID: 0}
-  moveSpeed: 3
-  detectionRadius: 5
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 256
+  graphics: {fileID: 0}
+  player: {fileID: 0}
 --- !u!114 &6325637395142987342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,15 +156,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e3d2ceb3b6f05b293df5f43750f73c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth2D
-  maxHealth: 5
-  currentHealth: 5
+  maxHealth: 15
+  currentHealth: 15
   invulnerableTime: 0.2
-  knockbackForce: 6
-  knockbackScale: {x: 1, y: 0.5}
-  rb: {fileID: 0}
+  canBeKnockedBack: 1
+  knockbackForce: 10
+  knockbackTime: 0.4
   animator: {fileID: 0}
   spriteRenderer: {fileID: 0}
   audioSource: {fileID: 0}
+  doorScript: {fileID: 0}
+  isBoss: 0
+  isLastBoss: 0
 --- !u!70 &7193346218328965332
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -197,8 +202,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
+  m_Offset: {x: 0.009270132, y: -0.002503395}
+  m_Size: {x: 0.2522105, y: 0.9567394}
   m_Direction: 0
 --- !u!114 &5296368813280778330
 MonoBehaviour:
@@ -207,7 +212,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7780548441554393858}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1eb9fff4d500c055c82ca60419403d8f, type: 3}
   m_Name: 
@@ -216,3 +221,25 @@ MonoBehaviour:
   playerLayers:
     serializedVersion: 2
     m_Bits: 256
+--- !u!95 &3874654115031515039
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7780548441554393858}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1d6e265af04a54e4ca3069b42b063cd0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
