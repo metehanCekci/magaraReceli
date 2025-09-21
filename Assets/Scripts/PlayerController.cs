@@ -102,6 +102,8 @@ public class PlayerController : MonoBehaviour
     public float limbThrowSpeed = 15f;
     public float limbPullDuration = 0.5f;
     public LayerMask enemyLayer;
+    public float limbCheckDistance = 1f;
+    public Vector2 limbCheckSize = new Vector2(1f, 2f);
     public InputActionReference Pull;
     public float pullSpeed = 15f;
     private bool heavyAttackButtonHeld = false;
@@ -508,9 +510,10 @@ private IEnumerator HeavyAttackRoutine()
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         }
+        // Pull check gizmo
         Gizmos.color = Color.cyan;
-        Vector2 checkPos = transform.position + new Vector3(transform.localScale.x * 1f, 0, 0);
-        Gizmos.DrawWireSphere(checkPos, 0.5f);
+        Vector2 pullCheckPos = (Vector2)transform.position + new Vector2(transform.localScale.x * limbCheckDistance, 0);
+        Gizmos.DrawWireCube(pullCheckPos, limbCheckSize);
     }
     public void AttackHitboxEnable() { if (attackHitbox) attackHitbox.gameObject.SetActive(true); }
     public void AttackHitboxDisable() { if (attackHitbox) attackHitbox.gameObject.SetActive(false); }
@@ -529,6 +532,7 @@ private IEnumerator HeavyAttackRoutine()
     // Event 1: Animasyonda eli oluşturur
     public void LimbSpawn()
     {
+        Debug.Log("LimbSpawn event triggered.");
         if (limbPrefab == null) return;
 
         currentLimb = Instantiate(limbPrefab, transform.position, Quaternion.identity);
@@ -545,34 +549,63 @@ private IEnumerator HeavyAttackRoutine()
     // Event 2: Düşmanı kontrol eder
     public void LimbHitboxCheck()
     {
-        if (enemyLayer.value == 0) return;
-
-        Vector2 checkPos = transform.position + new Vector3(transform.localScale.x * 1f, 0, 0);
-
-        Debug.Log($"Checking hitbox at position: {checkPos}, radius: 0.5f");
-
-        Collider2D[] hits = Physics2D.OverlapCircleAll(checkPos, 0.5f, enemyLayer);
-        if (hits.Length > 0)
+        Debug.Log("LimbHitboxCheck event triggered.");
+        if (enemyLayer.value == 0)
         {
-            Debug.Log($"Found {hits.Length} colliders.");
+            Debug.LogWarning("LimbHitboxCheck: Enemy Layer is not set in the Inspector.");
+            return;
         }
+
+        Vector2 checkPos = (Vector2)transform.position + new Vector2(transform.localScale.x * limbCheckDistance, 0);
+
+        Collider2D[] hits = Physics2D.OverlapBoxAll(checkPos, limbCheckSize, 0f, enemyLayer);
+
+        if (hits.Length == 0)
+        {
+            Debug.Log("LimbHitboxCheck: No enemies found in the hitbox.");
+            return;
+        }
+        
+        Debug.Log($"LimbHitboxCheck: Found {hits.Length} colliders in the hitbox.");
+
+        EnemyHealth2D closestEnemy = null;
+        float closestDistanceSqr = float.MaxValue;
 
         foreach (var col in hits)
         {
             EnemyHealth2D enemy = col.GetComponentInParent<EnemyHealth2D>();
             if (enemy != null)
             {
-                hitEnemy = enemy;
-                Debug.Log("Enemy hit: " + enemy.name);
-                if (currentLimb != null) Destroy(currentLimb);
-                break;
+                float distanceSqr = (enemy.transform.position - transform.position).sqrMagnitude;
+                if (distanceSqr < closestDistanceSqr)
+                {
+                    closestDistanceSqr = distanceSqr;
+                    closestEnemy = enemy;
+                    LimbReturn(); // Düşman bulunduğunda eli geri çek
+                }
             }
+        }
+
+        if (closestEnemy != null)
+        {
+            hitEnemy = closestEnemy;
+            Debug.Log("LimbHitboxCheck: Locked onto closest enemy: " + hitEnemy.name);
+            if (currentLimb != null)
+            {
+                Destroy(currentLimb);
+                currentLimb = null; // Set to null after destroying
+            }
+        }
+        else
+        {
+            Debug.Log("LimbHitboxCheck: Found colliders, but none had an EnemyHealth2D component.");
         }
     }
 
     // Event 3: Eli geri çeker ve düşmanı çeker
     public void LimbReturn()
     {
+        Debug.Log("LimbReturn event triggered.");
         if (currentLimb != null)
         {
             Destroy(currentLimb);
@@ -581,16 +614,23 @@ private IEnumerator HeavyAttackRoutine()
 
         if (hitEnemy != null)
         {
+            Debug.Log($"LimbReturn: 'hitEnemy' is '{hitEnemy.name}'. Starting PullEnemyCoroutine.");
             StartCoroutine(PullEnemyCoroutine(hitEnemy.transform));
             hitEnemy = null;
+        }
+        else
+        {
+            Debug.Log("LimbReturn: 'hitEnemy' is null. Nothing to pull.");
         }
     }
 
     // YENİ VE GARANTİLİ ÇEKME FONKSİYONU
     private IEnumerator PullEnemyCoroutine(Transform enemyTransform)
     {
+        Debug.Log("PullEnemyCoroutine has started.");
         if (enemyTransform == null)
         {
+            Debug.LogError("PullEnemyCoroutine: enemyTransform was null on entry!");
             yield break;
         }
 
@@ -604,6 +644,7 @@ private IEnumerator HeavyAttackRoutine()
         {
             if (enemyTransform == null)
             {
+                Debug.LogError("PullEnemyCoroutine: enemyTransform became null during the pull!");
                 yield break;
             }
 
@@ -618,8 +659,9 @@ private IEnumerator HeavyAttackRoutine()
             yield return null;
         }
 
+        Debug.Log("PullEnemyCoroutine has finished.");
+
         // if (enemyAI != null) enemyAI.enabled = true;
     }
     // --- PULL MEKANİĞİ BİTİŞ ---
 }
-
