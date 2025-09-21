@@ -554,6 +554,37 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &859818825
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 859818826}
+  m_Layer: 0
+  m_Name: uygyjk
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &859818826
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859818825}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 9.2972, y: 0.72500014, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &902973757
 GameObject:
   m_ObjectHideFlags: 0
@@ -658,6 +689,10 @@ PrefabInstance:
     - target: {fileID: 1477707327367700591, guid: 1b53c76b7e0c834d8b0dd4aaaba7ac4c, type: 3}
       propertyPath: m_Name
       value: PatrolEnemyWaypoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 1477707327367700591, guid: 1b53c76b7e0c834d8b0dd4aaaba7ac4c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7021954711747663662, guid: 1b53c76b7e0c834d8b0dd4aaaba7ac4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -976,6 +1011,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 2517637730954126968, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8019010494067289331, guid: fc39cb6a52dd40743a023409c3335d7e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -12.521925
@@ -1219,6 +1258,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4265303545122163627, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
     - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
+      propertyPath: pullSpeed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3736926135186564556, guid: 2848eabef73e3ba40863693fcda53f30, type: 3}
       propertyPath: limbPrefab
       value: 
       objectReference: {fileID: 11430882288494158, guid: 2f34d664276a07843919da6e5f2641a1, type: 3}
@@ -1305,11 +1348,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1045160414630831676, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.175
+      value: 9.505
       objectReference: {fileID: 0}
     - target: {fileID: 1045160414630831676, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.382
+      value: -1.552
       objectReference: {fileID: 0}
     - target: {fileID: 1045160414630831676, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1377,7 +1420,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7258894641560003482, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8904884055748503870, guid: 7bc40cd32faa3be409d1dcde4ff15736, type: 3}
       propertyPath: m_Name
@@ -1455,6 +1498,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PatrolEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 7780548441554393858, guid: 98e95e33d5defa14fbce53e4eacb75ad, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1476,3 +1523,4 @@ SceneRoots:
   - {fileID: 1739141337}
   - {fileID: 1803762330}
   - {fileID: 1499494936}
+  - {fileID: 859818826}

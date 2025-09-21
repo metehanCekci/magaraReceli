@@ -304,7 +304,14 @@ public class PlayerController : MonoBehaviour
     }
     void OnJumpPerformed(InputAction.CallbackContext ctx) { jumpHeld = true; bufferCounter = jumpBufferTime; }
     void OnJumpCanceled(InputAction.CallbackContext ctx) { jumpHeld = false; }
-    void OnDashPerformed(InputAction.CallbackContext ctx) { StartDash(); }
+    void OnDashPerformed(InputAction.CallbackContext ctx)
+    {
+        // AbilityManager'dan dash yeteneğinin açık olup olmadığını kontrol et
+        if (abilityManager != null && abilityManager.CanDash())
+        {
+            StartDash();
+        }
+    }
     void OnAttackPerformed(InputAction.CallbackContext ctx)
     {
         if (isHealing) return;
@@ -376,11 +383,21 @@ public class PlayerController : MonoBehaviour
         coyoteCounter = 0f;
         PlayOne(jumpSound);
     }
+    // metehancekci/magarareceli/magaraReceli-c354ca461671bdc0711870d4b7d693c7cf44512b/Assets/Scripts/PlayerController.cs
+
     void StartDash()
     {
-        isDashing = true; lastDashTime = Time.time;
+        // Dash'in kilidi açık değilse, zaten dash yapıyorsa veya cooldown'daysa işlemi iptal et
+        if (!abilityManager.CanDash() || isDashing || Time.time < lastDashTime + dashCooldown)
+        {
+            return;
+        }
+
+        isDashing = true;
+        lastDashTime = Time.time;
         rb.linearVelocity = new Vector2(transform.localScale.x * dashForce, rb.linearVelocity.y);
         animator?.SetTrigger("Dash");
+        PlayOne(dashSound); // Dash sesini de ekledim
         Invoke(nameof(_EndDash), dashDuration);
     }
     void _EndDash() => isDashing = false;
